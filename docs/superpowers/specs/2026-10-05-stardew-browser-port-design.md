@@ -1,6 +1,6 @@
 # Stardew Valley browser-native port: proposed design
 
-Status: proposed; awaiting design review. No game implementation exists yet.
+Status: approved by the user; implementation-plan review is next. No game implementation exists yet.
 
 ## Intended outcome
 
