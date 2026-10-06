@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>xTile</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <Import Project="../../Kni.props" />
+  <ItemGroup>
+    <Compile Include="../../Recovered/xTile/**/*.cs" Exclude="../../Recovered/xTile/bin/**;../../Recovered/xTile/obj/**" />
+  </ItemGroup>
+</Project>

@@ -59,12 +59,12 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `BrowserGameHost.StartAsync(CancellationToken) -> Task` initializes a canvas host; the browser publishes `window.portStatus = { phase, error }`. Phases are `loading`, `ready`, and `failed`; the test host uses actual archive textures/fonts/maps. `tests/browser/driver.mjs` exports `withGame(testBody: (page: Page) => Promise<void>) -> Promise<void>`, serving published files locally and cleaning up its Playwright browser/server after each test. Browser tests use Node's test runner and assertions; Playwright is a pinned development dependency.
 
-- [ ] Write a browser test requiring `ready`, a rendered real texture/font, keyboard and pointer response, successful render-target use, and no uncaught browser exception. Run it against the absent host and confirm failure.
-- [ ] Inspect the selected KNI release's browser template and pin compatible .NET/KNI versions; create a standalone host with interpretation and trimming disabled initially.
-- [ ] Implement the host and exercise real content readers, sprite batching, map rendering, render targets, and archive shader effects; report unsupported APIs explicitly.
-- [ ] Run `dotnet publish src/Browser/Browser.csproj -c Release` and `node --test tests/browser/compatibility.spec.mjs` against its static output; require build success and all assertions passing.
-- [ ] Resolve framework gaps in `src/Platform/Compatibility/` with narrowly scoped adapters. If this path cannot preserve the contracts, build the compatible-backend fallback described in the spec; record the switch and its evidence.
-- [ ] Commit the first verified browser rendering milestone and the compatibility report. It is not a game release.
+- [x] Write a browser test requiring `ready`, a rendered real texture/font, keyboard and pointer response, successful render-target use, and no uncaught browser exception. Run it against the absent host and confirm failure.
+- [x] Inspect the selected KNI release's browser template and pin compatible .NET/KNI versions; create a standalone host with interpretation and trimming disabled initially.
+- [x] Implement the host and exercise real content readers, sprite batching, map rendering, render targets, and archive shader effects; report unsupported APIs explicitly.
+- [x] Run `dotnet publish src/Browser/Browser.csproj -c Release` and `node --test tests/browser/compatibility.spec.mjs` against its static output; require build success and all assertions passing.
+- [x] Resolve framework gaps in `src/Platform/Compatibility/` with narrowly scoped adapters. If this path cannot preserve the contracts, build the compatible-backend fallback described in the spec; record the switch and its evidence.
+- [x] Commit the first verified browser rendering milestone and the compatibility report. It is not a game release.
 
 ### Task 3: Preserve content and audio behavior
 

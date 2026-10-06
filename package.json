@@ -1,0 +1,13 @@
+{
+  "name": "stardew-browser-port",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:tools": "python3 -m unittest discover -s tests/tools -v",
+    "test:browser": "node --test tests/browser/*.spec.mjs"
+  },
+  "devDependencies": {
+    "agent-browser": "0.38.2",
+    "playwright": "1.63.0"
+  }
+}

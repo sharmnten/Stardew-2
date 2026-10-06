@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="./">
+  <title>Stardew Valley browser port — graphics verification</title>
+  <link rel="icon" href="data:,">
+  <style>
+    html,body { margin:0; background:#172c2b; color:#f3e1b7; font-family:system-ui,sans-serif; }
+    #canvasHolder { width:100vw; height:calc(100vh - 44px); }
+    canvas { display:block; image-rendering:pixelated; width:100%; height:100%; }
+    #status { margin:10px 16px; font-size:14px; }
+    #blazor-error-ui { display:none; }
+  </style>
+</head>
+<body>
+  <div id="app">Loading browser runtime…</div>
+  <div id="status" role="status">Graphics verification in progress. Gameplay integration is pending.</div>
+  <div id="blazor-error-ui">The browser runtime failed to load. Reload to retry.</div>
+  <script src="_content/nkast.Wasm.JSInterop/js/JSObject.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Dom/js/Window.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Dom/js/Document.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Dom/js/Navigator.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Dom/js/Gamepad.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Dom/js/Media.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.XHR/js/XHR.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Canvas/js/Canvas.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Canvas/js/CanvasGLContext.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.Audio/js/Audio.10.0.3.js"></script>
+  <script src="_content/nkast.Wasm.XR/js/XR.10.0.3.js"></script>
+  <script src="platform/host.js"></script>
+  <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

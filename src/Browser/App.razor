@@ -1,0 +1,19 @@
+@namespace StardewBrowser
+@using Microsoft.JSInterop
+@using StardewBrowser.Platform
+@inject IJSRuntime Js
+@inject HttpClient Http
+@implements IAsyncDisposable
+
+<div id="canvasHolder"><canvas id="theCanvas" tabindex="0" aria-label="Stardew Valley browser graphics verification"></canvas></div>
+
+@code {
+    private BrowserGameHost? host;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        host = new BrowserGameHost(Js, Http);
+        await host.StartAsync(CancellationToken.None);
+    }
+    public ValueTask DisposeAsync() => host?.DisposeAsync() ?? ValueTask.CompletedTask;
+}
