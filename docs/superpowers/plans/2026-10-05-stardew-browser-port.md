@@ -46,12 +46,12 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `prepare_archive(archive: Path, output: Path) -> dict` returns archive identity and extracted paths; recovery produces `src/Recovered/Game/`, `GameData/`, and supporting managed projects plus a dependency report. The input hash must match `docs/port/archive-inventory.json`.
 
-- [ ] Write tests named `test_rejects_path_traversal`, `test_checks_archive_identity`, and `test_extracts_required_assets`; assert no files escape the output directory, wrong archives fail, and game/data assemblies plus content are retained.
-- [ ] Run `python3 -m unittest discover -s tests/tools -v`; confirm the missing implementation causes failure.
-- [ ] Implement archive checks, safe extraction, and deterministic reports; ignore generated source baselines, archives, extracted binaries, build output, and local tools.
-- [ ] Pin ILSpyCmd in the local tool manifest; recover each required managed assembly with project output and archive-local references. Preserve resource files. Record native imports and framework-specific references.
-- [ ] Restore/build the recovered desktop projects to identify recovery defects independently of browser defects. Store diagnostics and targeted recovery patches; do not treat a failing build as completion.
-- [ ] Run the tooling tests and repeat recovery into a fresh temporary directory; compare source hashes. Commit reproducible tooling and the evidence report.
+- [x] Write tests named `test_rejects_path_traversal`, `test_checks_archive_identity`, and `test_extracts_required_assets`; assert no files escape the output directory, wrong archives fail, and game/data assemblies plus content are retained.
+- [x] Run `python3 -m unittest discover -s tests/tools -v`; confirm the missing implementation causes failure.
+- [x] Implement archive checks, safe extraction, and deterministic reports; ignore generated source baselines, archives, extracted binaries, build output, and local tools.
+- [x] Pin ILSpyCmd in the local tool manifest; recover each required managed assembly with project output and archive-local references. Preserve resource files. Record native imports and framework-specific references.
+- [x] Restore/build the recovered desktop projects to identify recovery defects independently of browser defects. Store diagnostics and targeted recovery patches; do not treat a failing build as completion.
+- [x] Run the tooling tests and repeat recovery into a fresh temporary directory; compare source hashes. Commit reproducible tooling and the evidence report.
 
 ### Task 2: Prove the browser graphics and framework boundary
 

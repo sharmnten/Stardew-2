@@ -1,0 +1,20 @@
+{
+  "archive_sha256": "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11",
+  "sdk": "10.0.401",
+  "decompiler": "11.0.0.9375",
+  "files_compared": 1239,
+  "csharp_lines": 391098,
+  "identical": true,
+  "source_manifest_sha256": "6c547c7937dd6287c63467307012e1ffbfe0680bd04c55d89a5d8fa053ed8ae8",
+  "desktop_projects_built": [
+    "Game",
+    "GameData",
+    "xTile",
+    "BmFont",
+    "CPExtBmFont",
+    "Lidgren"
+  ],
+  "game_build_errors": 0,
+  "game_build_warnings": 82,
+  "browser_gameplay_verified": false
+}

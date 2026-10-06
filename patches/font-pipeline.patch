@@ -1,0 +1,11 @@
+--- a/CPExtBmFont.csproj
++++ b/CPExtBmFont.csproj
+@@ -17,4 +17,7 @@
+       <HintPath>../../../original/BmFont.dll</HintPath>
+     </Reference>
+   </ItemGroup>
++  <ItemGroup>
++    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" />
++  </ItemGroup>
+ </Project>
+\ No newline at end of file

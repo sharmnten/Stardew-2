@@ -1,0 +1,76 @@
+--- a/Stardew-Valley.csproj
++++ b/Stardew-Valley.csproj
+@@ -92,6 +92,9 @@
+     <Reference Include="System.Net.Primitives">
+       <HintPath>../../../original/System.Net.Primitives.dll</HintPath>
+     </Reference>
++    <Reference Include="System.Data.HashFunction.Core">
++      <HintPath>../../../original/System.Data.HashFunction.Core.dll</HintPath>
++    </Reference>
+     <Reference Include="System.Data.HashFunction.Interfaces">
+       <HintPath>../../../original/System.Data.HashFunction.Interfaces.dll</HintPath>
+     </Reference>
+--- a/StardewValley.Buffs/BuffAttributeDisplay.cs
++++ b/StardewValley.Buffs/BuffAttributeDisplay.cs
+@@ -81,7 +81,6 @@
+ 		_003C_003Ec__DisplayClass5_0 obj = new _003C_003Ec__DisplayClass5_0();
+ 		obj.value = value;
+ 		obj.descriptionKey = descriptionKey;
+-		base._002Ector();
+ 		Texture = _003C_003Ec._003C_003E9__5_0 ?? (_003C_003Ec._003C_003E9__5_0 = _003C_003Ec._003C_003E9._003C_002Ector_003Eb__5_0);
+ 		SpriteIndex = spriteIndex;
+ 		Value = obj._003C_002Ector_003Eb__1;
+--- a/StardewValley.Menus/FieldOfficeMenu.cs
++++ b/StardewValley.Menus/FieldOfficeMenu.cs
+@@ -55,10 +55,10 @@
+ 	private float frogTimer;
+ 
+ 	public FieldOfficeMenu(IslandFieldOffice office)
++		: base(highlightBones, okButton: true, trashCan: true, 16, 132)
+ 	{
+ 		_003C_003Ec__DisplayClass5_0 obj = new _003C_003Ec__DisplayClass5_0();
+ 		obj.office = office;
+-		base._002Ector(highlightBones, okButton: true, trashCan: true, 16, 132);
+ 		obj._003C_003E4__this = this;
+ 		this.office = obj.office;
+ 		fieldOfficeMenuTexture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\FieldOfficeDonationMenu");
+--- a/StardewValley/GameLocation.cs
++++ b/StardewValley/GameLocation.cs
+@@ -790,7 +790,7 @@
+ 			return feature.tickUpdate(time);
+ 		}
+ 
+-		private Object _003CUpdateWhenCurrentLocation_003Eg__CheckForSign_007C6(int offsetX, int offsetY, ref _003C_003Ec__DisplayClass276_2 P_2)
++		internal Object _003CUpdateWhenCurrentLocation_003Eg__CheckForSign_007C6(int offsetX, int offsetY, ref _003C_003Ec__DisplayClass276_2 P_2)
+ 		{
+ 			if (!_003C_003E4__this.objects.TryGetValue(P_2.player_position + new Vector2(offsetX, offsetY), out var value) || !value.IsTextSign())
+ 			{
+--- a/StardewValley/ItemContextTagManager.cs
++++ b/StardewValley/ItemContextTagManager.cs
+@@ -81,6 +81,12 @@
+ 				}
+ 				value.Add("geode");
+ 				goto IL_0207;
++				IL_0207:
++				if (!objectData.CanBeGivenAsGift)
++				{
++					value.Add("not_giftable");
++				}
++				break;
+ 			}
+ 			case "(H)":
+ 				{
+@@ -91,12 +97,7 @@
+ 					}
+ 					break;
+ 				}
+-				IL_0207:
+-				if (!objectData.CanBeGivenAsGift)
+-				{
+-					value.Add("not_giftable");
+-				}
+-				break;
++
+ 			}
+ 			if (dataOrErrorItem.InternalName != null)
+ 			{
