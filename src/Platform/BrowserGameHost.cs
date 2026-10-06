@@ -27,6 +27,13 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
     private BrowserContentStore content = null!;
     private BrowserAudioAdapter audio = null!;
 
+#if BROWSER_PORT_TESTING
+    private StardewBrowser.Platform.Testing.ScenarioBridge? scenarios;
+    [JSInvokable] public Task LoadScenario(string id) => scenarios!.LoadScenarioAsync(id);
+    [JSInvokable] public string ScenarioSnapshot() => scenarios!.Snapshot();
+    [JSInvokable] public string RunScenarioAction(string id) => scenarios!.RunAction(id);
+#endif
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         try
@@ -84,6 +91,15 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
                 game.Run();
             }
             reference = DotNetObjectReference.Create(this);
+#if BROWSER_PORT_TESTING
+            if (!diagnostic)
+            {
+                scenarios = new StardewBrowser.Platform.Testing.ScenarioBridge(http);
+                var testing = await js.InvokeAsync<IJSObjectReference>("import", "./platform/scenarios.js");
+                await testing.InvokeVoidAsync("start", reference);
+                await testing.DisposeAsync();
+            }
+#endif
             await js.InvokeVoidAsync("portHost.start", cancellationToken, reference);
         }
         catch (Exception error) { await js.InvokeVoidAsync("portHost.status", new { phase = "failed", error = error.ToString() }); }

@@ -120,7 +120,7 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `ScenarioBridge.LoadScenarioAsync(string scenarioId) -> Task` loads a reproducibly constructed original save; `Snapshot() -> string` exposes serialized original state to tests. Production builds exclude the bridge. Fixtures record game version and scenario prerequisites.
 
-- [ ] Create a parity ledger with every group from the approved spec and status `unverified`; associate each with a concrete new-game or advanced-save scenario and expected outcomes.
+- [x] Create a parity ledger with every group from the approved spec and status `unverified`; associate each with a concrete new-game or advanced-save scenario and expected outcomes.
 - [ ] Write scenarios for all original farm layouts; crops/season rollover; inventory/economy; recipes/machines; animals/buildings; fishing; combat/dungeons; NPC/family events; skill/mastery unlocks; both story routes; festivals; island/Qi/perfection; and original minigames.
 - [ ] Add desktop-save import, migration, full-day/sleep, reload, and export assertions. Use generated fixtures with original serializers or available reference saves; never mark unavailable fixtures verified.
 - [ ] Run `node --test tests/browser/parity.spec.mjs`, record failures, and fix each adapter or recovery defect without replacing original gameplay logic. Track each targeted fix and rerun its affected checks.

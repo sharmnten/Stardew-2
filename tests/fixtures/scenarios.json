@@ -1,0 +1,474 @@
+{
+  "schema": 1,
+  "gameVersion": "1.6.15.24356",
+  "seed": 123456789,
+  "fixtureProvenance": "Original desktop title and all eight farm creation/save/reload fixtures generated from unchanged supplied assemblies. Farming fixture also generated with original serialization. Remaining scenario prerequisites are planned until their own recorded checks pass.",
+  "scenarios": [
+    {
+      "id": "new-game-standard",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 0"
+      ],
+      "expected": [
+        "Original farm type 0 and map Farm",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "0",
+      "map": "Farm",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-riverland",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 1"
+      ],
+      "expected": [
+        "Original farm type 1 and map Farm_Fishing",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "1",
+      "map": "Farm_Fishing",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-forest",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 2"
+      ],
+      "expected": [
+        "Original farm type 2 and map Farm_Foraging",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "2",
+      "map": "Farm_Foraging",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-hilltop",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 3"
+      ],
+      "expected": [
+        "Original farm type 3 and map Farm_Mining",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "3",
+      "map": "Farm_Mining",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-wilderness",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 4"
+      ],
+      "expected": [
+        "Original farm type 4 and map Farm_Combat",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "4",
+      "map": "Farm_Combat",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-four-corners",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 5"
+      ],
+      "expected": [
+        "Original farm type 5 and map Farm_FourCorners",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "5",
+      "map": "Farm_FourCorners",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-beach",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector 6"
+      ],
+      "expected": [
+        "Original farm type 6 and map Farm_Island",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "6",
+      "map": "Farm_Island",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "new-game-meadowlands",
+      "group": "start",
+      "prerequisites": [
+        "Original title and character creation",
+        "Fixed seed 123456789",
+        "Original farm selector MeadowlandsFarm"
+      ],
+      "expected": [
+        "Original farm type MeadowlandsFarm and map Farm_Ranching",
+        "Original starting buildings/items/animals",
+        "Save, native Load menu and movement after reload"
+      ],
+      "farmId": "MeadowlandsFarm",
+      "map": "Farm_Ranching",
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop creation/save/reload",
+        "Browser import/original Load menu and native movement",
+        "Farm map/buildings/animals/farmer/full location list match desktop reload",
+        "All 8 farm layouts created with actual normal browser controls, day-one save and movement"
+      ],
+      "remaining": [],
+      "creationSeedComparison": "Desktop uses seed 123456789; browser creation uses original default seed and compares farm structures/animal types. Original imported saves retain and compare seeded animal names."
+    },
+    {
+      "id": "farming-season",
+      "group": "farming",
+      "prerequisites": [
+        "Spring 28 year 2",
+        "Watered crops, fruit/wild trees and greenhouse crops"
+      ],
+      "expected": [
+        "Original crop growth and seasonal survival on Summer 1",
+        "Greenhouse crop survival",
+        "Weather/tree changes match desktop"
+      ],
+      "status": "unverified",
+      "verifiedSubset": [
+        "Watered/dry crop dayUpdate comparison",
+        "Original parsnip harvest",
+        "Explicit summer crop death and greenhouse survival",
+        "Original Hoe creates soil; WateringCan state1/water39/stamina4",
+        "Fertilized wild-tree and fruit-tree growth match original desktop",
+        "Advanced browser natural Spring28\u2192Summer1 rollover, crop/greenhouse/weather match desktop"
+      ],
+      "remaining": []
+    },
+    {
+      "id": "inventory-economy",
+      "group": "economy",
+      "prerequisites": [
+        "Items of multiple qualities",
+        "Shop and shipping access",
+        "Currency balances"
+      ],
+      "expected": [
+        "Original stacking, chest transfer and shop prices",
+        "Shipping settlement after sleep",
+        "Tool upgrade handoff and return"
+      ],
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original chest stack overflow and quality separation",
+        "Four original quality prices",
+        "Original SeedShop stock and20 gold purchase",
+        "Original currency balances/charges",
+        "Original shipping parser total157",
+        "Full overnight shipping settlement matches desktop (advanced fixture,657gold)"
+      ],
+      "remaining": [
+        "Tool upgrade handoff/return"
+      ]
+    },
+    {
+      "id": "recipes-machines",
+      "group": "crafting",
+      "prerequisites": [
+        "Known cooking/crafting recipes",
+        "Materials and original machines",
+        "Tailoring and decoration access"
+      ],
+      "expected": [
+        "Original recipe consumption/output",
+        "Machine timers and output after sleep",
+        "Furniture/tailoring changes persist"
+      ],
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original Chest/Fried Egg ingredient consumption and outputs",
+        "Original mayonnaise machine consumes egg,180minutes and ready flag",
+        "Original machine completes overnight and survives browser cold reload/desktop export import"
+      ],
+      "remaining": [
+        "Automation, tailoring and decoration/persistence"
+      ]
+    },
+    {
+      "id": "text-sign-clipboard",
+      "group": "crafting",
+      "prerequisites": [
+        "Original text sign on farm",
+        "Readable clipboard permission"
+      ],
+      "expected": [
+        "Paste button replaces existing sign text with fresh clipboard text",
+        "Late response cannot modify a closed editor",
+        "Sign text persists after sleep/reload"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "animals-buildings",
+      "group": "animals",
+      "prerequisites": [
+        "Original livestock/pet/mount",
+        "Building upgrade and renovation prerequisites"
+      ],
+      "expected": [
+        "Original production/friendship and overnight changes",
+        "Construction/upgrade completion and interiors",
+        "Mount/pet interactions and persistence"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "fishing-gathering",
+      "group": "fishing",
+      "prerequisites": [
+        "Rod, bait/tackle and crab pot",
+        "Fish pond and forage access"
+      ],
+      "expected": [
+        "Original fishing minigame catches a fish",
+        "Bait/tackle consumption and crab pot harvest",
+        "Pond and resource regeneration match desktop"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "combat-dungeons",
+      "group": "combat",
+      "prerequisites": [
+        "Mines/Skull Cavern/volcano access",
+        "Weapon and buff consumables"
+      ],
+      "expected": [
+        "Original generation/warp/collision",
+        "Monster damage, drops and buff timing",
+        "Floor progression survives normal play"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "characters-family",
+      "group": "characters",
+      "prerequisites": [
+        "Schedules/friendship prerequisites",
+        "Spouse and child fixture",
+        "Heart event prerequisites"
+      ],
+      "expected": [
+        "Original dialogue, gift friendship and schedules",
+        "Heart event/cutscene progression",
+        "Family changes persist through sleep/reload"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "skills-mastery-achievements",
+      "group": "progression",
+      "prerequisites": [
+        "Near original XP and mastery thresholds",
+        "Achievement prerequisites"
+      ],
+      "expected": [
+        "Original level/profession/mastery unlocks",
+        "Local achievements/collections serialize",
+        "Unlock rewards match desktop"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "community-center",
+      "group": "story",
+      "prerequisites": [
+        "Bundle ingredients and center access"
+      ],
+      "expected": [
+        "Original bundle acceptance and rewards",
+        "Room restoration and story mail/events",
+        "Route state survives sleep/reload"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "joja-orders-museum",
+      "group": "story",
+      "prerequisites": [
+        "Joja membership prerequisites",
+        "Special order and museum donations"
+      ],
+      "expected": [
+        "Original purchases and Joja completion",
+        "Quest/order and museum progress/rewards",
+        "Mail and secret flags persist"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "festivals-events-movies",
+      "group": "calendar",
+      "prerequisites": [
+        "Festival date/time and invitations",
+        "Passive festival and movie access"
+      ],
+      "expected": [
+        "Original festival entry/minigames/rewards",
+        "Birthdays/random events/cutscenes",
+        "Movie selection and screening state"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "island-qi-perfection",
+      "group": "late-game",
+      "prerequisites": [
+        "Island access and walnut sources",
+        "Qi challenge and perfection prerequisites"
+      ],
+      "expected": [
+        "Original island warp and walnut unlocks",
+        "Qi challenge rewards and expiry",
+        "Perfection accounting matches desktop"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "original-minigames",
+      "group": "late-game",
+      "prerequisites": [
+        "Prairie King and Junimo Kart access"
+      ],
+      "expected": [
+        "Original input, collisions and progression",
+        "Quit/restart, rewards and saved minigame progress"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "advanced-desktop-roundtrip",
+      "group": "persistence",
+      "prerequisites": [
+        "Original desktop-generated advanced save",
+        "Original serializers and full day"
+      ],
+      "expected": [
+        "Import and original loader/migration",
+        "Sleep, cold reload and continued gameplay",
+        "Export retains all populated original fields",
+        "Quota failure preserves previous save"
+      ],
+      "status": "unverified",
+      "verifiedSubset": [
+        "Populated original desktop save generated with original serializer",
+        "Original desktop full overnight to Summer1 with shipping657gold/mayo ready/crop death/greenhouse survival",
+        "Original desktop advanced fields match after normal reload",
+        "Browser initial populated advanced state matches original desktop",
+        "Browser normal bed/overnight, season/weather/shipping/machine/populated fields match desktop",
+        "ZIP export and cold normal Load with original load-completion flags",
+        "Supplied unchanged desktop game loads browser export unchanged and matches all observed fields"
+      ],
+      "remaining": [
+        "Task5 quota/migration checks already pass; genuine older advanced desktop-save migration reference remains unavailable"
+      ]
+    },
+    {
+      "id": "presentation-desktop",
+      "group": "presentation",
+      "prerequisites": [
+        "Original desktop renderer/audio reference",
+        "Supported languages and font assets"
+      ],
+      "expected": [
+        "UI/shader/screenshots compare with desktop",
+        "Original audio loop/pitch/category/DSP behavior",
+        "Localization/controller/fullscreen checks",
+        "Record startup/overnight performance"
+      ],
+      "status": "unverified"
+    }
+  ]
+}

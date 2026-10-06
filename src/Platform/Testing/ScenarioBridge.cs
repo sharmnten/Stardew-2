@@ -1,0 +1,103 @@
+using System.Net.Http.Json;
+using System.Text.Json;
+using StardewBrowser.Platform.Storage;
+using StardewValley;
+using StardewValley.Menus;
+
+namespace StardewBrowser.Platform.Testing;
+
+/// <summary>Development-only import of fixtures produced by the supplied desktop game.</summary>
+internal sealed class ScenarioBridge(HttpClient http)
+{
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    private readonly SemaphoreSlim serial = new(1, 1);
+    private string? loadedScenario;
+
+    internal async Task LoadScenarioAsync(string scenarioId)
+    {
+        if (!Allowed.Contains(scenarioId)) throw new ArgumentException("Unknown reference scenario: " + scenarioId);
+        await serial.WaitAsync();
+        try
+        {
+            if (Game1.gameMode != 0 || Game1.activeClickableMenu is not TitleMenu)
+            {
+                var returned = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+                Game1.ExitToTitle(() => returned.TrySetResult());
+                await returned.Task.WaitAsync(TimeSpan.FromSeconds(60));
+            }
+            var report = await http.GetFromJsonAsync<ReferenceReport>("Fixtures/reference/" + scenarioId + ".json", Json)
+                ?? throw new InvalidDataException("Missing original reference report.");
+            if (report.GameVersion != "1.6.15.24356" || report.Scenario.Id != scenarioId)
+                throw new InvalidDataException("Reference fixture identity does not match the supplied game.");
+            string slot = report.Scenario.SaveFiles.Single(file => file.Name != "SaveGameInfo").Name;
+            BrowserSaveStore.ValidateSlot(slot);
+            var files = new Dictionary<string, byte[]>();
+            foreach (var file in report.Scenario.SaveFiles)
+            {
+                if (file.Name != slot && file.Name != "SaveGameInfo") throw new InvalidDataException("Unexpected fixture file.");
+                byte[] bytes = await http.GetByteArrayAsync("Fixtures/reference/" + scenarioId + "/" + slot + "/" + file.Name);
+                if (bytes.Length != file.Bytes) throw new InvalidDataException("Reference fixture length mismatch.");
+                files.Add(file.Name, bytes);
+            }
+            await BrowserPersistence.Current.Store.ImportAsync(files);
+            // Use the original selection handler, including its title-menu cleanup.
+            var title = (TitleMenu)Game1.activeClickableMenu;
+            var menu = new LoadGameMenu();
+            title.ForceSubmenu(menu);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            LoadGameMenu.SaveFileSlot? selected;
+            while ((selected = menu.MenuSlots.OfType<LoadGameMenu.SaveFileSlot>()
+                .FirstOrDefault(candidate => candidate.Farmer.slotName == slot)) == null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(30)) throw new TimeoutException("Original Load menu did not find the reference save.");
+                await Task.Delay(16);
+            }
+            selected.Activate();
+            timeout.Restart();
+            while (Game1.gameMode != 3 || SaveGame.IsProcessing || !Game1.player.CanMove || Game1.isWarping
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(90)) throw new TimeoutException("Original fixture load did not complete.");
+                await Task.Delay(16);
+            }
+            loadedScenario = scenarioId;
+        }
+        finally { serial.Release(); }
+    }
+
+    internal string RunAction(string id)
+    {
+        if (loadedScenario != id)
+            throw new InvalidOperationException("Load the matching original fixture before running its actions.");
+        object observations = id switch {
+            "farming-season" => StardewBrowser.Testing.FarmingActions.Run(),
+            "inventory-economy" => StardewBrowser.Testing.EconomyActions.Run(),
+            "recipes-machines" => StardewBrowser.Testing.ProductionActions.Run(),
+            _ => throw new ArgumentException("This scenario has no method comparison: " + id)
+        };
+        return JsonSerializer.Serialize(observations, Json);
+    }
+
+    internal string Snapshot()
+    {
+        var farm = Game1.getFarm();
+        return JsonSerializer.Serialize(new {
+            day = Game1.dayOfMonth, farmId = Game1.GetFarmTypeID(), map = farm.mapPath.Value,
+            farmer = new { name = Game1.player.Name, customized = Game1.player.isCustomized.Value, money = Game1.player.Money },
+            buildings = farm.buildings.Select(building => new { type = building.buildingType.Value,
+                x = building.tileX.Value, y = building.tileY.Value }).OrderBy(building => building.type).ToArray(),
+            animals = farm.getAllFarmAnimals().Select(animal => new { type = animal.type.Value, name = animal.Name }).OrderBy(animal => animal.type).ToArray(),
+            advanced = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AdvancedActions.FixtureKey)
+                ? StardewBrowser.Testing.AdvancedActions.Read() : null,
+            locationCount = Game1.locations.Count,
+            locations = Game1.locations.Select(location => location.NameOrUniqueName).Order().ToArray()
+        }, Json);
+    }
+
+    private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
+        "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
+        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip"];
+    private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
+    private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
+    private sealed record ReferenceFile(string Name, long Bytes);
+}

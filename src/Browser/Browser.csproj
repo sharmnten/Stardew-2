@@ -3,6 +3,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BrowserPortTesting Condition="'$(BrowserPortTesting)' == ''">false</BrowserPortTesting>
+    <DefineConstants Condition="'$(BrowserPortTesting)' == 'true'">$(DefineConstants);BROWSER_PORT_TESTING</DefineConstants>
     <PublishTrimmed>false</PublishTrimmed>
     <CompressionEnabled>false</CompressionEnabled>
     <RunAOTCompilation>false</RunAOTCompilation>
@@ -19,6 +21,13 @@
     <Content Include="../../.port-cache/content/manifest.json" Link="wwwroot/Content/manifest.json" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../.port-cache/audio/**/*.flac" Link="wwwroot/Audio/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../.port-cache/audio/manifest.json;../../.port-cache/audio/cues.json" Link="wwwroot/Audio/%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BrowserPortTesting)' == 'true'">
+    <Compile Include="../Platform/Testing/ScenarioBridge.cs;../../tests/fixtures/*Actions.cs" />
+    <Content Include="../../.port-cache/reference/fixtures/**/*" Link="wwwroot/Fixtures/reference/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(BrowserPortTesting)' != 'true'">
+    <Content Remove="wwwroot/platform/scenarios.js" />
   </ItemGroup>
   <Target Name="VerifyOriginalContent" BeforeTargets="PrepareForBuild">
     <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/build_content.py&quot;" />

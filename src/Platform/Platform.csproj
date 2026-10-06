@@ -10,7 +10,7 @@
     <ProjectReference Include="Compatibility/xTile.Browser.csproj" />
     <ProjectReference Include="Compatibility/BmFont/BmFont.Browser.csproj" />
     <Compile Remove="Compatibility/**/bin/**;Compatibility/**/obj/**;Compatibility/LegacyEffect.cs;Compatibility/xTileAliases.cs" />
-    <Compile Remove="BrowserGameHost.cs" />
+    <Compile Remove="BrowserGameHost.cs;Testing/**" />
   </ItemGroup>
   <Target Name="ProjectOriginalXact" BeforeTargets="CoreCompile">
     <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/project_xact.py&quot;" />

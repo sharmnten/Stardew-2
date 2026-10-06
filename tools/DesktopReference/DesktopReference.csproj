@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../tests/fixtures/*Actions.cs" />
+    <Reference Include="Stardew Valley"><HintPath>../../original/Stardew Valley.dll</HintPath></Reference>
+    <Reference Include="StardewValley.GameData"><HintPath>../../original/StardewValley.GameData.dll</HintPath></Reference>
+    <Reference Include="MonoGame.Framework"><HintPath>../../original/MonoGame.Framework.dll</HintPath></Reference>
+    <Reference Include="xTile"><HintPath>../../original/xTile.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

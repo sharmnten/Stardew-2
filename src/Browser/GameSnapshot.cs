@@ -32,6 +32,7 @@ internal static class GameSnapshot
         }
         return new {
             runtime = GameRunner.instance.GetType().FullName, day = Game1.dayOfMonth,
+            mode = Game1.gameMode, loading = SaveGame.IsProcessing,
             active = GameRunner.instance.IsActive, ticks = Game1.ticks,
             viewport = new { x = Game1.viewport.X, y = Game1.viewport.Y, zoom = Game1.options.zoomLevel },
             language = LocalizedContentManager.CurrentLanguageCode.ToString(),

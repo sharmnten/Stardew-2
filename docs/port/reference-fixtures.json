@@ -1,0 +1,1541 @@
+{
+  "schema": 1,
+  "status": "eight-farm-creation-loads-and-populated-desktop-browser-roundtrip-verified",
+  "gameVersion": "1.6.15.24356",
+  "gameAssembly": "Stardew Valley, Version=1.6.15.24356",
+  "runtime": ".NET 10.0.12",
+  "referenceFramework": "MonoGame 3.8.0.1641",
+  "renderer": "Xvfb/Mesa software OpenGL",
+  "audioDevice": "OpenAL null device",
+  "provenance": "Supplied unchanged desktop assemblies and content; offline SDK. Actual original customization selectors/textbox draw/OK and normal overnight/save. Windows path aliases and original SDL UI-queue pump supplied by harness. No successful outcome injected.",
+  "fixtures": [
+    {
+      "id": "new-game-beach",
+      "map": "Maps\\Farm_Island",
+      "farmId": "6",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16842
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 2396086
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "6",
+        "map": "Maps\\Farm_Island",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 14,
+            "y": 14
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 78,
+            "y": 21
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-forest",
+      "map": "Maps\\Farm_Foraging",
+      "farmId": "2",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16840
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 2347463
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "2",
+        "map": "Maps\\Farm_Foraging",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 25,
+            "y": 10
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 53,
+            "y": 7
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-four-corners",
+      "map": "Maps\\Farm_FourCorners",
+      "farmId": "5",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16842
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 2974955
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "5",
+        "map": "Maps\\Farm_FourCorners",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 36,
+            "y": 29
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 49,
+            "y": 40
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-hilltop",
+      "map": "Maps\\Farm_Mining",
+      "farmId": "3",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16841
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 2358137
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "3",
+        "map": "Maps\\Farm_Mining",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 25,
+            "y": 10
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 53,
+            "y": 7
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-meadowlands",
+      "map": "Maps\\Farm_Ranching",
+      "farmId": "MeadowlandsFarm",
+      "day": 1,
+      "buildingCount": 5,
+      "animals": [
+        {
+          "type": "Brown Chicken",
+          "name": "Viola"
+        },
+        {
+          "type": "White Chicken",
+          "name": "Piccolo"
+        }
+      ],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 17128
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 3073091
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "MeadowlandsFarm",
+        "map": "Maps\\Farm_Ranching",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Coop",
+            "x": 54,
+            "y": 9
+          },
+          {
+            "type": "Farmhouse",
+            "x": 76,
+            "y": 16
+          },
+          {
+            "type": "Greenhouse",
+            "x": 37,
+            "y": 19
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 91,
+            "y": 14
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 88,
+            "y": 18
+          }
+        ],
+        "animals": [
+          {
+            "type": "Brown Chicken",
+            "name": "Shrimp"
+          },
+          {
+            "type": "White Chicken",
+            "name": "Tiny"
+          }
+        ],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-riverland",
+      "map": "Maps\\Farm_Fishing",
+      "farmId": "1",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16842
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 2322814
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "1",
+        "map": "Maps\\Farm_Fishing",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 25,
+            "y": 10
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 53,
+            "y": 7
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-standard",
+      "map": "Maps\\Farm",
+      "farmId": "0",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16841
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3073012
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "0",
+        "map": "Maps\\Farm",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 25,
+            "y": 10
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 53,
+            "y": 7
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    },
+    {
+      "id": "new-game-wilderness",
+      "map": "Maps\\Farm_Combat",
+      "farmId": "4",
+      "day": 1,
+      "buildingCount": 4,
+      "animals": [],
+      "locationCount": 80,
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16842
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 2511384
+        }
+      ],
+      "afterLoad": {
+        "day": 1,
+        "farmId": "4",
+        "map": "Maps\\Farm_Combat",
+        "farmer": {
+          "name": "Reference",
+          "customized": true,
+          "money": 500
+        },
+        "buildings": [
+          {
+            "type": "Farmhouse",
+            "x": 59,
+            "y": 12
+          },
+          {
+            "type": "Greenhouse",
+            "x": 25,
+            "y": 10
+          },
+          {
+            "type": "Pet Bowl",
+            "x": 53,
+            "y": 7
+          },
+          {
+            "type": "Shipping Bin",
+            "x": 71,
+            "y": 14
+          }
+        ],
+        "animals": [],
+        "locationCount": 87,
+        "locations": [
+          "AbandonedJojaMart",
+          "AdventureGuild",
+          "AnimalShop",
+          "ArchaeologyHouse",
+          "Backwoods",
+          "BathHouse_Entry",
+          "BathHouse_MensLocker",
+          "BathHouse_Pool",
+          "BathHouse_WomensLocker",
+          "Beach",
+          "BeachNightMarket",
+          "Blacksmith",
+          "BoatTunnel",
+          "BugLand",
+          "BusStop",
+          "Caldera",
+          "CaptainRoom",
+          "Cellar",
+          "Cellar2",
+          "Cellar3",
+          "Cellar4",
+          "Cellar5",
+          "Cellar6",
+          "Cellar7",
+          "Cellar8",
+          "Club",
+          "CommunityCenter",
+          "Desert",
+          "DesertFestival",
+          "ElliottHouse",
+          "Farm",
+          "FarmCave",
+          "FarmHouse",
+          "FishShop",
+          "Forest",
+          "Greenhouse",
+          "HaleyHouse",
+          "HarveyRoom",
+          "Hospital",
+          "IslandEast",
+          "IslandFarmCave",
+          "IslandFarmHouse",
+          "IslandFieldOffice",
+          "IslandHut",
+          "IslandNorth",
+          "IslandNorthCave1",
+          "IslandShrine",
+          "IslandSouth",
+          "IslandSouthEast",
+          "IslandSouthEastCave",
+          "IslandWest",
+          "IslandWestCave1",
+          "JojaMart",
+          "JoshHouse",
+          "LeahHouse",
+          "LeoTreeHouse",
+          "LewisBasement",
+          "ManorHouse",
+          "MasteryCave",
+          "MermaidHouse",
+          "Mine",
+          "Mountain",
+          "MovieTheater",
+          "QiNutRoom",
+          "Railroad",
+          "Saloon",
+          "SamHouse",
+          "SandyHouse",
+          "ScienceHouse",
+          "SebastianRoom",
+          "SeedShop",
+          "Sewer",
+          "SkullCave",
+          "Submarine",
+          "Summit",
+          "Sunroom",
+          "Tent",
+          "Town",
+          "Trailer",
+          "Trailer_Big",
+          "Tunnel",
+          "WitchHut",
+          "WitchSwamp",
+          "WitchWarpCave",
+          "WizardHouse",
+          "WizardHouseBasement",
+          "Woods"
+        ]
+      }
+    }
+  ],
+  "verification": {
+    "desktop": "9/9 passing, 250417ms; supplied original title, eight original customization/overnight/save and reload cases",
+    "browser": "9/9 passing, 151412ms; eight native Load handler/import/state/location-name/movement comparisons",
+    "production_bridge": "1/1 passing, 3080ms; fresh production-mode publish excludes bridge, all 4 mutable action drivers, JSmodule and fixtures",
+    "browser_creation": "9/9 passing, 708375ms; actual original title/customization/text inputs/farm selectors/skip intro/OK, day-one saved state and native movement for all 8 layouts",
+    "browser_economy_production": "3/3 passing, 100559ms; loaded original desktop prerequisites, original shop row click/stacking/prices/currencies/shipping parser, crafting/cooking and machine methods"
+  },
+  "limits": [
+    "Host .NET10 runtime, not supplied Windows .NET6 runtime",
+    "Null audio output; exact audible hardware/DSP comparison remains",
+    "Fixture checks do not establish all advanced feature groups",
+    "All 8 original browser farm creations pass with default browser seed. Fixed-seed original imports also compare animal names/full state; advanced feature groups still need scenarios."
+  ],
+  "methodComparisons": [
+    {
+      "id": "farming-season",
+      "prerequisites": "Original desktop save: Spring 28/year 2 with watered, dry and greenhouse parsnips. Original serializer and original desktop/browser Load menu.",
+      "observations": {
+        "tools": {
+          "hoed": true,
+          "waterState": 1,
+          "waterLeft": 39,
+          "staminaUsed": 4
+        },
+        "trees": {
+          "wildStage": 1,
+          "fruitDays": 27
+        },
+        "wateredGrowth": {
+          "phase": 1,
+          "days": 0
+        },
+        "dryGrowth": {
+          "phase": 0,
+          "days": 0
+        },
+        "harvestedParsnips": 1,
+        "summer": {
+          "outdoorDead": true,
+          "greenhouseDead": false,
+          "greenhousePhase": 1,
+          "greenhouseDays": 0
+        }
+      },
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16844
+        },
+        {
+          "name": "Parity4_123456789",
+          "bytes": 3016801
+        }
+      ],
+      "scope": "Original Hoe/WateringCan and crop/fruit/wild-tree dayUpdate/harvest methods; method comparison, with full overnight/season/weather compared separately by advanced fixture.",
+      "desktop": "Extended original farming GREEN; part of2/2 native gate99249ms, farming40361ms",
+      "browser": "Extended comparison1/1 GREEN53900ms"
+    },
+    {
+      "id": "inventory-economy",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 13108
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 3032023
+        }
+      ],
+      "observations": {
+        "stacks": [
+          {
+            "id": "(O)24",
+            "quality": 0,
+            "stack": 999
+          },
+          {
+            "id": "(O)24",
+            "quality": 0,
+            "stack": 11
+          },
+          {
+            "id": "(O)24",
+            "quality": 2,
+            "stack": 2
+          }
+        ],
+        "chestCapacity": 36,
+        "prices": [
+          35,
+          43,
+          52,
+          70
+        ],
+        "shop": {
+          "seedPrice": 20,
+          "moneySpent": 20,
+          "purchasedId": "(O)472"
+        },
+        "currencies": [
+          480,
+          190,
+          290,
+          90
+        ],
+        "shippingTotal": 157
+      },
+      "desktop": "Original supplied desktop methods with original serializer and loader; inventory 22629ms corrected GREEN, production 37723ms GREEN",
+      "browser": "Included in3/3 GREEN 100559ms",
+      "scope": "Direct original methods and original shop menu purchase; tool upgrades, complete shipping settlement, automation/tailoring/decoration remain separately required."
+    },
+    {
+      "id": "recipes-machines",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 14202
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3033247
+        }
+      ],
+      "observations": {
+        "crafting": {
+          "hadIngredients": true,
+          "output": "(BC)130",
+          "woodConsumed": 50
+        },
+        "cooking": {
+          "hadIngredients": true,
+          "output": "(O)194",
+          "eggConsumed": 1
+        },
+        "machine": {
+          "accepted": true,
+          "inputConsumed": 1,
+          "output": "(O)306",
+          "minutes": 180,
+          "ready": true
+        }
+      },
+      "desktop": "Original supplied desktop methods with original serializer and loader; inventory 22629ms corrected GREEN, production 37723ms GREEN",
+      "browser": "Included in3/3 GREEN 100559ms",
+      "scope": "Direct original methods and original shop menu purchase; tool upgrades, complete shipping settlement, automation/tailoring/decoration remain separately required."
+    }
+  ],
+  "advancedReference": {
+    "id": "advanced-desktop-roundtrip",
+    "files": [
+      {
+        "name": "SaveGameInfo",
+        "bytes": 15838
+      },
+      {
+        "name": "Parity6_123456789",
+        "bytes": 3024416
+      }
+    ],
+    "before": {
+      "day": 28,
+      "season": "Spring",
+      "year": 2,
+      "money": 500,
+      "weather": {
+        "raining": false,
+        "snowing": false,
+        "lightning": false,
+        "tomorrow": "Sun"
+      },
+      "qiGems": 100,
+      "casinoCoins": 300,
+      "inventory": [
+        {
+          "id": "(O)388",
+          "quality": 0,
+          "stack": 100
+        },
+        {
+          "id": "(O)176",
+          "quality": 0,
+          "stack": 1
+        },
+        {
+          "id": "(O)24",
+          "quality": 0,
+          "stack": 20
+        }
+      ],
+      "chest": [
+        {
+          "id": "(O)24",
+          "quality": 0,
+          "stack": 990
+        },
+        {
+          "id": "(O)24",
+          "quality": 2,
+          "stack": 2
+        }
+      ],
+      "crops": {
+        "outdoorDead": false,
+        "greenhouseDead": false,
+        "greenhousePhase": 0,
+        "greenhouseDays": 0
+      },
+      "machine": {
+        "output": "(O)306",
+        "minutes": 180,
+        "ready": false
+      },
+      "friendship": {
+        "points": 750,
+        "gifts": 0
+      },
+      "professions": [
+        12,
+        14
+      ],
+      "foragingXp": 15000,
+      "recipes": {
+        "chest": true,
+        "egg": true
+      },
+      "receivedPetMail": true
+    },
+    "afterSleep": {
+      "day": 1,
+      "season": "Summer",
+      "year": 2,
+      "money": 657,
+      "weather": {
+        "raining": false,
+        "snowing": false,
+        "lightning": false,
+        "tomorrow": "Sun"
+      },
+      "qiGems": 100,
+      "casinoCoins": 300,
+      "inventory": [
+        {
+          "id": "(O)388",
+          "quality": 0,
+          "stack": 100
+        },
+        {
+          "id": "(O)176",
+          "quality": 0,
+          "stack": 1
+        },
+        {
+          "id": "(O)24",
+          "quality": 0,
+          "stack": 20
+        }
+      ],
+      "chest": [
+        {
+          "id": "(O)24",
+          "quality": 0,
+          "stack": 990
+        },
+        {
+          "id": "(O)24",
+          "quality": 2,
+          "stack": 2
+        }
+      ],
+      "crops": {
+        "outdoorDead": true,
+        "greenhouseDead": false,
+        "greenhousePhase": 1,
+        "greenhouseDays": 0
+      },
+      "machine": {
+        "output": "(O)306",
+        "minutes": 0,
+        "ready": true
+      },
+      "friendship": {
+        "points": 748,
+        "gifts": 0
+      },
+      "professions": [
+        12,
+        14
+      ],
+      "foragingXp": 15000,
+      "recipes": {
+        "chest": true,
+        "egg": true
+      },
+      "receivedPetMail": true
+    },
+    "afterSleepReload": {
+      "day": 1,
+      "season": "Summer",
+      "year": 2,
+      "money": 657,
+      "weather": {
+        "raining": false,
+        "snowing": false,
+        "lightning": false,
+        "tomorrow": "Sun"
+      },
+      "qiGems": 100,
+      "casinoCoins": 300,
+      "inventory": [
+        {
+          "id": "(O)388",
+          "quality": 0,
+          "stack": 100
+        },
+        {
+          "id": "(O)176",
+          "quality": 0,
+          "stack": 1
+        },
+        {
+          "id": "(O)24",
+          "quality": 0,
+          "stack": 20
+        }
+      ],
+      "chest": [
+        {
+          "id": "(O)24",
+          "quality": 0,
+          "stack": 990
+        },
+        {
+          "id": "(O)24",
+          "quality": 2,
+          "stack": 2
+        }
+      ],
+      "crops": {
+        "outdoorDead": true,
+        "greenhouseDead": false,
+        "greenhousePhase": 1,
+        "greenhouseDays": 0
+      },
+      "machine": {
+        "output": "(O)306",
+        "minutes": 0,
+        "ready": true
+      },
+      "friendship": {
+        "points": 748,
+        "gifts": 0
+      },
+      "professions": [
+        12,
+        14
+      ],
+      "foragingXp": 15000,
+      "recipes": {
+        "chest": true,
+        "egg": true
+      },
+      "receivedPetMail": true
+    },
+    "desktop": "Full original bed action, observed native night menu, original shipping OK/save/wake and normal Load; GREEN, advanced58699ms in2/2 native gate",
+    "browser": "1/1 passing,180433ms: original desktop import/populated state, normal bed controls, original shipping OK/save/wake, season/weather/machine/friendship/inventory fields, ZIP export, cold normal Load and movement",
+    "desktopExportImport": "1/1 passing,37268ms: supplied unchanged desktop game imports the browser ZIP and original Load menu/loader restores exactly the desktop advanced after-sleep state",
+    "exportBytes": 356249
+  }
+}
