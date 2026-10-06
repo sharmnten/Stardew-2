@@ -7,6 +7,8 @@ using xTile;
 using xTile.Display;
 using xTile.Tiles;
 using StardewBrowser.Platform.Compatibility;
+using StardewBrowser.Platform.Content;
+using System.Net.Http.Json;
 
 namespace StardewBrowser.Platform;
 
@@ -14,16 +16,19 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
 {
     private GraphicsProbe? game;
     private DotNetObjectReference<BrowserGameHost>? reference;
-    private readonly Dictionary<string, byte[]> assets = new(StringComparer.OrdinalIgnoreCase);
+    private BrowserContentStore content = null!;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         try
         {
             await js.InvokeVoidAsync("portHost.resize", cancellationToken);
-            foreach (string name in new[] { "TileSheets/crops", "Fonts/SmallFont", "Maps/Farm", "Effects/ShadowRemoveMG3.8.0" })
+            var manifest = await http.GetFromJsonAsync<ContentManifest>("Content/manifest.json", cancellationToken)
+                ?? throw new InvalidDataException("The original content manifest is empty.");
+            content = new BrowserContentStore(http, manifest);
+            foreach (string name in new[] { "TileSheets/crops", "Fonts/SmallFont", "Fonts/Japanese", "Maps/Farm", "Effects/ShadowRemoveMG3.8.0" })
                 await FetchAsync(name, cancellationToken);
-            game = new GraphicsProbe(assets);
+            game = new GraphicsProbe(content);
             game.Run();
             foreach (var sheet in game.Map.TileSheets)
                 await FetchAsync(sheet.ImageSource, cancellationToken);
@@ -34,12 +39,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
         catch (Exception error) { await js.InvokeVoidAsync("portHost.status", new { phase = "failed", error = error.ToString() }); }
     }
 
-    private async Task FetchAsync(string name, CancellationToken cancellationToken)
-    {
-        name = name.Replace('\\', '/');
-        if (assets.ContainsKey(name)) return;
-        assets[name] = await http.GetByteArrayAsync("Content/" + name + ".xnb", cancellationToken);
-    }
+    private Task FetchAsync(string name, CancellationToken cancellationToken) => content.PreloadAsync([name], cancellationToken);
 
     [JSInvokable]
     public void Tick()
@@ -47,7 +47,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
         try
         {
             game!.Tick();
-            ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", game.Status());
+            ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", game.Status(content.ResidentBytes));
         }
         catch (Exception error)
         {
@@ -63,14 +63,18 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
     }
 }
 
-internal sealed class ResidentContent(IServiceProvider services, Dictionary<string, byte[]> assets) : ContentManager(services)
+internal sealed class ResidentContent(IServiceProvider services, BrowserContentStore store) : ContentManager(services)
 {
     protected override Stream OpenStream(string assetName)
     {
-        string key = assetName.Replace('\\', '/');
-        if (!assets.TryGetValue(key, out var data)) throw new ContentLoadException("Asset not preloaded: " + key);
-        if (key == "Effects/ShadowRemoveMG3.8.0") data = LegacyEffect.ConvertXnb(data);
-        return new MemoryStream(data, writable: false);
+        var source = store.Open(assetName);
+        if (assetName.Replace('\\', '/') != "Effects/ShadowRemoveMG3.8.0") return source;
+        using (source)
+        using (var buffer = new MemoryStream())
+        {
+            source.CopyTo(buffer);
+            return new MemoryStream(LegacyEffect.ConvertXnb(buffer.ToArray()), writable: false);
+        }
     }
 }
 
@@ -98,11 +102,12 @@ internal sealed class GraphicsProbe : Game
     private bool previousPressed;
     private string? effectError;
     private bool effectVerified;
+    private int customFontCharacters;
 
-    public GraphicsProbe(Dictionary<string, byte[]> assets)
+    public GraphicsProbe(BrowserContentStore content)
     {
         graphics = new GraphicsDeviceManager(this) { GraphicsProfile = GraphicsProfile.HiDef, PreferredBackBufferWidth = 960, PreferredBackBufferHeight = 596 };
-        Content = new ResidentContent(Services, assets);
+        Content = new ResidentContent(Services, content);
         IsMouseVisible = true;
         IsFixedTimeStep = false;
     }
@@ -112,6 +117,7 @@ internal sealed class GraphicsProbe : Game
         batch = new SpriteBatch(GraphicsDevice);
         crops = Content.Load<Texture2D>("TileSheets/crops");
         font = Content.Load<SpriteFont>("Fonts/SmallFont");
+        customFontCharacters = BmFont.FontLoader.Parse(Content.Load<BmFont.XmlSource>("Fonts/Japanese").Source).Chars.Count;
         Map = Content.Load<Map>("Maps/Farm");
     }
 
@@ -182,7 +188,8 @@ internal sealed class GraphicsProbe : Game
         base.Draw(time);
     }
 
-    public object Status() => new { phase = "ready", error = (string?)null, textureWidth = crops.Width,
+    public object Status(long verifiedContentBytes) => new { phase = "ready", error = (string?)null, textureWidth = crops.Width,
         fontGlyphs = font.Characters.Count, mapLayers = Map.Layers.Count, renderedTiles = display.TilesDrawn,
-        targetDistinctColors = distinctColors, fontPixels, effectVerified, effectError, cursorX, pointerClicks = clicks };
+        targetDistinctColors = distinctColors, fontPixels, effectVerified, effectError, cursorX, pointerClicks = clicks,
+        customFontCharacters, verifiedContentBytes };
 }

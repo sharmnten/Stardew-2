@@ -1,0 +1,30 @@
+{
+  "cue_count": 433,
+  "wave_entries": 463,
+  "every_reference_valid": true,
+  "codecs": {
+    "ms-adpcm": 457,
+    "pcm": 6
+  },
+  "categories": 6,
+  "rpc_curves": 11,
+  "loop_event_counts": {
+    "255": 102,
+    "0": 237,
+    "2": 1
+  },
+  "banks": [
+    {
+      "name": "Wave Bank",
+      "sha256": "5ef10988d85ca3059c09d026eac62d73bc822232b2949cd7bd2a54568d7e0322",
+      "entries": 437
+    },
+    {
+      "name": "Wave Bank(1.4)",
+      "sha256": "8ae4c6a87125464078584739fc3e5354786512a9deea558e068901561c468703",
+      "entries": 26
+    }
+  ],
+  "metadata_sha256": "c25f21844160faa7edfd43b62d59b7ebb2d71c257713a8524b76a07f607b770a",
+  "browser_playback_verified": false
+}

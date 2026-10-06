@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.JSInterop" Version="10.0.12" />
     <ProjectReference Include="Compatibility/xTile.Browser.csproj" />
-    <Compile Remove="Compatibility/bin/**;Compatibility/obj/**" />
+    <ProjectReference Include="Compatibility/BmFont/BmFont.Browser.csproj" />
+    <Compile Remove="Compatibility/**/bin/**;Compatibility/**/obj/**" />
   </ItemGroup>
 </Project>

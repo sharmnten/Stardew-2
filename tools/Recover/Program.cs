@@ -2,9 +2,10 @@ using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.Metadata;
+using System.Reflection.Metadata;
 
-if (args.Length != 2)
-    throw new ArgumentException("Usage: Recover <assembly.dll> <output-directory>");
+if (args.Length is < 2 or > 3)
+    throw new ArgumentException("Usage: Recover <assembly.dll> <output-directory> [namespace]");
 string assemblyPath = Path.GetFullPath(args[0]);
 string outputPath = Path.GetFullPath(args[1]);
 if (Directory.Exists(outputPath))
@@ -22,7 +23,20 @@ var settings = new DecompilerSettings(LanguageVersion.CSharp11_0)
     UsePrimaryConstructorSyntax = false,
     UsePrimaryConstructorSyntaxForNonRecordTypes = false
 };
-var project = new WholeProjectDecompiler(settings, resolver, null, null, null);
+WholeProjectDecompiler project = args.Length == 3
+    ? new NamespaceProjectDecompiler(settings, resolver, args[2])
+    : new WholeProjectDecompiler(settings, resolver, null, null, null);
 Directory.CreateDirectory(outputPath);
 project.DecompileProject(module, outputPath);
 Console.WriteLine($"Recovered {module.Name} to {outputPath}");
+
+sealed class NamespaceProjectDecompiler(DecompilerSettings settings, IAssemblyResolver resolver, string namespaceName)
+    : WholeProjectDecompiler(settings, resolver, null, null, null)
+{
+    protected override bool IncludeTypeWhenDecompilingProject(MetadataFile module, TypeDefinitionHandle type)
+    {
+        var definition = module.Metadata.GetTypeDefinition(type);
+        return module.Metadata.GetString(definition.Namespace) == namespaceName
+            && base.IncludeTypeWhenDecompilingProject(module, type);
+    }
+}
