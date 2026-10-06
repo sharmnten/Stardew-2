@@ -96,3 +96,27 @@ test('original audio output applies reverb sends and frequency filters', { timeo
     await page.evaluate(() => window.portAudio.destroyVoice(9011));
   });
 });
+
+test('active music stays available and released buffers return within the audio cache budget', { timeout: 180000 }, async () => {
+  await withGame(async page => {
+    await page.waitForFunction(() => window.portStatus?.phase === 'ready', null, { timeout: 90000 });
+    await page.getByRole('button', { name: 'Test original audio' }).click();
+    await page.waitForFunction(() => window.portStatus.audioPeak > 0.005, null, { timeout: 30000 });
+    const held = await page.evaluate(async () => {
+      const manifest = await (await fetch('Audio/manifest.json')).json();
+      const parameters = { volume: 0.1, pitch: 0, pan: 0, loopCount: 255, reverbMix: 0, filterEnabled: false };
+      for (const [track, id] of [[91,9020],[92,9021]]) {
+        const wave = manifest.waves.find(wave => wave.bank === 0 && wave.track === track);
+        const data = new Uint8Array(await (await fetch(wave.path)).arrayBuffer());
+        await window.portAudio.decode(`0/${track}`, data, wave);
+        window.portAudio.createVoice(id, `0/${track}`, parameters);
+      }
+      return { first: window.portAudio.hasWave('0/91'), second: window.portAudio.hasWave('0/92'), bytes: window.portAudio.status().audioDecodedBytes };
+    });
+    assert.ok(held.first && held.second, 'Active music must stay resident during a transition');
+    assert.ok(held.bytes > 128 * 1024 * 1024, 'The original large active waves exercise the overflow condition');
+    await page.evaluate(() => { window.portAudio.destroyVoice(9020); window.portAudio.destroyVoice(9021); });
+    const released = await page.evaluate(() => window.portAudio.status().audioDecodedBytes);
+    assert.ok(released <= 128 * 1024 * 1024, `Released audio must return to the idle cache limit: ${released}`);
+  });
+});

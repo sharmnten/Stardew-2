@@ -38,10 +38,7 @@
           buffer.numberOfChannels !== descriptor.channels) throw new Error(`Original audio format changed: ${key}`);
       const bytes = buffer.length * buffer.numberOfChannels * 4;
       if (bytes > limit) throw new Error(`Original wave exceeds the decoded audio cache: ${key}`);
-      for (const [oldKey, old] of buffers) {
-        if (residentBytes + bytes <= limit) break;
-        if (old.active === 0) { buffers.delete(oldKey); residentBytes -= old.bytes; }
-      }
+      evictInactive(bytes);
       buffers.set(key, { buffer, bytes, active: 0, descriptor });
       residentBytes += bytes;
       downloadedBytes += data.length;
@@ -133,6 +130,12 @@
       voice.clock = context.currentTime;
     }
   }
+  function evictInactive(requiredBytes = 0) {
+    for (const [key, entry] of buffers) {
+      if (residentBytes + requiredBytes <= limit) break;
+      if (entry.active === 0) { buffers.delete(key); residentBytes -= entry.bytes; }
+    }
+  }
   function configure(voice) {
     const p = voice.parameters;
     voice.gain.gain.value = Math.max(0, p.volume);
@@ -184,6 +187,8 @@
     detachSource(voice);
     voice.state = 2;
     voice.entry.active--;
+    evictInactive();
+    voice.entry = null;
     voice.gain.disconnect();
     voice.pan.disconnect();
     voice.send.disconnect();

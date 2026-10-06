@@ -59,7 +59,8 @@
     "resume",
     "release",
     "reverb send",
-    "low-pass frequency control"
+    "low-pass frequency control",
+    "active music retention and immediate idle-cache pruning after release"
   ],
   "dsp_desktop_comparison": "Pending Task 7. Web Audio convolution and biquad outputs replace OpenAL EAX and native filters; exact response has not been compared."
 }

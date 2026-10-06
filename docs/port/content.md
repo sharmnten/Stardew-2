@@ -78,8 +78,11 @@ The browser verifies every downloaded wave before decoding at its original
 rate. All 463 waves successfully decoded in Chromium 153. The inactive decoded
 wave cache remained at or below its 134,217,728-byte limit, with an observed
 maximum of 134,164,480 bytes. The largest individual wave decodes to 92,677,120
-bytes. Active voices keep their buffers while playing; decoding and encoded
-transfer buffers temporarily require memory beyond the resident cache total.
+bytes. Active voices keep their buffers while playing; a transition can exceed the
+idle budget until a voice releases. A real two-track browser regression verifies
+that release immediately evicts inactive buffers back within the budget.
+Decoding and encoded transfer buffers temporarily require memory beyond the
+resident cache total.
 
 The verification host starts suspended with zero downloaded or decoded wave
 bytes. Its measured resource transfer is 30,461,892 bytes, including the
