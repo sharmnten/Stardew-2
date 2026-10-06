@@ -108,11 +108,11 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `BrowserInputAdapter.ReleaseAll()` clears held keys/buttons; the host uses the game's pause behavior on visibility/focus changes. Offline services preserve local achievements, screenshot downloads, and applicable clipboard functionality.
 
-- [ ] Write browser assertions for focus loss while holding movement, restored focus, fullscreen/resizing, controller mapping, user-gesture audio restart, and useful asset-loading errors.
-- [ ] Run `node --test tests/browser/lifecycle.spec.mjs` and confirm missing behaviors fail.
-- [ ] Implement input release, visibility handling, original pause behavior, fullscreen, and rendering scale; show progress and recoverable errors only outside the original interface.
-- [ ] Adapt remaining single-player desktop services, including screenshots, achievements, settings, language selection, and clipboard interactions used by the game.
-- [ ] Verify reload preserves saves/settings and restarting needs no server simulation. Run `node --test tests/browser/lifecycle.spec.mjs`, require all assertions to pass, and commit the completed browser layer.
+- [x] Write browser assertions for focus loss while holding movement, restored focus, fullscreen/resizing, controller mapping, user-gesture audio restart, and useful asset-loading errors.
+- [x] Run `node --test tests/browser/lifecycle.spec.mjs` and confirm missing behaviors fail.
+- [x] Implement input release, visibility handling, original pause behavior, fullscreen, and rendering scale; show progress and recoverable errors only outside the original interface.
+- [x] Adapt remaining single-player desktop services, including screenshots, achievements, settings, language selection, and clipboard interactions used by the game.
+- [x] Verify reload preserves saves/settings and restarting needs no server simulation. Run `node --test tests/browser/lifecycle.spec.mjs`, require all assertions to pass, and commit the completed browser layer.
 
 ### Task 7: Verify every single-player feature group
 

@@ -32,6 +32,9 @@ internal static class GameSnapshot
         }
         return new {
             runtime = GameRunner.instance.GetType().FullName, day = Game1.dayOfMonth,
+            active = GameRunner.instance.IsActive, ticks = Game1.ticks,
+            viewport = new { x = Game1.viewport.X, y = Game1.viewport.Y, zoom = Game1.options.zoomLevel },
+            language = LocalizedContentManager.CurrentLanguageCode.ToString(),
             warping = Game1.isWarping,
             preferences = Game1.activeClickableMenu is TitleMenu preferencesTitle ? new {
                 startMuted = preferencesTitle.startupPreferences.startMuted,
@@ -44,12 +47,18 @@ internal static class GameSnapshot
             save = SavedFiles(),
             lastTitleClick = BrowserDiagnostics.LastTitleClick,
             menu = new { type = menu?.GetType().Name, controls = Controls(menu),
+                text = menu?.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .Where(field => typeof(TextBox).IsAssignableFrom(field.FieldType))
+                    .ToDictionary(field => field.Name, field => (field.GetValue(menu) as TextBox)?.Text),
                 saves = menu is LoadGameMenu load ? load.MenuSlots.OfType<LoadGameMenu.SaveFileSlot>()
                     .Select(slot => new { slot = slot.Farmer.slotName, farmer = slot.Farmer.Name }).ToArray() : null,
                 allowsInteraction = AllowsInteraction(menu) },
             player = player == null ? null : new { name = player.Name, farmName = player.farmName.Value,
                 customized = player.isCustomized.Value, positionX = player.Position.X, positionY = player.Position.Y,
-                stamina = player.Stamina, usingTool = player.UsingTool, canMove = player.CanMove },
+                stamina = player.Stamina, usingTool = player.UsingTool, canMove = player.CanMove,
+                tool = player.CurrentTool?.GetType().Name, facing = player.FacingDirection,
+                grab = new { x = player.GetGrabTile().X, y = player.GetGrabTile().Y },
+                tile = new { x = player.Tile.X, y = player.Tile.Y } },
             location = location == null ? null : new { name = location.Name, exit, bed, houseEntrance = entrance },
             input = new { leftPressed = Game1.oldMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,
                 mouseX = Game1.oldMouseState.X, mouseY = Game1.oldMouseState.Y,

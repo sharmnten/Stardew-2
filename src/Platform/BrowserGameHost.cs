@@ -14,6 +14,8 @@ using StardewValley;
 using StardewBrowser.Framework.Graphics;
 using StardewBrowser.Platform.Storage;
 using StardewBrowser.GameStorage;
+using StardewBrowser.Platform.Input;
+using StardewBrowser.Platform.Services;
 
 namespace StardewBrowser.Platform;
 
@@ -30,6 +32,8 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
         try
         {
             await js.InvokeVoidAsync("portHost.resize", cancellationToken);
+            OfflinePlatformServices.Configure(js);
+            await OfflinePlatformServices.InitializeAsync();
             StardewBrowser.Framework.Graphics.OriginalContentReaders.Register();
             var manifest = await http.GetFromJsonAsync<StardewBrowser.Platform.Content.ContentManifest>("Content/manifest.json", cancellationToken)
                 ?? throw new InvalidDataException("The original content manifest is empty.");
@@ -91,6 +95,40 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
     public Task<string[]> ListSavesAsync() => BrowserPersistence.Current.Store.ListSlotsAsync();
     public void RetrySave() => BrowserPersistence.Current.Retry();
 
+    [JSInvokable]
+    public void FocusChanged(bool focused) => BrowserInputAdapter.SetFocus(game!.Window, focused);
+
+    [JSInvokable]
+    public void InitializeGamepads() => GamePad.GetState(PlayerIndex.One);
+
+    [JSInvokable]
+    public void Paste(string text, bool replacement) => BrowserClipboard.Receive(text, replacement);
+
+    [JSInvokable]
+    public void CancelPaste() => BrowserClipboard.CancelReplacement();
+
+    [JSInvokable]
+    public void Resize(PointerLayout layout)
+    {
+        BrowserInputAdapter.Configure(layout);
+        var manager = probe?.Manager ?? Game1.graphics;
+        bool fullscreen = BrowserWindow.IsFullScreen;
+        manager.IsFullScreen = fullscreen;
+        manager.HardwareModeSwitch = false;
+        if (!diagnostic && Game1.options != null)
+        {
+            Game1.options.fullscreen = fullscreen && BrowserWindow.Mode == 2;
+            Game1.options.windowedBorderlessFullscreen = fullscreen && BrowserWindow.Mode != 2;
+        }
+        if (manager.PreferredBackBufferWidth != layout.Width || manager.PreferredBackBufferHeight != layout.Height)
+        {
+            manager.PreferredBackBufferWidth = layout.Width;
+            manager.PreferredBackBufferHeight = layout.Height;
+            manager.ApplyChanges();
+        }
+        BrowserInputAdapter.NotifySizeChanged(game!.Window);
+    }
+
     public async Task ImportSaveAsync(IReadOnlyDictionary<string, byte[]> files)
     {
         if (Game1.activeClickableMenu is not StardewValley.Menus.TitleMenu || StardewValley.Menus.TitleMenu.subMenu != null)
@@ -115,6 +153,14 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
         if (pending.Slot == BrowserSaveStore.SettingsSlot)
             await js.InvokeVoidAsync("portStorage.download", "startup_preferences", pending.Files["startup_preferences"]);
         else await js.InvokeVoidAsync("portStorage.download", pending.Slot + "-pending.zip", SaveArchive.Create(pending.Slot, pending.Files));
+    }
+
+    public void TakeMapScreenshot()
+    {
+        if (Game1.gameMode != 3 || Game1.player?.isCustomized.Value != true || Game1.currentLocation == null)
+            throw new InvalidOperationException("Load a farm before taking a screenshot.");
+        if (Game1.game1.takeMapScreenshot(0.25f, null, null) == null)
+            throw new InvalidOperationException("The original game could not capture this location.");
     }
 
     [JSInvokable]
@@ -173,6 +219,7 @@ internal sealed class TileDisplay(ContentManager content, GraphicsDevice device)
 internal sealed class GraphicsProbe : Game
 {
     private readonly GraphicsDeviceManager graphics;
+    internal GraphicsDeviceManager Manager => graphics;
     private SpriteBatch batch = null!;
     private Texture2D crops = null!;
     private SpriteFont font = null!;
@@ -253,7 +300,7 @@ internal sealed class GraphicsProbe : Game
     {
         if (Keyboard.GetState().IsKeyDown(Keys.Right)) cursorX += 180 * (float)time.ElapsedGameTime.TotalSeconds;
         if (Keyboard.GetState().IsKeyDown(Keys.Left)) cursorX -= 180 * (float)time.ElapsedGameTime.TotalSeconds;
-        bool pressed = Mouse.GetState().LeftButton == ButtonState.Pressed;
+        bool pressed = BrowserInputAdapter.GetMouseState().LeftButton == ButtonState.Pressed;
         if (pressed && !previousPressed) clicks++;
         previousPressed = pressed;
         base.Update(time);
@@ -270,10 +317,16 @@ internal sealed class GraphicsProbe : Game
         base.Draw(time);
     }
 
-    public object Status(long verifiedContentBytes) => new { phase = "ready", error = (string?)null, textureWidth = crops.Width,
+    public object Status(long verifiedContentBytes)
+    {
+    var pad = GamePad.GetState(PlayerIndex.One);
+    return new { phase = "ready", error = (string?)null, textureWidth = crops.Width,
         fontGlyphs = font.Characters.Count, mapLayers = Map.Layers.Count, renderedTiles = display.TilesDrawn,
         targetDistinctColors = distinctColors, fontPixels, effectVerified, effectError, cursorX, pointerClicks = clicks,
         customFontCharacters, verifiedContentBytes, renderer = typeof(SpriteBatch).FullName,
+        pointerPressed = BrowserInputAdapter.GetMouseState().LeftButton == ButtonState.Pressed,
+        gamepad = new { connected = pad.IsConnected, a = pad.Buttons.A == ButtonState.Pressed, leftX = pad.ThumbSticks.Left.X },
         originalTextureReads = StardewBrowser.Framework.Graphics.OriginalContentReaders.TextureReads,
         desktopFrameworkLoaded = AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name == "MonoGame.Framework") };
+    }
 }

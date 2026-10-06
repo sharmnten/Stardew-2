@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "game_version": "1.6.15.24356",
+  "framework": "KNI 4.3.9001",
+  "status": "verified-development-milestone",
+  "verified_browser": "Chromium 153 (Playwright headless, WebGL SwiftShader)",
+  "affected_services_suite": {
+    "passed": 11,
+    "failed": 0,
+    "command": "node --test --test-concurrency=1 tests/browser/lifecycle.spec.mjs tests/browser/screenshots.spec.mjs tests/browser/audio-gesture.spec.mjs tests/browser/content.spec.mjs"
+  },
+  "checks": {
+    "pointer_layout": "Original game pixels map through CSS letterboxing; minimum original UI viewport 1280 by 720.",
+    "focus": "Scripted blur releases held KNI keyboard/mouse buttons; original Farm ticks and movement pause. Restored focus accepts the same movement key again.",
+    "visibility": "Scripted visibilitychange/hidden state stops held input; restored visibility enables new input.",
+    "save_controls": "Browser form input reaches its field and does not move the game; held game keys release on opening the panel.",
+    "controller": "Synthetic standard navigator device exercises native KNI startup connection, A/left-X values, disconnect and reconnect. Physical controller hardware remains untested.",
+    "fullscreen": "Original TitleMenu fullscreen button and external control enter and exit actual browser fullscreen. Original windowed/borderless/exclusive preferences remain serialized; both fullscreen modes use browser fullscreen.",
+    "audio_restart": "Real suspended AudioContext resumes through trusted canvas keyboard gestures.",
+    "content_errors": "Original corrupted map is identified in visible status; removing corruption and reloading loads it successfully.",
+    "language": "Original French selection persists and applies on cold reload.",
+    "clipboard": "Native farmer textbox receives PasteFarm and then two identical N gestures as NN. Replacement callback/cancellation is unit-tested; actual text-sign menu remains a Task 7 crafting scenario.",
+    "screenshot_encoder": "Opaque RGB compositor and PNG round trip preserve all fixture pixels.",
+    "screenshot_storage": "Independent local IndexedDB retains PNG bytes across reload; gallery downloads original PNG filename.",
+    "native_map_capture": "Original farmhouse full-map renderer downloads a 192 by 192 PNG (23097 bytes, more than 100 colors); native movement works after capture. Image visually inspected.",
+    "credit_links": "Original credits LaunchBrowser delegates to the browser URL boundary; HTTP/HTTPS links open with noopener/noreferrer and other protocols are rejected.",
+    "achievements": "Original local achievement logic/save fields retained; unlock/serialization scenario remains in Task 7."
+  },
+  "remaining": [
+    "All single-player parity and desktop reference comparisons (Task 7)",
+    "Actual text-sign paste and local achievement unlock scenarios (Task 7)",
+    "Download progress/start control and production diagnostics exclusion (release packaging)",
+    "Other browser engines and physical hardware verification"
+  ],
+  "combined_regression_suite": {
+    "command": "tools/check-browser.sh",
+    "tooling_passed": 17,
+    "platform_passed": 37,
+    "game_passed": 3,
+    "browser_passed": 23,
+    "failed": 0,
+    "browser_duration_ms": 504552,
+    "scope": "Before final clipboard replacement and repeated-gesture fixes; affected verification recorded separately."
+  },
+  "final_clipboard_verification": {
+    "platform_passed": 38,
+    "browser_passed": 10,
+    "failed": 0,
+    "browser_duration_ms": 172552,
+    "command": "node --test --test-concurrency=1 tests/browser/clipboard.spec.mjs tests/browser/lifecycle.spec.mjs tests/browser/screenshots.spec.mjs",
+    "checks": "Native French cold reload and repeated identical Ctrl+V; replacement callback/cancellation; browser screenshot persistence/gallery; original fullscreen; credits URL boundary."
+  }
+}

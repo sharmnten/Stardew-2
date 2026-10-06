@@ -12,5 +12,15 @@ test('keyboard input on the game canvas unlocks original audio', { timeout: 1200
     await page.keyboard.press('ArrowRight');
     await page.waitForFunction(() => window.portAudio.status().audioState === 'running', null, { timeout: 5000 });
     assert.equal((await page.evaluate(() => window.portAudio.status())).audioError, null);
-  });
+    await page.evaluate(() => window.testAudioContext.suspend());
+    await page.waitForFunction(() => portAudio.status().audioState === 'suspended');
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction(() => portAudio.status().audioState === 'running');
+    assert.equal((await page.evaluate(() => portAudio.status())).audioError, null);
+  }, page => page.addInitScript(() => {
+    const NativeAudioContext = window.AudioContext;
+    window.AudioContext = class extends NativeAudioContext {
+      constructor(...args) { super(...args); window.testAudioContext = this; }
+    };
+  }));
 });

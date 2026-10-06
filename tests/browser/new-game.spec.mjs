@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { deflateSync } from 'node:zlib';
 import { withGame } from './driver.mjs';
 
-import { snapshot, clickControl, hold, walkTo } from './game-controls.mjs';
+import { snapshot, clickControl, hold, walkTo, pointAtWorld } from './game-controls.mjs';
 
 test('the original new-game journey persists, recovers a failed save, reloads and migrates imported saves', { timeout: 360000 }, async () => {
   await withGame(async page => {
@@ -41,6 +41,24 @@ test('the original new-game journey persists, recovers a failed save, reloads an
     await hold(page, 'd', 250);
     const moved = await snapshot(page);
     assert.notEqual(moved.player.positionX, before.player.positionX);
+    await page.keyboard.down('a');
+    await page.waitForFunction(x => window.portStatus.game.player.positionX < x, moved.player.positionX);
+    await page.evaluate(() => window.dispatchEvent(new Event('blur')));
+    await page.waitForFunction(() => !window.portStatus.game.active);
+    const paused = await snapshot(page);
+    await page.waitForTimeout(300);
+    assert.equal((await snapshot(page)).ticks, paused.ticks, 'The original game must pause on focus loss');
+    assert.equal((await snapshot(page)).player.positionX, paused.player.positionX);
+    await page.keyboard.up('a');
+    await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+    await page.waitForFunction(() => window.portStatus.game.active);
+    const refocused = await snapshot(page);
+    await hold(page, 'a', 100);
+    assert.notEqual((await snapshot(page)).player.positionX, refocused.player.positionX, 'The released movement key must work again after focus returns');
+    await hold(page, '1', 100);
+    await page.waitForFunction(() => window.portStatus.game.player.tool === 'Axe');
+    const canvas = await page.locator('#theCanvas').boundingBox();
+    await page.mouse.move(canvas.x + canvas.width * 0.45, canvas.y + canvas.height * 0.5);
     await hold(page, 'c', 100);
     await page.waitForFunction(stamina => window.portStatus.game.player.stamina < stamina, moved.player.stamina, { timeout: 10000 });
     await page.waitForFunction(() => !window.portStatus.game.player.usingTool && window.portStatus.game.player.canMove, null, { timeout: 10000 });
@@ -51,6 +69,7 @@ test('the original new-game journey persists, recovers a failed save, reloads an
     const entrance = (await snapshot(page)).location.houseEntrance;
     await walkTo(page, entrance.x, entrance.y);
     await hold(page, 'w', 400);
+    await pointAtWorld(page, entrance.x + 32, entrance.y - 32);
     await hold(page, 'x', 100); // The original building door uses the action button.
     await page.waitForFunction(() => window.portStatus.game.location.name === 'FarmHouse' && !window.portStatus.game.warping
       && window.portStatus.game.player.canMove, null, { timeout: 10000 });
@@ -149,5 +168,29 @@ test('the original new-game journey persists, recovers a failed save, reloads an
     assert.notEqual((await snapshot(page)).player.positionX, migrated.player.positionX, 'Loaded gameplay must resume normal movement');
     console.info('Original day-2 save survived reload and loaded through the original Load menu.');
     await page.screenshot({ path: '.port-cache/task-5-loaded-save.png' });
+    await page.keyboard.down('Alt');
+    await hold(page, 'Enter', 100);
+    await page.keyboard.up('Alt');
+    await page.waitForFunction(() => !!document.fullscreenElement, null, { timeout: 5000 });
+    await page.evaluate(() => document.exitFullscreen());
+    await page.waitForFunction(() => !document.fullscreenElement);
+    const mapDownload = page.waitForEvent('download');
+    await page.locator('#mapScreenshot').click();
+    await (await mapDownload).saveAs('.port-cache/original-farmhouse-screenshot.png');
+    const png = await readFile('.port-cache/original-farmhouse-screenshot.png');
+    assert.deepEqual(Array.from(png.subarray(0,8)), [137,80,78,71,13,10,26,10]);
+    const image = await page.evaluate(async bytes => {
+      const bitmap = await createImageBitmap(new Blob([new Uint8Array(bytes)], { type: 'image/png' }));
+      const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+      const context = canvas.getContext('2d'); context.drawImage(bitmap, 0, 0);
+      const colors = new Set(); const pixels = context.getImageData(0,0,bitmap.width,bitmap.height).data;
+      for (let i = 0; i < pixels.length; i += 4) colors.add(`${pixels[i]},${pixels[i+1]},${pixels[i+2]}`);
+      return { width: bitmap.width, height: bitmap.height, colors: colors.size };
+    }, Array.from(png));
+    assert.ok(image.width > 100 && image.height > 100 && image.colors > 100, JSON.stringify(image));
+    assert.equal((await snapshot(page)).location.name, 'FarmHouse');
+    const captured = await snapshot(page);
+    await hold(page, 'a', 150);
+    assert.notEqual((await snapshot(page)).player.positionX, captured.player.positionX, 'Original controls must resume after map capture restores the viewport');
   }, undefined, '/');
 });

@@ -161,3 +161,42 @@ Task 5 verification passes 17 tooling, 36 platform, three recovered-game and
 normal movement after compressed import/migration and the native wake animation.
 Advanced desktop fixtures, complete lifecycle/services and full feature parity
 remain unverified in Tasks 6–7. These are development milestones.
+
+## Browser lifecycle and desktop services
+
+The original game receives native focus/activation and resize events. Losing
+focus, hiding the page or opening browser save/screenshot controls releases
+held keyboard and mouse buttons. Native single-player ticks and movement pause;
+restored focus accepts a new press of the same movement key. Browser form input
+is isolated from the framework's global input listeners. Logical mouse pixels
+map through the canvas's CSS scale and letterboxing, with a minimum 1280 by 720
+native game viewport so original controls fit.
+
+The pinned KNI fullscreen methods are empty. Narrow game/window adapters now
+connect original title controls and Alt+Enter to browser fullscreen. Original
+windowed, borderless and exclusive preferences remain serialized; fullscreen
+choices use browser fullscreen. A standard controller already connected at
+startup enters KNI's normal connection handler. Synthetic controller tests cover
+buttons, sticks and reconnect; physical hardware remains untested.
+
+Original clipboard subscriber processing accepts asynchronous browser paste.
+Clipboard writes and credit links use browser APIs. The text-sign paste control
+requests fresh clipboard text and replaces the original textbox only while its
+owning menu remains open. Distinct identical paste gestures remain distinct;
+one gesture's DOM and asynchronous clipboard deliveries are deduplicated.
+Original textbox width filtering is retained. Clipboard permission failures
+appear outside the native interface.
+
+Original full-map screenshot rendering, chunking, GPU readback and restoration
+remain. A browser opaque RGB compositor replaces the native Skia PNG encoder.
+The native farmhouse capture downloads a 192 by 192 PNG (23,097 bytes); visual
+inspection shows the original room/furnishings/farmer, and subsequent normal
+movement confirms control restoration. Screenshots retain their filenames in
+separate local IndexedDB storage and an offline gallery, including after reload.
+The native credit link calls a validated HTTP/HTTPS browser window boundary.
+
+The combined development gate passes 17 tooling, 37 platform, three game and
+23 browser checks. Final clipboard changes are verified separately in the
+lifecycle evidence report. This milestone does not establish advanced gameplay
+parity, desktop audio DSP equivalence, physical controller behavior or support
+for other browser engines. See [lifecycle evidence](lifecycle-verification.json).

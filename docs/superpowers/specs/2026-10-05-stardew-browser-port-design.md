@@ -1,6 +1,6 @@
 # Stardew Valley browser-native port: proposed design
 
-Status: design and implementation plan approved by the user; source recovery, graphics/content/audio adapters and the original new-game/sleep integration are verified. Browser save persistence, lifecycle services and full single-player parity remain pending.
+Status: design and implementation plan approved by the user; source recovery, graphics/content/audio adapters and the original new-game/sleep integration are verified. Browser save persistence/import/export and original migration are verified. Browser focus/input, fullscreen, clipboard and screenshot services are verified in Chromium. Full single-player parity and desktop comparisons remain pending.
 
 ## Intended outcome
 

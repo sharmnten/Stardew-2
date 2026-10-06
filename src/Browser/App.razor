@@ -18,6 +18,7 @@
 else
 {
     <button id="saveTools" @onclick="OpenSaves">Save files</button>
+    <button id="mapScreenshot" @onclick="TakeMapScreenshot">Map screenshot</button>
     <div id="saveFailure" role="alert" hidden>
         <p>Save could not be stored. Your previous save is retained.</p>
         <p id="saveError"></p>
@@ -49,6 +50,11 @@ else
     private string? saveMessage;
     protected override void OnInitialized() => diagnostic = new Uri(Navigation.Uri).Query.Contains("diagnostic=1");
     private Task PlayAudioProbe() => host?.PlayAudioProbeAsync() ?? Task.CompletedTask;
+    private void TakeMapScreenshot()
+    {
+        try { host!.TakeMapScreenshot(); }
+        catch (Exception error) { saveMessage = error.GetBaseException().Message; showSaves = true; }
+    }
     private async Task OpenSaves()
     {
         showSaves = true;

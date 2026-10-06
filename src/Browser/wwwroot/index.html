@@ -8,18 +8,23 @@
   <link rel="icon" href="data:,">
   <style>
     html,body { margin:0; background:#172c2b; color:#f3e1b7; font-family:system-ui,sans-serif; }
-    #canvasHolder { width:100vw; height:calc(100vh - 44px); }
+    #canvasHolder { width:100vw; height:calc(100vh - 44px); display:flex; align-items:center; justify-content:center; background:#080706; }
+    #canvasHolder:fullscreen { height:100vh; }
     canvas { display:block; image-rendering:pixelated; width:100%; height:100%; }
     #status { margin:10px 16px; font-size:14px; }
     #blazor-error-ui { display:none; }
     #saveTools { position:fixed; right:16px; bottom:8px; }
-    #savePanel,#saveFailure { position:fixed; right:16px; bottom:52px; max-width:380px; max-height:70vh; overflow:auto; background:#172c2b; border:2px solid #f3e1b7; padding:16px; z-index:10; }
+    #fullscreen { position:fixed; right:110px; bottom:8px; }
+    #mapScreenshot { position:fixed; right:210px; bottom:8px; }
+    #savePanel,#saveFailure,#screenshotPanel { position:fixed; right:16px; bottom:52px; max-width:380px; max-height:70vh; overflow:auto; background:#172c2b; border:2px solid #f3e1b7; padding:16px; z-index:10; }
+    #screenshotPanel img { width:100%; image-rendering:pixelated; display:block; }
     #saveFailure { left:16px; right:auto; }
   </style>
 </head>
 <body>
   <div id="app">Loading browser runtime…</div>
   <div id="status" role="status">Graphics verification in progress. Gameplay integration is pending.</div>
+  <button id="fullscreen">Fullscreen</button>
   <div id="blazor-error-ui">The browser runtime failed to load. Reload to retry.</div>
   <script src="_content/nkast.Wasm.JSInterop/js/JSObject.10.0.3.js"></script>
   <script src="_content/nkast.Wasm.Dom/js/Window.10.0.3.js"></script>
@@ -34,6 +39,8 @@
   <script src="_content/nkast.Wasm.XR/js/XR.10.0.3.js"></script>
   <script src="platform/audio.js"></script>
   <script src="platform/storage.js"></script>
+  <script src="platform/lifecycle.js"></script>
+  <script src="platform/services.js"></script>
   <script src="platform/host.js"></script>
   <script src="_framework/blazor.webassembly.js"></script>
 </body>
