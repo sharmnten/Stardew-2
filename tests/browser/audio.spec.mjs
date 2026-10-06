@@ -83,12 +83,15 @@ test('original audio output applies reverb sends and frequency filters', { timeo
     await page.evaluate(() => window.portAudio.destroyVoice(9010));
     await page.waitForTimeout(5000); // Let the previous reverb tail finish.
     await page.evaluate(parameters => window.portAudio.createVoice(9011, '0/3', { ...parameters, reverbMix: 0, loopCount: 255 }), parameters);
-    await page.waitForTimeout(150);
-    const dry = await page.evaluate(() => window.portAudio.status().audioCurrentLevel);
+    await page.evaluate(() => window.portAudio.markCue('dry-filter-baseline'));
+    await page.waitForTimeout(1400); // Measure across multiple complete sample periods.
+    const dry = await page.evaluate(() => window.portAudio.status().audioPeak);
     await page.evaluate(parameters => window.portAudio.updateVoice(9011, { ...parameters, reverbMix: 0, loopCount: 255,
       filterEnabled: true, filterMode: 0, filterQ: 1, filterFrequency: 20 }), parameters);
-    await page.waitForTimeout(600);
-    const filtered = await page.evaluate(() => window.portAudio.status().audioCurrentLevel);
+    await page.waitForTimeout(200); // Discard the analyser's previous dry window and filter transient.
+    await page.evaluate(() => window.portAudio.markCue('filtered-baseline'));
+    await page.waitForTimeout(1400);
+    const filtered = await page.evaluate(() => window.portAudio.status().audioPeak);
     assert.ok(filtered < dry / 4, `The original low-pass control must reduce high frequency output: dry=${dry}, filtered=${filtered}`);
     await page.evaluate(() => window.portAudio.destroyVoice(9011));
   });
