@@ -1,0 +1,827 @@
+{
+  "kind": "metadata-only preflight; no executable or game behavior tested",
+  "assemblies": {
+    "Stardew Valley": {
+      "types": 1887,
+      "methods": 18367,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "MonoGame.Framework",
+          "version": "3.8.0.1641"
+        },
+        {
+          "name": "System.Collections",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Xml.XmlSerializer",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Linq.Expressions",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "xTile",
+          "version": "1.0.0.0"
+        },
+        {
+          "name": "StardewValley.GameData",
+          "version": "1.6.15.24356"
+        },
+        {
+          "name": "System.Xml.ReaderWriter",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Linq",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Diagnostics.Process",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Threading.Thread",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "SkiaSharp",
+          "version": "2.80.0.0"
+        },
+        {
+          "name": "System.Reflection.Emit.Lightweight",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Reflection.Emit",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Reflection.Emit.ILGeneration",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Diagnostics.StackTrace",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "Steamworks.NET",
+          "version": "20.0.0.0"
+        },
+        {
+          "name": "GalaxyCSharp",
+          "version": "3.133.7.0"
+        },
+        {
+          "name": "Lidgren.Network",
+          "version": "2012.1.7.0"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Data.HashFunction.Interfaces",
+          "version": "1.0.0.2"
+        },
+        {
+          "name": "BmFont",
+          "version": "1.0.0.0"
+        },
+        {
+          "name": "System.Threading",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Runtime.InteropServices.RuntimeInformation",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "TextCopy",
+          "version": "1.0.0.0"
+        },
+        {
+          "name": "System.Reflection.Primitives",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.NameResolution",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Console",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Data.HashFunction.xxHash",
+          "version": "1.8.2.2"
+        }
+      ],
+      "native_imports": [
+        {
+          "module": "liblwjgl_lz4",
+          "entrypoint": "Java_org_lwjgl_util_lz4_LZ4_LZ4_1compressBound"
+        },
+        {
+          "module": "liblwjgl_lz4",
+          "entrypoint": "Java_org_lwjgl_util_lz4_LZ4_nLZ4_1compress_1default"
+        },
+        {
+          "module": "liblwjgl_lz4",
+          "entrypoint": "Java_org_lwjgl_util_lz4_LZ4_nLZ4_1decompress_1safe"
+        },
+        {
+          "module": "Imm32.dll",
+          "entrypoint": "ImmGetContext"
+        },
+        {
+          "module": "Imm32.dll",
+          "entrypoint": "ImmAssociateContext"
+        },
+        {
+          "module": "user32.dll",
+          "entrypoint": "CallWindowProc"
+        },
+        {
+          "module": "user32.dll",
+          "entrypoint": "SetWindowLong"
+        },
+        {
+          "module": "SDL2.dll",
+          "entrypoint": "SDL_GetClipboardText"
+        },
+        {
+          "module": "SDL2.dll",
+          "entrypoint": "SDL_SetClipboardText"
+        }
+      ],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute",
+        "System.Diagnostics.DebuggerBrowsableState",
+        "System.Diagnostics.DebuggerBrowsableAttribute",
+        "System.Diagnostics.DebuggerHiddenAttribute",
+        "System.IO.Stream",
+        "System.IO.SeekOrigin",
+        "System.IO.MemoryStream",
+        "System.IO.TextReader",
+        "System.IO.BinaryReader",
+        "System.IO.BinaryWriter",
+        "System.IO.StreamReader",
+        "System.Diagnostics.Stopwatch",
+        "System.Diagnostics.ConditionalAttribute",
+        "System.Diagnostics.ProcessStartInfo",
+        "System.Diagnostics.Process",
+        "System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute",
+        "System.Threading.Tasks.Task",
+        "System.Threading.ThreadStart",
+        "SkiaSharp.SKSurface",
+        "SkiaSharp.SKBitmap",
+        "SkiaSharp.SKPaint",
+        "System.Reflection.Emit.DynamicMethod",
+        "System.Reflection.Emit.TypeBuilder",
+        "System.Reflection.Emit.ILGenerator",
+        "System.Reflection.Emit.LocalBuilder",
+        "System.Diagnostics.CodeAnalysis.NotNullWhenAttribute",
+        "System.IO.StreamWriter",
+        "System.Threading.Tasks.Task`1",
+        "System.Threading.Tasks.TaskCompletionSource`1",
+        "System.IO.FileStream",
+        "System.IO.IOException",
+        "System.Diagnostics.StackFrame",
+        "Steamworks.Callback`1",
+        "Steamworks.GameOverlayActivated_t",
+        "Steamworks.CallResult`1",
+        "Steamworks.EncryptedAppTicketResponse_t",
+        "Steamworks.GamepadTextInputDismissed_t",
+        "Steamworks.SteamAPICall_t",
+        "Galaxy.Api.GalaxyID",
+        "Galaxy.Api.IAuthListener",
+        "Steamworks.LobbyEnter_t",
+        "Steamworks.SteamNetConnectionStatusChangedCallback_t",
+        "Steamworks.CSteamID",
+        "Steamworks.HSteamNetConnection",
+        "Steamworks.ESteamNetworkingConnectionState",
+        "Steamworks.SteamNetworkingIdentity",
+        "Steamworks.SteamNetworkingConfigValue_t",
+        "Galaxy.Api.ILobbyDataRetrieveListener",
+        "Steamworks.SteamNetworkingQuickConnectionStatus",
+        "Steamworks.LobbyDataUpdate_t",
+        "Steamworks.GameLobbyJoinRequested_t",
+        "Steamworks.EFriendFlags",
+        "Steamworks.FriendGameInfo_t",
+        "Steamworks.LobbyCreated_t",
+        "Steamworks.LobbyChatUpdate_t",
+        "Steamworks.HSteamListenSocket",
+        "Steamworks.HSteamNetPollGroup",
+        "Steamworks.ELobbyType",
+        "Steamworks.EResult",
+        "Steamworks.SteamNetworkingMessage_t",
+        "Galaxy.Api.LobbyEnterResult",
+        "Galaxy.Api.LobbyType",
+        "Galaxy.Api.LobbyCreateResult",
+        "Galaxy.Api.LobbyMemberStateChange",
+        "Galaxy.Api.ILobbyLeftListener",
+        "Galaxy.Api.IGameJoinRequestedListener",
+        "Galaxy.Api.ILobbyCreatedListener",
+        "Galaxy.Api.ILobbyDataListener",
+        "Galaxy.Api.ILobbyEnteredListener",
+        "Galaxy.Api.ILobbyMemberStateListener",
+        "Galaxy.Api.IOperationalStateChangeListener",
+        "Galaxy.Api.IRichPresenceListener",
+        "Galaxy.Api.ISpecificUserDataListener",
+        "System.IO.StringReader",
+        "System.Threading.Monitor",
+        "System.IO.Path",
+        "System.Threading.Interlocked",
+        "System.IO.File",
+        "System.Threading.Thread",
+        "System.Diagnostics.Debugger",
+        "TextCopy.ClipboardService",
+        "System.IO.TextWriter",
+        "System.Threading.ThreadPriority",
+        "System.Threading.Tasks.TaskStatus",
+        "System.IO.Directory",
+        "SkiaSharp.SKColorType",
+        "SkiaSharp.SKAlphaType",
+        "SkiaSharp.SKCanvas",
+        "SkiaSharp.SKRect",
+        "SkiaSharp.SKNativeObject",
+        "SkiaSharp.SKImage",
+        "SkiaSharp.SKData",
+        "SkiaSharp.SKEncodedImageFormat",
+        "System.IO.FileMode",
+        "System.Threading.ApartmentState",
+        "System.Reflection.Emit.AssemblyBuilder",
+        "System.Reflection.Emit.AssemblyBuilderAccess",
+        "System.Reflection.Emit.ModuleBuilder",
+        "System.Reflection.Emit.FieldBuilder",
+        "System.Reflection.Emit.OpCodes",
+        "System.Reflection.Emit.OpCode",
+        "System.IO.DirectoryInfo",
+        "System.IO.FileAccess",
+        "System.Diagnostics.StackTrace",
+        "Steamworks.SteamAPI",
+        "Steamworks.SteamUser",
+        "Steamworks.SteamUtils",
+        "Steamworks.SteamNetworkingUtils",
+        "Galaxy.Api.InitParams",
+        "Galaxy.Api.GalaxyInstance",
+        "Steamworks.EGamepadTextInputMode",
+        "Steamworks.EGamepadTextInputLineMode",
+        "Galaxy.Api.IUser",
+        "Galaxy.Api.IGalaxyListener",
+        "Steamworks.SteamFriends",
+        "Steamworks.SteamUserStats",
+        "Steamworks.SteamNetConnectionInfo_t",
+        "Steamworks.SteamNetworkingSockets",
+        "Steamworks.EChatRoomEnterResponse",
+        "Steamworks.SteamMatchmaking",
+        "Galaxy.Api.IMatchmaking",
+        "Steamworks.CGameID",
+        "Steamworks.AppId_t",
+        "Galaxy.Api.IFriends",
+        "Steamworks.ESteamNetworkingConfigValue",
+        "Steamworks.ESteamNetworkingConfigDataType",
+        "Galaxy.Api.IStats",
+        "Galaxy.Api.INetworking",
+        "Galaxy.Api.LobbyTopologyType",
+        "Galaxy.Api.P2PSendType",
+        "Galaxy.Api.IListenerRegistrar",
+        "Galaxy.Api.GalaxyTypeAwareListenerAuth",
+        "Galaxy.Api.ListenerType",
+        "Galaxy.Api.GalaxyTypeAwareListenerGameJoinRequested",
+        "Galaxy.Api.GalaxyTypeAwareListenerLobbyCreated",
+        "Galaxy.Api.GalaxyTypeAwareListenerLobbyData",
+        "Galaxy.Api.GalaxyTypeAwareListenerLobbyEntered",
+        "Galaxy.Api.GalaxyTypeAwareListenerLobbyLeft",
+        "Galaxy.Api.GalaxyTypeAwareListenerLobbyMemberState",
+        "Galaxy.Api.GalaxyTypeAwareListenerOperationalStateChange",
+        "Galaxy.Api.GalaxyTypeAwareListenerRichPresence",
+        "Galaxy.Api.GalaxyTypeAwareListenerSpecificUserData",
+        "System.Threading.Tasks.TaskCanceledException",
+        "System.IO.InvalidDataException"
+      ]
+    },
+    "StardewValley.GameData": {
+      "types": 170,
+      "methods": 539,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "MonoGame.Framework",
+          "version": "3.6.0.862"
+        },
+        {
+          "name": "System.Collections",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Linq",
+          "version": "6.0.0.0"
+        }
+      ],
+      "native_imports": [],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute"
+      ]
+    },
+    "xTile": {
+      "types": 35,
+      "methods": 380,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "MonoGame.Framework",
+          "version": "3.8.0.1641"
+        },
+        {
+          "name": "System.Xml.ReaderWriter",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Linq",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Threading",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Text.Encoding.Extensions",
+          "version": "6.0.0.0"
+        }
+      ],
+      "native_imports": [],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute",
+        "System.IO.MemoryStream",
+        "System.IO.Stream",
+        "System.IO.Path",
+        "System.IO.BinaryReader",
+        "System.Threading.Interlocked",
+        "System.IO.FileStream",
+        "System.IO.FileMode",
+        "System.IO.FileAccess"
+      ]
+    },
+    "BmFont": {
+      "types": 10,
+      "methods": 96,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Xml.ReaderWriter",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Xml.XmlSerializer",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "MonoGame.Framework",
+          "version": "3.8.0.1641"
+        }
+      ],
+      "native_imports": [],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute",
+        "System.IO.TextReader",
+        "System.IO.StringReader",
+        "System.IO.BinaryReader"
+      ]
+    },
+    "CPExtBmFont": {
+      "types": 3,
+      "methods": 6,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "MonoGame.Framework.Content.Pipeline",
+          "version": "1.0.0.0"
+        },
+        {
+          "name": "BmFont",
+          "version": "1.0.0.0"
+        }
+      ],
+      "native_imports": [],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute",
+        "System.IO.File",
+        "System.IO.BinaryWriter"
+      ]
+    },
+    "Lidgren.Network": {
+      "types": 71,
+      "methods": 734,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Security.Cryptography.Primitives",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections.NonGeneric",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.Primitives",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Threading.Thread",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.Sockets",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Threading",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Security.Cryptography.Algorithms",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Xml.ReaderWriter",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.Requests",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.NetworkInformation",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.NameResolution",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "MonoGame.Framework",
+          "version": "3.8.0.1641"
+        },
+        {
+          "name": "System.Security.Cryptography.Csp",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Net.WebHeaderCollection",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections.Specialized",
+          "version": "6.0.0.0"
+        }
+      ],
+      "native_imports": [],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute",
+        "System.IO.MemoryStream",
+        "System.Diagnostics.DebuggerDisplayAttribute",
+        "System.Diagnostics.ConditionalAttribute",
+        "System.Threading.Thread",
+        "System.Threading.AutoResetEvent",
+        "System.Threading.SynchronizationContext",
+        "System.Threading.SendOrPostCallback",
+        "System.Threading.ReaderWriterLockSlim",
+        "System.Threading.ManualResetEvent",
+        "System.IO.Stream",
+        "System.Threading.Monitor",
+        "System.Threading.Interlocked",
+        "System.Threading.ThreadStart",
+        "System.Threading.WaitHandle",
+        "System.Threading.EventWaitHandle",
+        "System.Diagnostics.Stopwatch"
+      ]
+    },
+    "MonoGame.Framework": {
+      "types": 1071,
+      "methods": 7337,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Threading.Thread",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Text.Encoding.Extensions",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Runtime.Serialization.Primitives",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.ObjectModel",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Threading",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.ComponentModel.TypeConverter",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Collections.Concurrent",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Linq",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Text.RegularExpressions",
+          "version": "6.0.0.0"
+        },
+        {
+          "name": "System.Console",
+          "version": "6.0.0.0"
+        }
+      ],
+      "native_imports": [
+        {
+          "module": "libc",
+          "entrypoint": "uname"
+        },
+        {
+          "module": "kernel32",
+          "entrypoint": "GetProcAddress"
+        },
+        {
+          "module": "kernel32",
+          "entrypoint": "LoadLibraryW"
+        },
+        {
+          "module": "libdl.so.2",
+          "entrypoint": "dlopen"
+        },
+        {
+          "module": "libdl.so.2",
+          "entrypoint": "dlsym"
+        },
+        {
+          "module": "/usr/lib/libSystem.dylib",
+          "entrypoint": "dlopen"
+        },
+        {
+          "module": "/usr/lib/libSystem.dylib",
+          "entrypoint": "dlsym"
+        }
+      ],
+      "platform_type_references": [
+        "System.Diagnostics.DebuggableAttribute",
+        "System.IO.Stream",
+        "System.Threading.Thread",
+        "System.IO.SeekOrigin",
+        "System.Diagnostics.Stopwatch",
+        "System.Diagnostics.DebuggerTypeProxyAttribute",
+        "System.IO.BinaryReader",
+        "System.IO.BinaryWriter",
+        "System.IO.MemoryStream",
+        "System.IO.TextReader",
+        "System.Diagnostics.DebuggerDisplayAttribute",
+        "System.Diagnostics.ConditionalAttribute",
+        "System.Diagnostics.DebuggerNonUserCodeAttribute",
+        "System.IO.FileNotFoundException",
+        "System.Threading.ManualResetEventSlim",
+        "System.Diagnostics.DebuggerHiddenAttribute",
+        "System.IO.FileStream",
+        "System.IO.DirectoryNotFoundException",
+        "System.Threading.AutoResetEvent",
+        "System.Threading.Monitor",
+        "System.Threading.SynchronizationLockException",
+        "System.IO.InvalidDataException",
+        "System.IO.File",
+        "System.IO.FileMode",
+        "System.IO.FileAccess",
+        "System.IO.FileShare",
+        "System.Threading.Interlocked",
+        "System.IO.Path",
+        "System.IO.StreamReader",
+        "System.IO.Directory",
+        "System.Diagnostics.Debugger",
+        "System.Threading.ThreadStart",
+        "System.Threading.ThreadPriority",
+        "System.Threading.EventWaitHandle",
+        "System.Threading.WaitHandle"
+      ]
+    },
+    "TextCopy": {
+      "types": 26,
+      "methods": 99,
+      "assembly_references": [
+        {
+          "name": "System.Runtime",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "System.Diagnostics.Process",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "System.ComponentModel",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "System.IO.FileSystem",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "System.Runtime.InteropServices",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "System.Threading.Thread",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "Microsoft.Win32.Primitives",
+          "version": "5.0.0.0"
+        },
+        {
+          "name": "System.Runtime.InteropServices.RuntimeInformation",
+          "version": "5.0.0.0"
+        }
+      ],
+      "native_imports": [
+        {
+          "module": "/System/Library/Frameworks/AppKit.framework/AppKit",
+          "entrypoint": "objc_getClass"
+        },
+        {
+          "module": "/System/Library/Frameworks/AppKit.framework/AppKit",
+          "entrypoint": "objc_msgSend"
+        },
+        {
+          "module": "/System/Library/Frameworks/AppKit.framework/AppKit",
+          "entrypoint": "objc_msgSend"
+        },
+        {
+          "module": "/System/Library/Frameworks/AppKit.framework/AppKit",
+          "entrypoint": "objc_msgSend"
+        },
+        {
+          "module": "/System/Library/Frameworks/AppKit.framework/AppKit",
+          "entrypoint": "objc_msgSend"
+        },
+        {
+          "module": "/System/Library/Frameworks/AppKit.framework/AppKit",
+          "entrypoint": "sel_registerName"
+        },
+        {
+          "module": "User32.dll",
+          "entrypoint": "IsClipboardFormatAvailable"
+        },
+        {
+          "module": "User32.dll",
+          "entrypoint": "GetClipboardData"
+        },
+        {
+          "module": "kernel32.dll",
+          "entrypoint": "GlobalLock"
+        },
+        {
+          "module": "kernel32.dll",
+          "entrypoint": "GlobalUnlock"
+        },
+        {
+          "module": "user32.dll",
+          "entrypoint": "OpenClipboard"
+        },
+        {
+          "module": "user32.dll",
+          "entrypoint": "CloseClipboard"
+        },
+        {
+          "module": "user32.dll",
+          "entrypoint": "SetClipboardData"
+        },
+        {
+          "module": "user32.dll",
+          "entrypoint": "EmptyClipboard"
+        },
+        {
+          "module": "Kernel32.dll",
+          "entrypoint": "GlobalSize"
+        }
+      ],
+      "platform_type_references": [
+        "System.Diagnostics.Process",
+        "System.Diagnostics.ProcessStartInfo",
+        "System.Diagnostics.DataReceivedEventHandler",
+        "System.Diagnostics.DataReceivedEventArgs",
+        "System.Threading.Tasks.Task",
+        "System.Threading.CancellationToken",
+        "System.IO.Path",
+        "System.IO.File",
+        "System.Threading.Tasks.Task`1",
+        "System.Diagnostics.DebuggerHiddenAttribute",
+        "System.Threading.Thread",
+        "System.Threading.Tasks.ValueTask`1",
+        "System.Diagnostics.DebuggableAttribute"
+      ]
+    }
+  },
+  "xnb_platform_version_flags": {
+    "w/v5/0x81": 3541,
+    "w/v5/0x01": 8,
+    "d/v5/0x00": 1
+  },
+  "wave_banks": [
+    {
+      "name": "Wave Bank.xwb",
+      "signature": "WBND",
+      "version": 46,
+      "header_version": 44,
+      "flags": 524288,
+      "entries": 437,
+      "entry_metadata_bytes": 24
+    },
+    {
+      "name": "Wave Bank(1.4).xwb",
+      "signature": "WBND",
+      "version": 46,
+      "header_version": 44,
+      "flags": 524288,
+      "entries": 26,
+      "entry_metadata_bytes": 24
+    }
+  ]
+}
