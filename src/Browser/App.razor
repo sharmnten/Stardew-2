@@ -3,6 +3,8 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components
 @using StardewBrowser.Platform
+@using StardewBrowser.Platform.Storage
+@using Microsoft.AspNetCore.Components.Forms
 @inject IJSRuntime Js
 @inject HttpClient Http
 @inject NavigationManager Navigation
@@ -13,12 +15,80 @@
 {
     <button id="audioProbe" @onclick="PlayAudioProbe">Test original audio</button>
 }
+else
+{
+    <button id="saveTools" @onclick="OpenSaves">Save files</button>
+    <div id="saveFailure" role="alert" hidden>
+        <p>Save could not be stored. Your previous save is retained.</p>
+        <p id="saveError"></p>
+        <button id="retrySave" @onclick="RetrySave">Retry save</button>
+        <button id="exportPending" @onclick="ExportPending">Export pending save</button>
+    </div>
+    @if (showSaves)
+    {
+        <div id="savePanel" role="dialog" aria-label="Save files">
+            <button @onclick="() => showSaves = false">Close</button>
+            <p>Import at the title screen. Select a save ZIP, or the farm file and SaveGameInfo together.</p>
+            <InputFile id="importSave" OnChange="ImportSave" multiple accept=".zip,.xml,*" />
+            <p>Export a stored save:</p>
+            <select id="saveSlot" @bind="selectedSlot">
+                @foreach (string slot in slots) { <option value="@slot">@slot</option> }
+            </select>
+            <button id="exportSave" @onclick="ExportSave" disabled="@(selectedSlot == null)">Export ZIP</button>
+            <p id="saveMessage" role="status">@saveMessage</p>
+        </div>
+    }
+}
 
 @code {
     private BrowserGameHost? host;
     private bool diagnostic;
+    private bool showSaves;
+    private string[] slots = [];
+    private string? selectedSlot;
+    private string? saveMessage;
     protected override void OnInitialized() => diagnostic = new Uri(Navigation.Uri).Query.Contains("diagnostic=1");
     private Task PlayAudioProbe() => host?.PlayAudioProbeAsync() ?? Task.CompletedTask;
+    private async Task OpenSaves()
+    {
+        showSaves = true;
+        try { slots = await host!.ListSavesAsync(); selectedSlot = slots.FirstOrDefault(); }
+        catch (Exception error) { saveMessage = error.Message; }
+    }
+    private void RetrySave() => host?.RetrySave();
+    private async Task ExportPending()
+    {
+        try { await host!.ExportPendingAsync(); }
+        catch (Exception error) { saveMessage = error.Message; showSaves = true; }
+    }
+    private async Task ExportSave()
+    {
+        try { await host!.ExportSaveAsync(selectedSlot!); saveMessage = "Save exported."; }
+        catch (Exception error) { saveMessage = error.Message; }
+    }
+    private async Task ImportSave(InputFileChangeEventArgs selection)
+    {
+        try
+        {
+            saveMessage = "Checking original save…";
+            var selected = selection.GetMultipleFiles(4);
+            var files = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+            foreach (var file in selected)
+            {
+                using var buffer = new MemoryStream();
+                await using var source = file.OpenReadStream(SaveArchive.MaxFileBytes);
+                await source.CopyToAsync(buffer);
+                if (selected.Count == 1 && file.Name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+                    files = SaveArchive.Read(buffer.ToArray());
+                else if (!files.TryAdd(file.Name, buffer.ToArray())) throw new InvalidDataException("Duplicate save filename.");
+            }
+            await host!.ImportSaveAsync(files);
+            slots = await host.ListSavesAsync();
+            selectedSlot = files.Keys.First(name => name != "SaveGameInfo" && !name.EndsWith("_old", StringComparison.Ordinal));
+            saveMessage = "Save imported. Choose Load on the title screen.";
+        }
+        catch (Exception error) { saveMessage = error.GetBaseException().Message; }
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;

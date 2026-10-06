@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "gameVersion": "1.6.15.24356",
+  "tooling": 17,
+  "platform": 36,
+  "recoveredGame": 3,
+  "browser": 14,
+  "affectedJourneyRerun": "passed; normal movement resumes after original load/migration",
+  "storage": "IndexedDB current/previous snapshots in one strict-durability transaction; original bytes hydrated before game startup",
+  "scenarios": [
+    "original initial day-1 save retained byte-for-byte after failed day-2 write",
+    "pending original day-2 draft exports before retry",
+    "retry finishes original SaveGameMenu without repeating sleep",
+    "fresh reload and original Load menu",
+    "reject invalid original save pair before replacement",
+    "original ZIP export/import",
+    "original native mute setting survives reload",
+    "zlib-compressed constructed legacy bundle fields migrate through original loader",
+    "normal movement resumes after load"
+  ],
+  "fixtureProvenance": "Original browser serializer output with constructed six-field bundle and migration cutoff48; no genuine older desktop save comparison claimed",
+  "remaining": [
+    "advanced desktop reference saves",
+    "browser lifecycle and services",
+    "all single-player parity groups",
+    "private release"
+  ]
+}

@@ -485,7 +485,70 @@
  		obj.loader = getSaveEnumerator();
 -		Task saveTask = new Task(obj._003CSave_003Eb__0);
 -		Game1.hooks.StartTask(saveTask, "Save");
-+		Task saveTask = StardewBrowser.Platform.CooperativeOperation.Run(obj.loader, stopAt: 100);
++		Task saveTask = StardewBrowser.GameStorage.BrowserSaveBridge.SaveAsync(obj.loader);
  		while (!saveTask.IsCanceled && !saveTask.IsCompleted && !saveTask.IsFaulted)
  		{
  			yield return 1;
+--- a/StardewValley/Program.cs
++++ b/StardewValley/Program.cs
+@@ -81,19 +81,6 @@
+ 	/// <param name="createIfMissing">Whether to create the folder if it doesn't exist already.</param>
+ 	public static string GetLocalAppDataFolder(string subfolder = null, bool createIfMissing = true)
+ 	{
+-		if (Environment.OSVersion.Platform == PlatformID.Unix)
+-		{
+-			string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+-			if (!string.IsNullOrWhiteSpace(folderPath))
+-			{
+-				string text = ((subfolder != null) ? Path.Combine(folderPath, "StardewValley", subfolder) : Path.Combine(folderPath, "StardewValley"));
+-				if (createIfMissing)
+-				{
+-					Directory.CreateDirectory(text);
+-				}
+-				return text;
+-			}
+-		}
+ 		return GetAppDataFolder(subfolder, createIfMissing);
+ 	}
+ 
+@@ -102,8 +89,8 @@
+ 	/// <param name="createIfMissing">Whether to create the folder if it doesn't exist already.</param>
+ 	public static string GetAppDataFolder(string subfolder = null, bool createIfMissing = true)
+ 	{
+-		string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+-		string text = ((subfolder != null) ? Path.Combine(folderPath, "StardewValley", subfolder) : Path.Combine(folderPath, "StardewValley"));
++		string folderPath = StardewBrowser.Platform.Storage.BrowserSaveStore.Root;
++		string text = ((subfolder != null) ? Path.Combine(folderPath, subfolder) : folderPath);
+ 		if (createIfMissing)
+ 		{
+ 			Directory.CreateDirectory(text);
+--- a/StardewValley/StartupPreferences.cs
++++ b/StardewValley/StartupPreferences.cs
+@@ -162,6 +162,7 @@
+ 			}
+ 			using FileStream stream = File.Create(path);
+ 			writeSettings(stream);
++			StardewBrowser.Platform.Storage.BrowserPersistence.QueueSettings();
+ 		}
+ 		catch (Exception ex)
+ 		{
+@@ -254,6 +255,7 @@
+ 				}
+ 				using FileStream stream = File.Create(text);
+ 				writeSettings(stream);
++			StardewBrowser.Platform.Storage.BrowserPersistence.QueueSettings();
+ 			}
+ 			catch (Exception ex)
+ 			{
+--- a/StardewValley.Menus/LoadGameMenu.cs
++++ b/StardewValley.Menus/LoadGameMenu.cs
+@@ -786,8 +786,7 @@
+ 				}
+ 				else
+ 				{
+-					_deleteTask = new Task(_003CreceiveLeftClick_003Eb__58_0);
+-					Game1.hooks.StartTask(_deleteTask, "Farm_Delete");
++					_deleteTask = StardewBrowser.GameStorage.BrowserSaveBridge.DeleteAsync(((SaveFileSlot)MenuSlots[selectedForDelete]).Farmer.slotName);
+ 				}
+ 				deleteConfirmationScreen = false;
+ 				if (Game1.options.snappyMenus && Game1.options.gamepadControls)

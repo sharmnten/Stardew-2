@@ -96,11 +96,11 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `BrowserSaveStore.HydrateAsync() -> Task`; `CommitAsync(string slot, IReadOnlyDictionary<string, byte[]> files) -> Task`; `ImportAsync(IReadOnlyDictionary<string, byte[]> files) -> Task`; `ExportAsync(string slot) -> Task<IReadOnlyDictionary<string, byte[]>>`. Stores original save bytes with per-slot transactional snapshots.
 
-- [ ] Write tests for successful reload, interrupted commit, quota failure, original-save import, migration, settings persistence, and export. On failed commits assert the previous snapshot remains byte-identical and exportable.
-- [ ] Run `dotnet test tests/Platform.Tests` and `node --test tests/browser/saves.spec.mjs`; confirm failure before implementation.
-- [ ] Implement IndexedDB hydration and atomic commits with a previous-save backup; connect original serializers and migration paths through the virtual filesystem.
-- [ ] Connect sleep completion to successful persistence; report errors while retaining a valid recoverable save. Implement import/export using file selection and downloads, with validation before replacing a slot.
-- [ ] Run the tests in a real browser, including a fresh page reload and injected transaction failure. Commit storage and evidence.
+- [x] Write tests for successful reload, interrupted commit, quota failure, original-save import, migration, settings persistence, and export. On failed commits assert the previous snapshot remains byte-identical and exportable.
+- [x] Run `dotnet test tests/Platform.Tests` and `node --test tests/browser/saves.spec.mjs`; confirm failure before implementation.
+- [x] Implement IndexedDB hydration and atomic commits with a previous-save backup; connect original serializers and migration paths through the virtual filesystem.
+- [x] Connect sleep completion to successful persistence; report errors while retaining a valid recoverable save. Implement import/export using file selection and downloads, with validation before replacing a slot.
+- [x] Run the tests in a real browser, including a fresh page reload and injected transaction failure. Commit storage and evidence.
 
 ### Task 6: Complete browser lifecycle and player controls
 

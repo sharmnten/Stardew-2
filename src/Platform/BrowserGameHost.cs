@@ -12,6 +12,8 @@ using System.Net.Http.Json;
 using StardewBrowser.Platform.Audio;
 using StardewValley;
 using StardewBrowser.Framework.Graphics;
+using StardewBrowser.Platform.Storage;
+using StardewBrowser.GameStorage;
 
 namespace StardewBrowser.Platform;
 
@@ -48,6 +50,9 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
             }
             else
             {
+                var saves = new BrowserSaveStore(new IndexedDbSaveBackend(js), validateImport: BrowserSaveBridge.ValidateImport);
+                await saves.HydrateAsync();
+                BrowserPersistence.Configure(saves);
                 await js.InvokeVoidAsync("portHost.status", new { phase = "loading", message = "Verifying original game content…" });
                 await content.PreloadAsync(manifest.Assets.Where(entry => entry.Group != "audio-bank").Select(entry => entry.Name), cancellationToken);
                 OriginalContent.Configure(content);
@@ -83,6 +88,35 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
     private Task FetchAsync(string name, CancellationToken cancellationToken) => content.PreloadAsync([name], cancellationToken);
     public Task PlayAudioProbeAsync() => audio.PlayProbeAsync();
 
+    public Task<string[]> ListSavesAsync() => BrowserPersistence.Current.Store.ListSlotsAsync();
+    public void RetrySave() => BrowserPersistence.Current.Retry();
+
+    public async Task ImportSaveAsync(IReadOnlyDictionary<string, byte[]> files)
+    {
+        if (Game1.activeClickableMenu is not StardewValley.Menus.TitleMenu || StardewValley.Menus.TitleMenu.subMenu != null)
+            throw new InvalidOperationException("Return to the title screen before importing a save.");
+        await BrowserPersistence.Current.Store.ImportAsync(files);
+    }
+
+    public async Task ExportSaveAsync(string slot)
+    {
+        var files = await BrowserPersistence.Current.Store.ExportAsync(slot);
+        await js.InvokeVoidAsync("portStorage.download", slot + ".zip", SaveArchive.Create(slot, files));
+    }
+
+    public async Task ExportPendingAsync()
+    {
+        var pending = BrowserPersistence.Current.Pending;
+        if (pending == null)
+        {
+            await ExportSaveAsync(BrowserPersistence.Current.Status.Slot ?? throw new InvalidOperationException("No recoverable save exists."));
+            return;
+        }
+        if (pending.Slot == BrowserSaveStore.SettingsSlot)
+            await js.InvokeVoidAsync("portStorage.download", "startup_preferences", pending.Files["startup_preferences"]);
+        else await js.InvokeVoidAsync("portStorage.download", pending.Slot + "-pending.zip", SaveArchive.Create(pending.Slot, pending.Files));
+    }
+
     [JSInvokable]
     public void Tick()
     {
@@ -91,7 +125,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
             game!.Tick();
             audio.UpdateFrame();
             object status = probe != null ? probe.Status(content.ResidentBytes)
-                : new { phase = "ready", verifiedContentBytes = content.ResidentBytes, game = GameSnapshot.Read() };
+                : new { phase = "ready", verifiedContentBytes = content.ResidentBytes, game = GameSnapshot.Read(), storage = BrowserPersistence.Current.Status };
             ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", status);
         }
         catch (Exception error)

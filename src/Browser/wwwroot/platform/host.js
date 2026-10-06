@@ -13,6 +13,7 @@ window.portHost = {
     return { width: canvas.width, height: canvas.height };
   },
   status(value) {
+    window.portStorage.updateStatus(value.storage);
     window.portStatus = { ...value, ...window.portAudio.status() };
     document.getElementById('status').textContent = value.phase === 'failed'
       ? value.error

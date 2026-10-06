@@ -32,10 +32,20 @@ internal static class GameSnapshot
         }
         return new {
             runtime = GameRunner.instance.GetType().FullName, day = Game1.dayOfMonth,
+            warping = Game1.isWarping,
+            preferences = Game1.activeClickableMenu is TitleMenu preferencesTitle ? new {
+                startMuted = preferencesTitle.startupPreferences.startMuted,
+                timesPlayed = preferencesTitle.startupPreferences.timesPlayed,
+                language = preferencesTitle.startupPreferences.languageCode } : null,
+            migration = Game1.gameMode == 3 && Game1.player?.isCustomized.Value == true ? new {
+                lastSaveFix = (int)Game1.lastAppliedSaveFix,
+                bundles = Game1.netWorldState.Value.BundleData } : null,
             overnight = NewDayTask.GetValue(null) != null || Game1.showingEndOfNightStuff || Game1.game1.IsSaving,
             save = SavedFiles(),
             lastTitleClick = BrowserDiagnostics.LastTitleClick,
             menu = new { type = menu?.GetType().Name, controls = Controls(menu),
+                saves = menu is LoadGameMenu load ? load.MenuSlots.OfType<LoadGameMenu.SaveFileSlot>()
+                    .Select(slot => new { slot = slot.Farmer.slotName, farmer = slot.Farmer.Name }).ToArray() : null,
                 allowsInteraction = AllowsInteraction(menu) },
             player = player == null ? null : new { name = player.Name, farmName = player.farmName.Value,
                 customized = player.isCustomized.Value, positionX = player.Position.X, positionY = player.Position.Y,

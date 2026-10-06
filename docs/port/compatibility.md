@@ -70,8 +70,8 @@ probe. The root page is the original game integration under development. This
 serves static files only; simulation runs inside the browser. Full gameplay
 startup preloads 3,559 verified non-bank files (63,914,330 encoded bytes) to
 preserve synchronous original content readers. Audio waves load on demand.
-Persistent saves, lifecycle behavior and single-player parity still require
-the remaining plan checks.
+Persistent saves use local IndexedDB. Lifecycle behavior and complete
+single-player parity still require the remaining plan checks.
 
 ## Original renderer and new-game integration
 
@@ -114,9 +114,50 @@ waves with matching original hashes/sample metadata and an idle cache maximum
 of 134,164,480 bytes. Desktop execution comparisons, persistent saves, lifecycle
 services and all advanced feature scenarios remain in the later plan tasks.
 
-The platform suite currently passes 22 checks, including bounded parallel asset
+The Task 4 platform suite passes 22 checks, including bounded parallel asset
 preload and an original-rate PCM wave stream fixture. Optional Vorbis/file-based
 voices have compile support but still require browser decoder verification;
 chained Vorbis remains explicitly unsupported. Complete original XACT banks were
 verified separately in Task 3. None of these milestones establishes full game
 or single-player feature parity.
+
+## Browser save persistence
+
+The store hydrates original save files and `startup_preferences` into
+`/stardew-user` before the original game initializes. Each write transaction
+updates a complete per-slot snapshot and retains the preceding snapshot in
+IndexedDB. Original XML/zlib bytes and original `_old` files are retained.
+Transactions request strict durability and resolve only after `complete`.
+See the browser contracts for [transactions](https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction)
+and [durability](https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/transaction).
+
+Original `SaveGame.Save` completes only after persistence succeeds. A failed
+transaction leaves the original save menu pending, retains the previous valid
+snapshot, and offers retry and pending-save export. Retry persists the captured
+bytes without repeating serialization or advancing the day. Original settings
+writes use the same persistence queue. Original save deletion awaits IndexedDB
+deletion before removing virtual files.
+
+The Save files panel imports a ZIP containing one original save folder or a
+farm file plus `SaveGameInfo`. It validates paths, both original serialized
+objects, their matching farmer/save identities, and supported game version
+before committing. Import is limited to the title screen. Export downloads a
+ZIP with the original files. Import supports original plain XML and legacy zlib
+format; the original loader performs migration, rather than the storage layer.
+Individual import files are limited to 128 MiB.
+
+The storage checks cover exact-byte hydration/export, invalid import, aborted
+and quota-limited transactions, retry gating, original mute-settings reload,
+and ZIP round trips/path rejection. The real game journey preserves the initial
+day-1 save on a failed day-2 transaction, exports its pending day-2 draft,
+retries, reloads, imports, and uses the original Load menu. Its explicit legacy
+bundle fixture removes the seventh bundle field and sets the migration cutoff
+to 48; original migration restores the field. This fixture is constructed from
+the original browser serializer output. It is not a genuine desktop 1.5 or
+advanced-content reference save; those comparisons remain in Task 7.
+
+Task 5 verification passes 17 tooling, 36 platform, three recovered-game and
+14 browser checks. An additional run of the affected original journey confirms
+normal movement after compressed import/migration and the native wake animation.
+Advanced desktop fixtures, complete lifecycle/services and full feature parity
+remain unverified in Tasks 6–7. These are development milestones.
