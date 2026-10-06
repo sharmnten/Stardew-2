@@ -9,7 +9,7 @@ window.portHost = {
     canvas.addEventListener('contextmenu', event => event.preventDefault());
   },
   status(value) {
-    window.portStatus = value;
+    window.portStatus = { ...value, ...window.portAudio.status() };
     document.getElementById('status').textContent = value.phase === 'failed'
       ? value.error
       : 'Original assets: graphics verification. Use arrow keys and click the canvas. Gameplay integration is pending.';

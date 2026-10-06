@@ -72,11 +72,11 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `BrowserContentStore.PreloadAsync(IEnumerable<string>, CancellationToken) -> Task`; `Open(string assetName) -> Stream` reads a verified resident asset. `BrowserAudioAdapter.UnlockAsync() -> Task` enables audio after a gesture. Retain the recovered game's cue interfaces and identifiers.
 
-- [ ] Write tests for stable asset-name mapping, checksum mismatch, missing asset errors, compressed-XNB decoding, custom data readers, and xTile external references. Add browser assertions that audio is blocked before a gesture and a known original cue plays after unlock.
-- [ ] Run `python3 -m unittest discover -s tests/tools -v`, `dotnet test tests/Platform.Tests`, and `node --test tests/browser/audio.spec.mjs`; confirm new expectations fail.
-- [ ] Generate a versioned manifest with paths, hashes, sizes, and load groups. Preload required synchronous dependencies before initialization or location transitions; preserve content identity.
-- [ ] Inspect XACT bank codecs and KNI playback support; implement supported playback or a deterministic conversion preserving all cue/category/loop/runtime-variable metadata. Decode effects on demand and stream/cache music within browser limits.
-- [ ] Run the tests and validate every manifest entry and audio cue mapping against the archive; measure startup bytes and resident audio memory. Commit adapters, tooling, and results.
+- [x] Write tests for stable asset-name mapping, checksum mismatch, missing asset errors, compressed-XNB decoding, custom data readers, and xTile external references. Add browser assertions that audio is blocked before a gesture and a known original cue plays after unlock.
+- [x] Run `python3 -m unittest discover -s tests/tools -v`, `dotnet test tests/Platform.Tests`, and `node --test tests/browser/audio.spec.mjs`; confirm new expectations fail.
+- [x] Generate a versioned manifest with paths, hashes, sizes, and load groups. Preload required synchronous dependencies before initialization or location transitions; preserve content identity.
+- [x] Inspect XACT bank codecs and KNI playback support; implement supported playback or a deterministic conversion preserving all cue/category/loop/runtime-variable metadata. Decode effects on demand and stream/cache music within browser limits.
+- [x] Run the tests and validate every manifest entry and audio cue mapping against the archive; measure startup bytes and resident audio memory. Commit adapters, tooling, and results.
 
 ### Task 4: Integrate the actual recovered game
 

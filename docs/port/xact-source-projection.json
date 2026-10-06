@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "namespace": "StardewBrowser.Platform.Audio.Xact",
+  "changes": [
+    "namespace and parent XNA math import",
+    "nullable context disabled for recovered source",
+    "TitleContainer.OpenStream \u2192 XactRuntime.OpenStream",
+    "EventHelpers.Raise \u2192 XactRuntime.Raise"
+  ],
+  "files": [
+    {
+      "name": "AudioEngine",
+      "original_sha256": "640799957276f3de867cfa38a6a1dae7ad3a49e807ffffb5beeba43ba2244a8a",
+      "projected_sha256": "57231b4de6b0ba3705639622b332a71c42d8378f4c161d0ec97adcc14cb379b1"
+    },
+    {
+      "name": "AudioCategory",
+      "original_sha256": "a089c5f929271d4b529fc3505e094a01e1eef71cd59cb0e3cb22f0e550b3823a",
+      "projected_sha256": "9c82a1ce71023c5e428bcc715d4dc211201d78606ba61cea233023b7c1e2701c"
+    },
+    {
+      "name": "Cue",
+      "original_sha256": "e46c449f491f3da124a8ec6005d95c71fd927f1ea4e4cdb856b7d013f37a8d74",
+      "projected_sha256": "87947ed2d2d569365eb5f75f8a5fd15ffad992f5281b940e7ac46166eae449bb"
+    },
+    {
+      "name": "CueDefinition",
+      "original_sha256": "0f330fc47a43418d165169f3a1aeadeb86c0aa1c5ba8d7fd34cacc03f13ee9a0",
+      "projected_sha256": "2fda981be9a487a8bf755dd6a03365b2aa61d44aaf3e69a0e1c9fb79109944da"
+    },
+    {
+      "name": "SoundBank",
+      "original_sha256": "eae37d6c55d67f6b5a0c983cbdf4d12a337e558adc7493a732fa5ed439b5499a",
+      "projected_sha256": "e66ee0873bc65dd574cee26dd11569d3076cc674b283efc294fbe823119120ff"
+    },
+    {
+      "name": "XactSoundBankSound",
+      "original_sha256": "82aec8f6f5cd969f9caf14c594a85dbf916e5ee6cc1ad5f149fe967af1a4beea",
+      "projected_sha256": "67a062e045529a682cc24ccbb238cb6432511a6a4bd301740617833e55ab3b9f"
+    },
+    {
+      "name": "XactClip",
+      "original_sha256": "4f51950b4652582ee8e7ad4352bc2f98bf756154c937eefa16fc564950420aa5",
+      "projected_sha256": "a9061462be444ea32cb535622a595e25e38d9d9d76aa8c52f6c21ebd005afdad"
+    },
+    {
+      "name": "ClipEvent",
+      "original_sha256": "8f80f63a8bfa89c581f36a4acd20ed552e5561e86530a93a23e8ecdad309a948",
+      "projected_sha256": "5b32c2da60f5f3c9ad343a142e13dc623f63d9cc96bbd1627e81c70c25a51869"
+    },
+    {
+      "name": "PlayWaveEvent",
+      "original_sha256": "cd96ef79a756a394cca8beb84a7c14e09f02cdaea9450352a7fa9004ec4c4841",
+      "projected_sha256": "08182d0820c95f7fae42e6ea41414b113dbcb1f734b4e5010e8d1e4329bf4301"
+    },
+    {
+      "name": "PlayWaveVariant",
+      "original_sha256": "d0a95612ac404765f30cb5b417ee2f8d66b3170f244b78ca21fdaf81f7274ded",
+      "projected_sha256": "f8f3e946e9cec9836a4e458b57d519f27823325526ef5e647ac2110efe22d490"
+    },
+    {
+      "name": "VolumeEvent",
+      "original_sha256": "dd8850ef72624f679a9eeec219a934720c5cb7fb3fe159776b35ae4ee8bcb594",
+      "projected_sha256": "b104aeb57a4e53a713b9caf89e035ab443777c1d4bb61fc8c6efaf5f25d3768f"
+    },
+    {
+      "name": "RpcCurve",
+      "original_sha256": "6971f08346ac57139232d99889d3e7ef5c13d4de7d5f0a69688a806b186c004d",
+      "projected_sha256": "61dfcfb02447723bd8234da8381b671ad3f18692ff4ee265c1ea7f27a66b2548"
+    },
+    {
+      "name": "RpcPoint",
+      "original_sha256": "d69969f747b77d0fdd122b550424b036e91056258fba3a194afa36d890aa9f8f",
+      "projected_sha256": "7e5691dcc6238b4171885cf63584148f4dd561471c88133b16986b3485c165d9"
+    },
+    {
+      "name": "RpcPointType",
+      "original_sha256": "7a748ab31e7dec25e0e7b4f3d32b486a4df0f5bc310c9c4c608f199f55e81de6",
+      "projected_sha256": "8936576ba437cff53214839f99818c27229cb24458e261679cc3f5574fb8f554"
+    },
+    {
+      "name": "RpcParameter",
+      "original_sha256": "75fc178370d24896ad249f137cd709d7d16a5c2154b9412a29cd1a727f6e71ae",
+      "projected_sha256": "9d0c16871fcc63d7d32c75f15faaccc0afe8d5853b73173030aea9ea12b2655e"
+    },
+    {
+      "name": "RpcVariable",
+      "original_sha256": "e8c0dfc3fcd1d2124c002db7c66173163c14d25cb51370c0997533bee4982cd9",
+      "projected_sha256": "f96593b0132f46ae053fe1158fbac2b8ee0b396f4b97503c306bf3908d0bc42c"
+    },
+    {
+      "name": "ReverbSettings",
+      "original_sha256": "c55b0f5623072e5ae3aece87f842687928e0cf2beb4ff9e01522134947fe9350",
+      "projected_sha256": "cb1b15d99f465a58ad258068781c798b87744e1c32d88b808884c09ada60cab4"
+    },
+    {
+      "name": "DspParameter",
+      "original_sha256": "beeb836b387577db0d317ee18c3097b5b77f25d7b319c297f3f0efa8716f1692",
+      "projected_sha256": "659ed01de11ffa53c946235e997832c60ecc384cfa4f116c80dabe0390a9913c"
+    },
+    {
+      "name": "XactHelpers",
+      "original_sha256": "3dba67b0f85f8f0333fbdb14dea98518a4c23de5d0ce7cc3d17875fb006aa340",
+      "projected_sha256": "ac854c93d7e765adbbbce26ec1a7fe7df90d3d149f96bad03f017c56e8ee1f55"
+    },
+    {
+      "name": "VariationType",
+      "original_sha256": "954bc0f9fe45d9a02a751f38904c31c888f5d3550e8ffc99bba8beef92dab144",
+      "projected_sha256": "06a45229374d608212d7d0cfabc9799e1471c7521558431f2ec0c4b0d9fe7de4"
+    },
+    {
+      "name": "CrossfadeType",
+      "original_sha256": "22595b37f7fd4ffec9022498bff27ecce7c0f90de81082806eeeee9ae771d9bf",
+      "projected_sha256": "362101a67680c4cf71f1b959c2ac1a7433966320f8dd826410507967180005cc"
+    },
+    {
+      "name": "MaxInstanceBehavior",
+      "original_sha256": "7cee2e6b3fe94088f2e35716302227c038510fa512ea95ced2ed3996bcd1d060",
+      "projected_sha256": "ccdba80a7a78a8c202c4cc3e6ad7152a658b72103f124b7530c4bb76248c5532"
+    },
+    {
+      "name": "FilterMode",
+      "original_sha256": "04a4b1933b046ba7a473789018013d57710c86433a7391dcac409f6543694188",
+      "projected_sha256": "a4943eb9f23ecbde04c660f609f94f5cde90d2026b717972b462e7ff69c4a988"
+    },
+    {
+      "name": "AudioStopOptions",
+      "original_sha256": "99a8d65e66c9d297045daba345d61fa738c53178871e3ae3aed14d045ba73628",
+      "projected_sha256": "b64405173e23a9998739482fcaee643c47f85d37b5c3bace7c841d0e1acbe082"
+    },
+    {
+      "name": "SoundState",
+      "original_sha256": "53e14beb67f71a7c9360c86e1954c4594861eabdc99dc47562cbfba8d62611aa",
+      "projected_sha256": "1428a7b3e43fbe3a9b25e19d00d231a4e79e863661c88d58f1b75f8a69188c8d"
+    },
+    {
+      "name": "AudioListener",
+      "original_sha256": "597c8a51fbddca0c2182286d27ec31dae92b0f8e06c6962a951dc24a668f96b2",
+      "projected_sha256": "f4490a0a0bc6b8ca042942f0d7e76806197a3571286d1964d68c085ee2534f5e"
+    },
+    {
+      "name": "AudioEmitter",
+      "original_sha256": "56c84a3c4e932aae4fe24da805eeb87d0ddd7531e0a573431fc54aba78a66410",
+      "projected_sha256": "04170cbeb660ec4127e5acc4f5c89c327e7164c15501fa92d9209ca8cd2cf757"
+    },
+    {
+      "name": "InstancePlayLimitException",
+      "original_sha256": "6de017c5e7bf4ca9826a4cb24529f3e7260cd199fa9da375ebd0aecf22151b57",
+      "projected_sha256": "fd0a33b19a25651e2f4a62f0c3ad158cc071f0414174b14ee4cf649da8b5cf22"
+    },
+    {
+      "name": "SoundEffectInstancePool",
+      "original_sha256": "d61e6c9dd451985f931145eca2c98f58f0b2ac0512098058e1731dc10e38e023",
+      "projected_sha256": "4173a539cb39634d5632771046049181985d2cb0ad89e45f2acbeca2d705701a"
+    }
+  ]
+}

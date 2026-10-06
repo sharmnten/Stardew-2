@@ -21,7 +21,7 @@ export async function withGame(testBody, setupPage = async () => {}) {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   let browser;
   try {
-    browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+    browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--autoplay-policy=user-gesture-required'] });
     const page = await browser.newPage({ viewport: { width: 960, height: 640 } });
     const exceptions = [];
     page.on('pageerror', error => exceptions.push(error.message));

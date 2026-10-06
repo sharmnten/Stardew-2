@@ -11,4 +11,8 @@
     <ProjectReference Include="Compatibility/BmFont/BmFont.Browser.csproj" />
     <Compile Remove="Compatibility/**/bin/**;Compatibility/**/obj/**" />
   </ItemGroup>
+  <Target Name="ProjectOriginalXact" BeforeTargets="CoreCompile">
+    <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/project_xact.py&quot;" />
+    <ItemGroup><Compile Include="../../.port-cache/xact-browser/*.cs" /></ItemGroup>
+  </Target>
 </Project>

@@ -5,6 +5,9 @@ import hashlib
 import json
 from pathlib import Path
 import struct
+import os
+import subprocess
+import tempfile
 
 
 def inspect_bank(path: Path) -> dict:
@@ -65,6 +68,59 @@ def inspect_bank(path: Path) -> dict:
     return {'name': name, 'version': 46, 'header_version': 44, 'flags': flags, 'alignment': alignment,
             'entry_name_size': name_size, 'compact_format': compact_format, 'build_time': build_time,
             'size': size, 'sha256': digest, 'entries': entries}
+
+
+def wrap_wave(entry: dict, data: bytes) -> bytes:
+    """Add a WAV container; keep encoded samples and decoded padding unchanged."""
+    if len(data) != entry['size']:
+        raise ValueError('Wave entry byte length does not match its metadata')
+
+    def chunk(name, payload):
+        return name + struct.pack('<I', len(payload)) + payload + (b'\0' if len(payload) & 1 else b'')
+
+    channels, rate, alignment = entry['channels'], entry['rate'], entry['block_alignment']
+    if entry['codec'] == 'pcm':
+        fmt = struct.pack('<HHIIHH', 1, channels, rate, rate * alignment, alignment, entry['bits'])
+        body = b'WAVE' + chunk(b'fmt ', fmt) + chunk(b'data', data)
+    elif entry['codec'] == 'ms-adpcm':
+        samples_per_block = (alignment // channels - 7) * 2 + 2
+        coefficients = [(256, 0), (512, -256), (0, 0), (192, 64), (240, 0), (460, -208), (392, -232)]
+        extra = struct.pack('<HH', samples_per_block, len(coefficients)) + b''.join(struct.pack('<hh', *pair) for pair in coefficients)
+        fmt = struct.pack('<HHIIHHH', 2, channels, rate, rate * alignment // samples_per_block, alignment, 4, len(extra)) + extra
+        body = b'WAVE' + chunk(b'fmt ', fmt) + chunk(b'fact', struct.pack('<I', entry['decoded_samples'])) + chunk(b'data', data)
+    else:
+        raise ValueError('Unsupported wave codec: ' + entry['codec'])
+    return b'RIFF' + struct.pack('<I', len(body)) + body
+
+
+def encode_flac(entry: dict, data: bytes, output: Path) -> dict:
+    """Encode losslessly and validate native timing before replacing output."""
+    wave = wrap_wave(entry, data)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(dir=output.parent, suffix='.flac', delete=False) as temporary:
+        staging = Path(temporary.name)
+    try:
+        subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-nostdin', '-i', 'pipe:0',
+                        '-map_metadata', '-1', '-c:a', 'flac', '-sample_fmt', 's16', '-compression_level', '8',
+                        '-fflags', '+bitexact', '-flags:a', '+bitexact', '-f', 'flac', '-y', str(staging)],
+                       input=wave, capture_output=True, check=True)
+        with staging.open('rb') as stream:
+            header = stream.read(42)
+            if len(header) != 42 or header[:4] != b'fLaC' or header[4] & 0x7f != 0 or header[5:8] != b'\0\0\x22':
+                raise ValueError('Encoded FLAC has no valid STREAMINFO header')
+            packed = int.from_bytes(header[18:26], 'big')
+            rate, channels, bits, samples = packed >> 44, ((packed >> 41) & 7) + 1, ((packed >> 36) & 31) + 1, packed & 0xfffffffff
+            if (rate, channels, bits, samples) != (entry['rate'], entry['channels'], 16, entry['decoded_samples']):
+                raise ValueError(f'Lossless audio timing/format mismatch: {(rate, channels, bits, samples)}')
+            stream.seek(0)
+            digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+        size = staging.stat().st_size
+        os.replace(staging, output)
+        return {'sha256': digest, 'size': size, 'rate': rate, 'channels': channels, 'bits': bits, 'samples': samples,
+                'pcm_md5': header[26:42].hex()}
+    finally:
+        if staging.exists():
+            staging.unlink()
 
 
 if __name__ == '__main__':

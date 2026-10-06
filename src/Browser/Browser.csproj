@@ -13,10 +13,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
     <ProjectReference Include="../Platform/Platform.csproj" />
-    <Content Include="../../original/Content/**/*.xnb" Link="wwwroot/Content/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../original/Content/**/*" Exclude="../../original/Content/**/*.xwb" Link="wwwroot/Content/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../.port-cache/content/manifest.json" Link="wwwroot/Content/manifest.json" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../.port-cache/audio/**/*.flac" Link="wwwroot/Audio/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../.port-cache/audio/manifest.json;../../.port-cache/audio/cues.json" Link="wwwroot/Audio/%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
   <Target Name="VerifyOriginalContent" BeforeTargets="PrepareForBuild">
     <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/build_content.py&quot;" />
+    <Error Condition="!Exists('$(MSBuildProjectDirectory)/../../.port-cache/audio/manifest.json')" Text="Prepare the original audio first: python3 tools/build_audio.py" />
   </Target>
 </Project>

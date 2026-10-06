@@ -9,6 +9,7 @@ using xTile.Tiles;
 using StardewBrowser.Platform.Compatibility;
 using StardewBrowser.Platform.Content;
 using System.Net.Http.Json;
+using StardewBrowser.Platform.Audio;
 
 namespace StardewBrowser.Platform;
 
@@ -17,6 +18,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
     private GraphicsProbe? game;
     private DotNetObjectReference<BrowserGameHost>? reference;
     private BrowserContentStore content = null!;
+    private BrowserAudioAdapter audio = null!;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -26,6 +28,9 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
             var manifest = await http.GetFromJsonAsync<ContentManifest>("Content/manifest.json", cancellationToken)
                 ?? throw new InvalidDataException("The original content manifest is empty.");
             content = new BrowserContentStore(http, manifest);
+            audio = new BrowserAudioAdapter(js, http);
+            await audio.InitializeAsync(cancellationToken);
+            await audio.InitializeXactAsync(content, cancellationToken);
             foreach (string name in new[] { "TileSheets/crops", "Fonts/SmallFont", "Fonts/Japanese", "Maps/Farm", "Effects/ShadowRemoveMG3.8.0" })
                 await FetchAsync(name, cancellationToken);
             game = new GraphicsProbe(content);
@@ -40,6 +45,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
     }
 
     private Task FetchAsync(string name, CancellationToken cancellationToken) => content.PreloadAsync([name], cancellationToken);
+    public Task PlayAudioProbeAsync() => audio.PlayProbeAsync();
 
     [JSInvokable]
     public void Tick()
@@ -47,6 +53,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
         try
         {
             game!.Tick();
+            audio.UpdateFrame();
             ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", game.Status(content.ResidentBytes));
         }
         catch (Exception error)
@@ -59,6 +66,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
     {
         await js.InvokeVoidAsync("portHost.stop");
         game?.Dispose();
+        if (audio != null) await audio.DisposeAsync();
         reference?.Dispose();
     }
 }

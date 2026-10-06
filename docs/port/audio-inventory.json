@@ -26,5 +26,40 @@
     }
   ],
   "metadata_sha256": "c25f21844160faa7edfd43b62d59b7ebb2d71c257713a8524b76a07f607b770a",
-  "browser_playback_verified": false
+  "browser_playback_verified": true,
+  "browser_all_waves_decoded": true,
+  "converted_wave_bytes": 888852358,
+  "encoding_recipe": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers; converter-sha256=7f98c2502b05b015b98f09a54b91c6b2fc20c452e23584b296e010e384cc8e12",
+  "prepared_manifest_sha256": "23a262a865498d92c7ef12aea3dea812972b5d5b769715a2c4b85feb2ee347fa",
+  "decoded_wave_cache_limit_bytes": 134217728,
+  "observed_maximum_idle_decoded_wave_bytes": 134164480,
+  "largest_decoded_wave_bytes": 92677120,
+  "probe": {
+    "cue": "bigSelect",
+    "bank": 0,
+    "track": 3,
+    "downloaded_bytes": 16055,
+    "decoded_bytes": 110592
+  },
+  "startup": {
+    "stage": "graphics-and-audio-verification",
+    "transferredResourceBytes": 30461892,
+    "verifiedContentBytes": 321571,
+    "audioDecodedWaveBytes": 0,
+    "audioDownloadedWaveBytes": 0,
+    "audioState": "suspended",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36"
+  },
+  "browser_controls_verified": [
+    "gesture unlock",
+    "checksum rejection",
+    "finite repeats",
+    "continuous loops",
+    "pause",
+    "resume",
+    "release",
+    "reverb send",
+    "low-pass frequency control"
+  ],
+  "dsp_desktop_comparison": "Pending Task 7. Web Audio convolution and biquad outputs replace OpenAL EAX and native filters; exact response has not been compared."
 }

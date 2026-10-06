@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import unittest
 
@@ -14,11 +15,15 @@ class WaveBankTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.inspect = None
+        self.wrap = None
+        self.encode = None
         if MODULE_PATH.exists():
             spec = importlib.util.spec_from_file_location('wave_banks', MODULE_PATH)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             self.inspect = module.inspect_bank
+            self.wrap = getattr(module, 'wrap_wave', None)
+            self.encode = getattr(module, 'encode_flac', None)
 
     def bank(self, codec=0, data=None, samples=4, loop_start=1, loop_length=2):
         if data is None:
@@ -66,3 +71,39 @@ class WaveBankTests(unittest.TestCase):
         self.assertIsNotNone(self.inspect, 'Wave bank inspection is not implemented')
         with self.assertRaisesRegex(ValueError, 'codec'):
             self.inspect(self.bank(codec=1))
+
+    def test_wave_container_preserves_pcm_samples_for_the_external_decoder(self):
+        self.assertIsNotNone(self.wrap, 'Wave container conversion is not implemented')
+        data = struct.pack('<4h', -1000, 0, 1000, 0)
+        entry = self.inspect(self.bank(data=data))['entries'][0]
+        decoded = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', 'pipe:0', '-f', 's16le', '-'],
+                                 input=self.wrap(entry, data), capture_output=True, check=True).stdout
+        self.assertEqual(decoded, data)
+
+    def test_adpcm_conversion_preserves_native_block_padding_and_samples(self):
+        self.assertIsNotNone(self.wrap, 'Wave container conversion is not implemented')
+        data = struct.pack('<Bhhh', 0, 16, 1000, 900) + bytes(15)
+        entry = self.inspect(self.bank(codec=2, data=data, samples=31, loop_start=4, loop_length=8))['entries'][0]
+        decoded = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', 'pipe:0', '-f', 's16le', '-'],
+                                 input=self.wrap(entry, data), capture_output=True, check=True).stdout
+        self.assertEqual(struct.unpack('<32h', decoded), tuple([900, 1000] + [1000] * 30))
+
+    def test_lossless_audio_retains_samples_rate_and_channel_count(self):
+        self.assertIsNotNone(self.encode, 'Lossless audio preparation is not implemented')
+        data = struct.pack('<4h', -1000, 0, 1000, 0)
+        entry = self.inspect(self.bank(data=data))['entries'][0]
+        output = self.root / 'audio.flac'
+        report = self.encode(entry, data, output)
+        decoded = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', str(output), '-f', 's16le', '-'],
+                                 capture_output=True, check=True).stdout
+        self.assertEqual(decoded, data)
+        self.assertEqual((report['rate'], report['channels'], report['samples']), (22050, 1, 4))
+
+    def test_failed_audio_preparation_keeps_the_previous_output(self):
+        self.assertIsNotNone(self.encode, 'Lossless audio preparation is not implemented')
+        entry = self.inspect(self.bank())['entries'][0]
+        output = self.root / 'audio.flac'
+        output.write_bytes(b'previous valid output')
+        with self.assertRaises(ValueError):
+            self.encode(entry, b'short', output)
+        self.assertEqual(output.read_bytes(), b'previous valid output')
