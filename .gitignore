@@ -1,0 +1,11 @@
+.worktrees/
+.superpowers/
+.port-cache/
+.tools/
+node_modules/
+dist/
+**/bin/
+**/obj/
+src/Recovered/
+original/
+*.zip
