@@ -9,3 +9,5 @@ dist/
 src/Recovered/
 original/
 *.zip
+__pycache__/
+*.py[cod]
