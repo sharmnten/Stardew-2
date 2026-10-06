@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Stardew Valley</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>11.0</LangVersion>
+  </PropertyGroup>
+  <Import Project="../Kni.props" />
+  <ItemGroup>
+    <Compile Include="*.cs" />
+    <ProjectReference Include="../Platform/Platform.csproj" />
+    <ProjectReference Include="../Platform/Compatibility/GameData/GameData.Browser.csproj" />
+    <ProjectReference Include="../Platform/Compatibility/Lidgren/Lidgren.Browser.csproj" />
+    <Reference Include="System.Data.HashFunction.Core"><HintPath>../../original/System.Data.HashFunction.Core.dll</HintPath></Reference>
+    <Reference Include="System.Data.HashFunction.Interfaces"><HintPath>../../original/System.Data.HashFunction.Interfaces.dll</HintPath></Reference>
+    <Reference Include="System.Data.HashFunction.xxHash"><HintPath>../../original/System.Data.HashFunction.xxHash.dll</HintPath></Reference>
+    <Reference Include="SkiaSharp"><HintPath>../../original/SkiaSharp.dll</HintPath></Reference>
+    <Reference Include="Steamworks.NET"><HintPath>../../original/Steamworks.NET.dll</HintPath></Reference>
+    <Reference Include="GalaxyCSharp"><HintPath>../../original/GalaxyCSharp.dll</HintPath></Reference>
+    <Reference Include="TextCopy"><HintPath>../../original/TextCopy.dll</HintPath></Reference>
+  </ItemGroup>
+  <Target Name="ProjectRecoveredGameplay" BeforeTargets="CoreCompile">
+    <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/apply-patches.py&quot;" />
+    <ItemGroup><Compile Include="../../.port-cache/game-browser/**/*.cs" /></ItemGroup>
+  </Target>
+</Project>

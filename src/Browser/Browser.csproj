@@ -13,6 +13,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
     <ProjectReference Include="../Platform/Platform.csproj" />
+    <ProjectReference Include="../Game/Game.Browser.csproj" />
+    <Compile Include="../Platform/BrowserGameHost.cs;../Platform/BrowserAliases.cs" />
     <Content Include="../../original/Content/**/*" Exclude="../../original/Content/**/*.xwb" Link="wwwroot/Content/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../.port-cache/content/manifest.json" Link="wwwroot/Content/manifest.json" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../.port-cache/audio/**/*.flac" Link="wwwroot/Audio/%(RecursiveDir)%(Filename)%(Extension)" CopyToPublishDirectory="PreserveNewest" />

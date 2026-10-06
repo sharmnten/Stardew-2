@@ -6,7 +6,11 @@ python3 -m unittest discover -s tests/tools -v
 if [ ! -f src/Recovered/Xact/Microsoft.Xna.Framework.Audio/Cue.cs ]; then
     tools/recover-audio.sh
 fi
+if [ ! -f src/Recovered/Content/Microsoft.Xna.Framework.Content/Texture2DReader.cs ]; then
+    tools/recover-graphics.sh
+fi
 python3 tools/build_audio.py
 dotnet test tests/Platform.Tests --nologo
+dotnet test tests/Game.Tests --nologo
 dotnet publish src/Browser/Browser.csproj -c Release --nologo
 node --test --test-concurrency=1 tests/browser/*.spec.mjs

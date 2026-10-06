@@ -48,21 +48,36 @@ public sealed class BrowserContentStore
 
     private async Task PreloadCoreAsync(IEnumerable<string> names, CancellationToken cancellationToken)
     {
+        var pending = new List<(string Key, ContentEntry Entry)>();
+        var requestedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (string requested in names)
         {
             cancellationToken.ThrowIfCancellationRequested();
             string key = Normalize(requested);
             if (!index.TryGetValue(key, out var entry)) throw new FileNotFoundException("Missing original content: " + key);
             if (resident.ContainsKey(key)) continue;
-            string path = string.Join('/', entry.Path.Split('/').Select(Uri.EscapeDataString));
-            byte[] data;
-            try { data = await http.GetByteArrayAsync(path, cancellationToken); }
-            catch (HttpRequestException error) { throw new IOException("Could not download original content: " + entry.Name, error); }
-            if (data.LongLength != entry.Size || !Convert.ToHexString(SHA256.HashData(data)).Equals(entry.Sha256, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidDataException("Original content checksum mismatch: " + entry.Name);
-            resident.Add(key, data);
-            ResidentBytes += data.Length;
+            if (requestedKeys.Add(key)) pending.Add((key, entry));
         }
+        foreach (var batch in pending.Chunk(8))
+        {
+            var downloads = await Task.WhenAll(batch.Select(async item => (item.Key, Data: await DownloadAsync(item.Entry, cancellationToken))));
+            foreach (var (key, data) in downloads)
+            {
+                resident.Add(key, data);
+                ResidentBytes += data.Length;
+            }
+        }
+    }
+
+    private async Task<byte[]> DownloadAsync(ContentEntry entry, CancellationToken cancellationToken)
+    {
+        string path = string.Join('/', entry.Path.Split('/').Select(Uri.EscapeDataString));
+        byte[] data;
+        try { data = await http.GetByteArrayAsync(path, cancellationToken); }
+        catch (HttpRequestException error) { throw new IOException("Could not download original content: " + entry.Name, error); }
+        if (data.LongLength != entry.Size || !Convert.ToHexString(SHA256.HashData(data)).Equals(entry.Sha256, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException("Original content checksum mismatch: " + entry.Name);
+        return data;
     }
 
     public Stream Open(string name)

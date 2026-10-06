@@ -84,11 +84,11 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `BrowserGameHost` initializes the recovered original `Game1` lifecycle. Patches are applied to the reproducible Task 1 baseline before compiling; shared data types and local net-field semantics remain intact.
 
-- [ ] Write a browser flow that enters the original title screen, creates a farmer, enters the farm, moves, uses a tool, opens inventory, and sleeps. It must inspect real game state rather than only page text.
-- [ ] Run `node --test tests/browser/new-game.spec.mjs`; confirm the compatibility host cannot pass it.
-- [ ] Reference the recovered projects and apply targeted patches for startup, desktop window APIs, native SDK calls, threading, and synchronous file assumptions. Preserve original simulation, events, locations, and menus.
-- [ ] Adapt threading to cooperative operations or proven browser workers according to each call site's semantics; prevent blocking the browser event loop.
-- [ ] Run `dotnet publish src/Browser/Browser.csproj -c Release` and `node --test tests/browser/new-game.spec.mjs`; require success and compare representative state transitions with the original implementation. Commit integration and updated compatibility evidence.
+- [x] Write a browser flow that enters the original title screen, creates a farmer, enters the farm, moves, uses a tool, opens inventory, and sleeps. It must inspect real game state rather than only page text.
+- [x] Run `node --test tests/browser/new-game.spec.mjs`; confirm the compatibility host cannot pass it.
+- [x] Reference the recovered projects and apply targeted patches for startup, desktop window APIs, native SDK calls, threading, and synchronous file assumptions. Preserve original simulation, events, locations, and menus.
+- [x] Adapt threading to cooperative operations or proven browser workers according to each call site's semantics; prevent blocking the browser event loop.
+- [x] Run `dotnet publish src/Browser/Browser.csproj -c Release` and `node --test tests/browser/new-game.spec.mjs`; require success and compare representative state transitions with the original implementation. Commit integration and updated compatibility evidence.
 
 ### Task 5: Persistent saves, settings, import, and export
 

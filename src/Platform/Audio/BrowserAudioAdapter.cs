@@ -13,7 +13,8 @@ public sealed record WaveLoops(
     [property: JsonPropertyName("loop_length")] int Length);
 public sealed record BrowserWave(int Bank, int Track, string Path, string Sha256, int Size,
     int Rate, int Channels, int Samples, WaveLoops Original,
-    [property: JsonPropertyName("bank_name")] string BankName);
+    [property: JsonPropertyName("bank_name")] string BankName,
+    [property: JsonIgnore] byte[]? EncodedData = null);
 public sealed record AudioManifest(int Schema,
     [property: JsonPropertyName("game_version")] string GameVersion,
     [property: JsonPropertyName("archive_sha256")] string ArchiveSha256,
@@ -61,13 +62,18 @@ public sealed class BrowserAudioAdapter(IJSRuntime js, HttpClient http) : IAsync
 
     public async Task InitializeXactAsync(BrowserContentStore content, CancellationToken cancellationToken)
     {
-        await content.PreloadAsync(["XACT/FarmerSounds.xgs", "XACT/Sound Bank.xsb"], cancellationToken);
-        output = new WebAudioOutput((IJSInProcessRuntime)js, this);
-        XactRuntime.Configure(path => content.Open(path.Replace('\\', '/').Replace("Content/", "")), manifest, output);
+        await ConfigureXactAsync(content, cancellationToken);
         engine = new AudioEngine("Content/XACT/FarmerSounds.xgs");
         _ = new WaveBank(engine, "Content/XACT/Wave Bank.xwb");
         _ = new WaveBank(engine, "Content/XACT/Wave Bank(1.4).xwb");
         bank = new SoundBank(engine, "Content/XACT/Sound Bank.xsb");
+    }
+
+    public async Task ConfigureXactAsync(BrowserContentStore content, CancellationToken cancellationToken)
+    {
+        await content.PreloadAsync(["XACT/FarmerSounds.xgs", "XACT/Sound Bank.xsb"], cancellationToken);
+        output = new WebAudioOutput((IJSInProcessRuntime)js, this);
+        XactRuntime.Configure(path => content.Open(path.Replace('\\', '/').Replace("Content/", "")), manifest, output);
         ((IJSInProcessRuntime)js).InvokeVoid("portAudio.markScheduler");
     }
 
@@ -80,13 +86,18 @@ public sealed class BrowserAudioAdapter(IJSRuntime js, HttpClient http) : IAsync
 
     public async Task PreloadWaveAsync(int bank, int track, CancellationToken cancellationToken = default)
     {
+        if (!waves.TryGetValue((bank, track), out var wave)) throw new FileNotFoundException($"Missing original wave: {bank}/{track}");
+        await PreloadWaveAsync(wave, cancellationToken);
+    }
+
+    public async Task PreloadWaveAsync(BrowserWave wave, CancellationToken cancellationToken = default)
+    {
         await loading.WaitAsync(cancellationToken);
         try
         {
-            string key = $"{bank}/{track}";
+            string key = $"{wave.Bank}/{wave.Track}";
             if (await js.InvokeAsync<bool>("portAudio.hasWave", cancellationToken, key)) return;
-            if (!waves.TryGetValue((bank, track), out var wave)) throw new FileNotFoundException("Missing original wave: " + key);
-            byte[] data = await http.GetByteArrayAsync(wave.Path, cancellationToken);
+            byte[] data = wave.EncodedData ?? await http.GetByteArrayAsync(wave.Path, cancellationToken);
             if (data.Length != wave.Size) throw new InvalidDataException("Original audio checksum mismatch: " + key);
             Verify(data, wave.Sha256, key);
             await js.InvokeVoidAsync("portAudio.decode", cancellationToken, key, data, wave);

@@ -8,6 +8,8 @@
   </PropertyGroup>
   <Import Project="../../Kni.props" />
   <ItemGroup>
+    <ProjectReference Include="../../Framework/Framework.csproj" />
+    <Compile Include="xTileAliases.cs" />
     <Compile Include="../../Recovered/xTile/**/*.cs" Exclude="../../Recovered/xTile/bin/**;../../Recovered/xTile/obj/**" />
   </ItemGroup>
 </Project>

@@ -50,7 +50,7 @@ public sealed class WebAudioOutput(IJSInProcessRuntime js, BrowserAudioAdapter a
         {
             try
             {
-                await adapter.PreloadWaveAsync(wave.Bank, wave.Track);
+                await adapter.PreloadWaveAsync(wave);
                 if (disposed || State == SoundState.Stopped) return;
                 js.InvokeVoid("portAudio.createVoice", id, $"{wave.Bank}/{wave.Track}", parameters);
                 loaded = true;

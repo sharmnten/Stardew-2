@@ -2,8 +2,13 @@
 
 ## Verified graphics boundary
 
-This is a framework verification host. The recovered Stardew Valley game is
-not integrated yet, and single-player feature parity remains unverified.
+The recovered Stardew Valley gameplay project compiles against the browser
+adapters with zero errors. The original title screen creates a farmer and loads
+the farmhouse; WASD movement reaches the farm and tool use consumes original
+stamina. Inventory opens, the original bed prompt accepts sleep, and the game
+returns control on day 2 after writing the original farm and SaveGameInfo files.
+These files are currently in the browser runtime's temporary filesystem;
+reload persistence and single-player feature parity remain unverified.
 
 Pinned environment:
 
@@ -15,8 +20,8 @@ Pinned environment:
 
 The browser reads the actual archive content, including compressed XNBs, the
 original xTile map reader, and external farm tile sheets. The xTile browser
-project compiles unchanged recovered sources against KNI and retains the
-`xTile` assembly identity.
+project compiles recovered sources against KNI with an alias to the preserved
+original SpriteBatch, and retains the `xTile` assembly identity.
 
 Observed in Chromium with SwiftShader:
 
@@ -60,9 +65,58 @@ tools/check-browser.sh
 python3 -m http.server 4173 --directory src/Browser/bin/Release/net10.0/publish/wwwroot
 ```
 
-Open `http://localhost:4173`. This serves static files only; simulation runs
-inside the browser. The current verification page explicitly labels gameplay
-integration as pending. The full publish tree includes original XNB assets;
-only probe dependencies are downloaded at startup. Audio banks, complete
-content verification, storage, lifecycle behavior and the recovered Game1
-runtime are addressed by the remaining plan tasks.
+Open `http://localhost:4173/?diagnostic=1` for the verified graphics/audio
+probe. The root page is the original game integration under development. This
+serves static files only; simulation runs inside the browser. Full gameplay
+startup preloads 3,559 verified non-bank files (63,914,330 encoded bytes) to
+preserve synchronous original content readers. Audio waves load on demand.
+Persistent saves, lifecycle behavior and single-player parity still require
+the remaining plan checks.
+
+## Original renderer and new-game integration
+
+The browser projects preserve the original four sprite renderer types and
+sprite shader, packed logical/physical texture reader, and DXT decoder.
+`project_graphics.py` records each original/projected source hash. The original
+0.001-texel tuck and global transform behavior remain. KNI supplies GPU resources;
+its native texture sorting key is retained through cached reflection. The packed
+31×21 logical / 32×24 allocated texture fixture passes. Browser draw/readback
+checks pass with this reader and the preserved renderer, including the original
+shadow shader. A loaded-assembly check confirms the desktop MonoGame framework
+is absent; the unchanged recovered Lidgren project is retargeted against KNI.
+
+The main projection resolves texture properties using original MonoGame symbols,
+adapting 481 width/height/bounds accesses while leaving unrelated dimensions
+unchanged. Patches retain gameplay bodies while adapting window display helpers,
+activation signature, offline SDK and shared verified content. Reflection.Emit
+static holders are replaced with indexed snapshots of the original discovered
+fields/default references; the round-trip test preserves boxed values, references
+and nulls without generating a dynamic assembly.
+
+The actual `GameRunner`/`Game1` lifecycle runs at the root page. The new-game
+browser flow inspects original names, locations, positions, stamina, menus and
+save files. It uses the original WASD/C/E/X controls and original clickable
+components. The original date increment, building door action, sleep question,
+overnight iterator and save serializer supply the observed transitions. No
+farmer position, date or menu state is injected by this flow.
+
+Overnight and save iterators advance over browser timer turns. Explicit yields
+at the original 21 overnight barrier boundaries prevent single-player phases
+from draining in one turn. Original phase bodies, local net fields and random
+operations remain. Save completion retains its 100 progress marker and original
+abort/fault status; invariant task culture is preserved independently of caller
+culture. Individual synchronous phase/serialization costs still need the Task 7
+performance measurements.
+
+The Task 4 regression run passes 17 tooling, 22 platform, one static snapshot and
+10 browser checks. A separate Chromium audit again decoded all 463 original
+waves with matching original hashes/sample metadata and an idle cache maximum
+of 134,164,480 bytes. Desktop execution comparisons, persistent saves, lifecycle
+services and all advanced feature scenarios remain in the later plan tasks.
+
+The platform suite currently passes 22 checks, including bounded parallel asset
+preload and an original-rate PCM wave stream fixture. Optional Vorbis/file-based
+voices have compile support but still require browser decoder verification;
+chained Vorbis remains explicitly unsupported. Complete original XACT banks were
+verified separately in Task 3. None of these milestones establishes full game
+or single-player feature parity.

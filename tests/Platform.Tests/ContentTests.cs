@@ -81,4 +81,36 @@ public class ContentTests
                 : new HttpResponseMessage(HttpStatusCode.NotFound);
         }
     }
+
+    [Fact]
+    public async Task CompleteContentPreloadUsesBoundedRequestsAndRetainsEveryAsset()
+    {
+        var files = new ManyFiles();
+        var entries = Enumerable.Range(0, 19).Select(i => new ContentEntry($"Maps/{i}", $"Content/Maps/{i}.xnb",
+            Convert.ToHexString(SHA256.HashData(Original)), Original.Length, "content")).ToArray();
+        var store = new BrowserContentStore(new HttpClient(files) { BaseAddress = new Uri("https://static.invalid/") },
+            new ContentManifest(1, "1.6.15.24356", "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11", entries));
+        await store.PreloadAsync(entries.Select(entry => entry.Name), CancellationToken.None);
+        Assert.InRange(files.Peak, 2, 8);
+        Assert.Equal(Original.Length * 19, store.ResidentBytes);
+        foreach (var entry in entries)
+        {
+            using var stream = store.Open(entry.Name);
+            Assert.Equal(Original.Length, stream.Length);
+        }
+    }
+
+    private sealed class ManyFiles : HttpMessageHandler
+    {
+        private int active;
+        private readonly object sync = new();
+        public int Peak { get; private set; }
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            lock (sync) { active++; Peak = Math.Max(Peak, active); }
+            await Task.Delay(20, cancellationToken);
+            lock (sync) active--;
+            return new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(Original) };
+        }
+    }
 }

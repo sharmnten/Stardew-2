@@ -1,0 +1,491 @@
+--- a/StardewValley.Extensions/FrameworkExtensions.cs
++++ b/StardewValley.Extensions/FrameworkExtensions.cs
+@@ -63,22 +63,22 @@
+ 
+ 	public static int GetElementCount(this Texture2D texture)
+ 	{
+-		return texture.ActualWidth * texture.ActualHeight;
++		return TextureMetrics.ActualWidth(texture) * TextureMetrics.ActualHeight(texture);
+ 	}
+ 
+ 	public static int GetActualWidth(this Texture2D texture)
+ 	{
+-		return texture.ActualWidth;
++		return TextureMetrics.ActualWidth(texture);
+ 	}
+ 
+ 	public static int GetActualHeight(this Texture2D texture)
+ 	{
+-		return texture.ActualHeight;
++		return TextureMetrics.ActualHeight(texture);
+ 	}
+ 
+ 	public static void SetContentSize(this Texture2D texture, int width, int height)
+ 	{
+-		texture.SetImageSize(width, height);
++		TextureMetrics.SetImageSize(texture, width, height);
+ 	}
+ 
+ 	/// <summary>Get a property value as a string, if it exists.</summary>
+--- a/StardewValley.Menus/EmoteMenu.cs
++++ b/StardewValley.Menus/EmoteMenu.cs
+@@ -198,7 +198,7 @@
+ 				float num = -1f;
+ 				for (int i = 0; i < _emoteButtons.Count; i++)
+ 				{
+-					float num2 = Vector2.Dot(value2: new Vector2((float)_emoteButtons[i].bounds.Center.X - ((float)xPositionOnScreen + (float)width / 2f), (float)_emoteButtons[i].bounds.Center.Y - ((float)yPositionOnScreen + (float)height / 2f)), value1: value);
++					float num2 = Vector2.Dot(value, new Vector2((float)_emoteButtons[i].bounds.Center.X - ((float)xPositionOnScreen + (float)width / 2f), (float)_emoteButtons[i].bounds.Center.Y - ((float)yPositionOnScreen + (float)height / 2f)));
+ 					if (num2 > num)
+ 					{
+ 						num = num2;
+--- a/StardewValley/DebugMetricsComponent.cs
++++ b/StardewValley/DebugMetricsComponent.cs
+@@ -67,7 +67,7 @@
+ 		_spriteBatch = new SpriteBatch(base.GraphicsDevice);
+ 		int num = 2;
+ 		int num2 = 2;
+-		_opaqueWhite = new Texture2D(base.GraphicsDevice, num, num2, mipmap: false, SurfaceFormat.Color)
++		_opaqueWhite = new Texture2D(base.GraphicsDevice, num, num2, mipMap: false, SurfaceFormat.Color)
+ 		{
+ 			Name = "@DebugMetricsComponent._opaqueWhite"
+ 		};
+--- a/StardewValley/Game1.cs
++++ b/StardewValley/Game1.cs
+@@ -4222,7 +4222,7 @@
+ 		Texture2D texture2D = content.Load<Texture2D>("TileSheets\\tools");
+ 		int width = texture2D.Width;
+ 		int height = texture2D.Height;
+-		Texture2D obj = new Texture2D(game1.GraphicsDevice, width, height, mipmap: false, SurfaceFormat.Color)
++		Texture2D obj = new Texture2D(game1.GraphicsDevice, width, height, mipMap: false, SurfaceFormat.Color)
+ 		{
+ 			Name = texture2D.Name
+ 		};
+@@ -5244,7 +5244,7 @@
+ 		Color[] data = new Color[1] { Color.White };
+ 		for (int i = 0; i < dynamicPixelRects.Length; i++)
+ 		{
+-			dynamicPixelRects[i] = new Texture2D(base.GraphicsDevice, 1, 1, mipmap: false, SurfaceFormat.Color)
++			dynamicPixelRects[i] = new Texture2D(base.GraphicsDevice, 1, 1, mipMap: false, SurfaceFormat.Color)
+ 			{
+ 				Name = $"@{"Game1"}.{"dynamicPixelRects"}[{i}]"
+ 			};
+@@ -7553,7 +7553,7 @@
+ 	{
+ 		int num = width;
+ 		int num2 = height;
+-		foreach (DisplayMode supportedDisplayMode in graphics.GraphicsDevice.Adapter.SupportedDisplayModes)
++		foreach (DisplayMode supportedDisplayMode in graphics.GraphicsDevice.Adapter.GetBrowserDisplayModes())
+ 		{
+ 			if (supportedDisplayMode.Width >= 1280 && supportedDisplayMode.Width == num && supportedDisplayMode.Height == num2)
+ 			{
+@@ -7562,17 +7562,17 @@
+ 				return;
+ 			}
+ 		}
+-		foreach (DisplayMode supportedDisplayMode2 in graphics.GraphicsDevice.Adapter.SupportedDisplayModes)
+-		{
+-			if (supportedDisplayMode2.Width >= 1280 && supportedDisplayMode2.Width == graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width && supportedDisplayMode2.Height == graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height)
+-			{
+-				width = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+-				height = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
++		foreach (DisplayMode supportedDisplayMode2 in graphics.GraphicsDevice.Adapter.GetBrowserDisplayModes())
++		{
++			if (supportedDisplayMode2.Width >= 1280 && supportedDisplayMode2.Width == graphics.GraphicsDevice.Adapter.GetBrowserDisplayMode().Width && supportedDisplayMode2.Height == graphics.GraphicsDevice.Adapter.GetBrowserDisplayMode().Height)
++			{
++				width = graphics.GraphicsDevice.Adapter.GetBrowserDisplayMode().Width;
++				height = graphics.GraphicsDevice.Adapter.GetBrowserDisplayMode().Height;
+ 				return;
+ 			}
+ 		}
+ 		bool flag = false;
+-		foreach (DisplayMode supportedDisplayMode3 in graphics.GraphicsDevice.Adapter.SupportedDisplayModes)
++		foreach (DisplayMode supportedDisplayMode3 in graphics.GraphicsDevice.Adapter.GetBrowserDisplayModes())
+ 		{
+ 			if (supportedDisplayMode3.Width >= 1280 && num > supportedDisplayMode3.Width)
+ 			{
+--- a/StardewValley/GameRunner.cs
++++ b/StardewValley/GameRunner.cs
+@@ -113,8 +113,9 @@
+ 		DebugTools.GameConstructed(this);
+ 	}
+ 
+-	protected override void OnActivated(object sender, EventArgs args)
+-	{
++	protected override void OnActivated(EventArgs args)
++	{
++		object sender = this;
+ 		_003C_003Ec__DisplayClass12_0 obj = new _003C_003Ec__DisplayClass12_0();
+ 		obj.sender = sender;
+ 		obj.args = args;
+--- a/StardewValley/LocalMultiplayer.cs
++++ b/StardewValley/LocalMultiplayer.cs
+@@ -81,69 +81,37 @@
+ 		}
+ 	}
+ 
++	public sealed class BrowserStaticVars
++	{
++		public object[] Values = Array.Empty<object>();
++	}
++
+ 	private static void GenerateDynamicMethodsForStatics()
+ 	{
+-		TypeBuilder typeBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("StardewValley.StaticInstanceVars"), AssemblyBuilderAccess.RunAndCollect).DefineDynamicModule("MainModule").DefineType("StardewValley.StaticInstanceVars", TypeAttributes.Public | TypeAttributes.AutoClass);
+-		foreach (FieldInfo staticField in staticFields)
+-		{
+-			typeBuilder.DefineField(staticField.DeclaringType.Name + "_" + staticField.Name, staticField.FieldType, FieldAttributes.Public);
+-		}
+-		StaticVarHolderType = typeBuilder.CreateType();
+-		staticDefaultMethod = new DynamicMethod("SetStaticVarsToDefault", null, new Type[1] { typeof(object) }, typeof(Game1).Module, skipVisibility: true);
+-		ILGenerator iLGenerator = staticDefaultMethod.GetILGenerator();
+-		LocalBuilder localBuilder = iLGenerator.DeclareLocal(StaticVarHolderType);
+-		iLGenerator.Emit(OpCodes.Ldarg_0);
+-		iLGenerator.Emit(OpCodes.Castclass, StaticVarHolderType);
+-		iLGenerator.Emit(OpCodes.Stloc_0);
+-		FieldInfo field = typeof(LocalMultiplayer).GetField("staticDefaults", BindingFlags.Static | BindingFlags.NonPublic);
+-		MethodInfo method = typeof(List<object>).GetMethod("get_Item");
++		StaticVarHolderType = typeof(BrowserStaticVars);
++		StaticSetDefault = BrowserSetDefault;
++		StaticSave = BrowserSave;
++		StaticLoad = BrowserLoad;
++	}
++
++	private static void BrowserSetDefault(object holder)
++	{
++		((BrowserStaticVars)holder).Values = staticDefaults.ToArray();
++	}
++
++	private static void BrowserSave(object holder)
++	{
++		object[] values = new object[staticFields.Count];
+ 		for (int i = 0; i < staticFields.Count; i++)
+-		{
+-			FieldInfo fieldInfo = staticFields[i];
+-			iLGenerator.Emit(OpCodes.Ldloc, localBuilder.LocalIndex);
+-			iLGenerator.Emit(OpCodes.Ldsfld, field);
+-			iLGenerator.Emit(OpCodes.Ldc_I4, i);
+-			iLGenerator.Emit(OpCodes.Callvirt, method);
+-			if (fieldInfo.FieldType.IsValueType)
+-			{
+-				iLGenerator.Emit(OpCodes.Unbox_Any, fieldInfo.FieldType);
+-			}
+-			else
+-			{
+-				iLGenerator.Emit(OpCodes.Castclass, fieldInfo.FieldType);
+-			}
+-			iLGenerator.Emit(OpCodes.Stfld, StaticVarHolderType.GetField(fieldInfo.DeclaringType.Name + "_" + fieldInfo.Name));
+-		}
+-		iLGenerator.Emit(OpCodes.Ret);
+-		StaticSetDefault = (StaticInstanceMethod)staticDefaultMethod.CreateDelegate(typeof(StaticInstanceMethod));
+-		staticSaveMethod = new DynamicMethod("SaveStaticVars", null, new Type[1] { typeof(object) }, typeof(Game1).Module, skipVisibility: true);
+-		iLGenerator = staticSaveMethod.GetILGenerator();
+-		localBuilder = iLGenerator.DeclareLocal(StaticVarHolderType);
+-		iLGenerator.Emit(OpCodes.Ldarg_0);
+-		iLGenerator.Emit(OpCodes.Castclass, StaticVarHolderType);
+-		iLGenerator.Emit(OpCodes.Stloc_0);
+-		foreach (FieldInfo staticField2 in staticFields)
+-		{
+-			iLGenerator.Emit(OpCodes.Ldloc, localBuilder.LocalIndex);
+-			iLGenerator.Emit(OpCodes.Ldsfld, staticField2);
+-			iLGenerator.Emit(OpCodes.Stfld, StaticVarHolderType.GetField(staticField2.DeclaringType.Name + "_" + staticField2.Name));
+-		}
+-		iLGenerator.Emit(OpCodes.Ret);
+-		StaticSave = (StaticInstanceMethod)staticSaveMethod.CreateDelegate(typeof(StaticInstanceMethod));
+-		staticLoadMethod = new DynamicMethod("LoadStaticVars", null, new Type[1] { typeof(object) }, typeof(Game1).Module, skipVisibility: true);
+-		iLGenerator = staticLoadMethod.GetILGenerator();
+-		localBuilder = iLGenerator.DeclareLocal(StaticVarHolderType);
+-		iLGenerator.Emit(OpCodes.Ldarg_0);
+-		iLGenerator.Emit(OpCodes.Castclass, StaticVarHolderType);
+-		iLGenerator.Emit(OpCodes.Stloc_0);
+-		foreach (FieldInfo staticField3 in staticFields)
+-		{
+-			iLGenerator.Emit(OpCodes.Ldloc, localBuilder.LocalIndex);
+-			iLGenerator.Emit(OpCodes.Ldfld, StaticVarHolderType.GetField(staticField3.DeclaringType.Name + "_" + staticField3.Name));
+-			iLGenerator.Emit(OpCodes.Stsfld, staticField3);
+-		}
+-		iLGenerator.Emit(OpCodes.Ret);
+-		StaticLoad = (StaticInstanceMethod)staticLoadMethod.CreateDelegate(typeof(StaticInstanceMethod));
++			values[i] = staticFields[i].GetValue(null);
++		((BrowserStaticVars)holder).Values = values;
++	}
++
++	private static void BrowserLoad(object holder)
++	{
++		object[] values = ((BrowserStaticVars)holder).Values;
++		for (int i = 0; i < staticFields.Count; i++)
++			staticFields[i].SetValue(null, values[i]);
+ 	}
+ 
+ 	public static void SaveOptions()
+--- a/StardewValley/LocalizedContentManager.cs
++++ b/StardewValley/LocalizedContentManager.cs
+@@ -313,11 +313,16 @@
+ 	}
+ 
+ 	/// <summary>Get the absolute path to the root content directory from which this manager loads assets.</summary>
++	protected override Stream OpenStream(string assetName)
++	{
++		return StardewBrowser.Platform.Content.OriginalContent.Open(assetName);
++	}
++
+ 	public virtual string GetContentRoot()
+ 	{
+ 		if (_CachedContentRoot == null)
+ 		{
+-			string path = ((string)(typeof(TitleContainer).GetProperty("Location", BindingFlags.Static | BindingFlags.NonPublic) ?? throw new InvalidOperationException("Can't get TitleContainer.Location property from MonoGame")).GetValue(null, null)) ?? throw new InvalidOperationException("Can't get value of TitleContainer.Location property from MonoGame");
++			string path = StardewBrowser.Platform.Content.OriginalContent.Root;
+ 			_CachedContentRoot = Path.Combine(path, base.RootDirectory);
+ 		}
+ 		return _CachedContentRoot;
+--- a/StardewValley/Program.cs
++++ b/StardewValley/Program.cs
+@@ -53,7 +53,7 @@
+ 		{
+ 			if (_sdk == null)
+ 			{
+-				_sdk = new SteamHelper();
++				_sdk = new NullSDKHelper();
+ 				if (_sdk == null)
+ 				{
+ 					_sdk = new NullSDKHelper();
+--- a/StardewValley/KeyboardDispatcher.cs
++++ b/StardewValley/KeyboardDispatcher.cs
+@@ -50,7 +50,7 @@
+ 
+ 	public void Cleanup()
+ 	{
+-		if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.Win32NT)
++		if (OperatingSystem.IsBrowser() || Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.Win32NT)
+ 		{
+ 			_window.TextInput -= Event_TextInput;
+ 		}
+@@ -68,7 +68,7 @@
+ 		_keysDown = new List<Keys>();
+ 		_charsEntered = new List<char>();
+ 		_window = window;
+-		if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.Win32NT)
++		if (OperatingSystem.IsBrowser() || Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.Win32NT)
+ 		{
+ 			window.TextInput += Event_TextInput;
+ 			return;
+--- a/StardewValley/Options.cs
++++ b/StardewValley/Options.cs
+@@ -707,7 +707,7 @@
+ 		footstepVolumeLevel = 0.9f;
+ 		soundVolumeLevel = 1f;
+ 		dialogueFontScale = 1f;
+-		DisplayMode displayMode = Game1.graphics.GraphicsDevice.Adapter.SupportedDisplayModes.Last();
++		DisplayMode displayMode = Game1.graphics.GraphicsDevice.Adapter.GetBrowserDisplayModes().Last();
+ 		preferredResolutionX = displayMode.Width;
+ 		preferredResolutionY = displayMode.Height;
+ 		vsyncEnabled = true;
+@@ -1937,7 +1937,7 @@
+ 			{
+ 			}
+ 			int num = 0;
+-			foreach (DisplayMode supportedDisplayMode in Game1.graphics.GraphicsDevice.Adapter.SupportedDisplayModes)
++			foreach (DisplayMode supportedDisplayMode in Game1.graphics.GraphicsDevice.Adapter.GetBrowserDisplayModes())
+ 			{
+ 				if (supportedDisplayMode.Width >= 1280)
+ 				{
+--- a/StardewValley.Menus/TitleMenu.cs
++++ b/StardewValley.Menus/TitleMenu.cs
+@@ -895,6 +895,7 @@
+ 	/// <inheritdoc />
+ 	public override void receiveLeftClick(int x, int y, bool playSound = true)
+ 	{
++		BrowserDiagnostics.LastTitleClick = new { x, y, logoFadeTimer, fadeFromWhiteTimer, titleInPosition, showButtonsTimer, isTransitioningButtons, globalXOffset, uiScale = Game1.options.uiScale };
+ 		if (HasActiveUser && muteMusicButton.containsPoint(x, y))
+ 		{
+ 			startupPreferences.startMuted = Utility.toggleMuteMusic();
+--- a/StardewValley/Game1.cs
++++ b/StardewValley/Game1.cs
+@@ -1045,7 +1045,7 @@
+ 			}
+ 			else
+ 			{
+-				_newDayTask = new Task(_003C_003Ec._003C_003E9__782_2 ?? (_003C_003Ec._003C_003E9__782_2 = _003C_003Ec._003C_003E9._003CnewDayAfterFade_003Eb__782_2));
++				_newDayTask = StardewBrowser.Platform.CooperativeOperation.Run(_newDayAfterFade());
+ 			}
+ 		}
+ 	}
+@@ -9601,6 +9601,7 @@
+ 		}
+ 		int timeWentToSleep = timeOfDay;
+ 		newDaySync.barrier("start");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("start"))
+ 		{
+ 			yield return 0;
+@@ -9637,6 +9638,7 @@
+ 			netWorldState.Value.UpdateFromGame1();
+ 		}
+ 		newDaySync.barrier("date");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("date"))
+ 		{
+ 			yield return 0;
+@@ -9687,6 +9689,7 @@
+ 		}
+ 		player.team.endOfNightStatus.UpdateState("sleep");
+ 		newDaySync.barrier("sleep");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("sleep"))
+ 		{
+ 			yield return 0;
+@@ -9706,6 +9709,7 @@
+ 			UpdateDishOfTheDay();
+ 		}
+ 		newDaySync.barrier("dishOfTheDay");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("dishOfTheDay"))
+ 		{
+ 			yield return 0;
+@@ -9812,6 +9816,7 @@
+ 			}
+ 		}
+ 		newDaySync.barrier("handleMiniShippingBins");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("handleMiniShippingBins"))
+ 		{
+ 			yield return 0;
+@@ -9923,6 +9928,7 @@
+ 			}
+ 		}
+ 		newDaySync.barrier("player.dayupdate");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("player.dayupdate"))
+ 		{
+ 			yield return 0;
+@@ -9932,6 +9938,7 @@
+ 			player.doDivorce();
+ 		}
+ 		newDaySync.barrier("player.divorce");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("player.divorce"))
+ 		{
+ 			yield return 0;
+@@ -9947,6 +9954,7 @@
+ 			}
+ 		}
+ 		newDaySync.barrier("player.finishDivorce");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("player.finishDivorce"))
+ 		{
+ 			yield return 0;
+@@ -9956,6 +9964,7 @@
+ 			Utility.ForEachBuilding(_003C_003Ec._003C_003E9__784_4 ?? (_003C_003Ec._003C_003E9__784_4 = _003C_003Ec._003C_003E9._003C_newDayAfterFade_003Eb__784_4));
+ 		}
+ 		newDaySync.barrier("updateFarmLayout");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("updateFarmLayout"))
+ 		{
+ 			yield return 0;
+@@ -9972,6 +9981,7 @@
+ 			}
+ 		}
+ 		newDaySync.barrier("player.wallets");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("player.wallets"))
+ 		{
+ 			yield return 0;
+@@ -9979,6 +9989,7 @@
+ 		getFarm().lastItemShipped = null;
+ 		getFarm().getShippingBin(player).Clear();
+ 		newDaySync.barrier("clearShipping");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("clearShipping"))
+ 		{
+ 			yield return 0;
+@@ -9989,6 +10000,7 @@
+ 			newDaySync.processMessages();
+ 		}
+ 		newDaySync.barrier("sendFarmhands");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("sendFarmhands"))
+ 		{
+ 			yield return 0;
+@@ -9998,6 +10010,7 @@
+ 			multiplayer.saveFarmhands();
+ 		}
+ 		newDaySync.barrier("saveFarmhands");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("saveFarmhands"))
+ 		{
+ 			yield return 0;
+@@ -10024,6 +10037,7 @@
+ 			netWorldState.Value.UpdateFromGame1();
+ 		}
+ 		newDaySync.barrier("specialOrders");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("specialOrders"))
+ 		{
+ 			yield return 0;
+@@ -10033,6 +10047,7 @@
+ 			player.team.specialOrders.RemoveWhere(_003C_003Ec._003C_003E9__784_5 ?? (_003C_003Ec._003C_003E9__784_5 = _003C_003Ec._003C_003E9._003C_newDayAfterFade_003Eb__784_5));
+ 		}
+ 		newDaySync.barrier("processOrders");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("processOrders"))
+ 		{
+ 			yield return 0;
+@@ -10102,6 +10117,7 @@
+ 			RefreshQuestOfTheDay();
+ 		}
+ 		newDaySync.barrier("questOfTheDay");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("questOfTheDay"))
+ 		{
+ 			yield return 0;
+@@ -10110,6 +10126,7 @@
+ 		wasGreenRain = false;
+ 		UpdateWeatherForNewDay();
+ 		newDaySync.barrier("updateWeather");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("updateWeather"))
+ 		{
+ 			yield return 0;
+@@ -10231,6 +10248,7 @@
+ 		}
+ 		PerformPassiveFestivalSetup();
+ 		newDaySync.barrier("buildingUpgrades");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("buildingUpgrades"))
+ 		{
+ 			yield return 0;
+@@ -10263,6 +10281,7 @@
+ 			}
+ 		}
+ 		newDaySync.barrier("removeItemsFromWorld");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("removeItemsFromWorld"))
+ 		{
+ 			yield return 0;
+@@ -10323,6 +10342,7 @@
+ 			morningQueue.Enqueue(_003C_003Ec._003C_003E9__784_12 ?? (_003C_003Ec._003C_003E9__784_12 = _003C_003Ec._003C_003E9._003C_newDayAfterFade_003Eb__784_12));
+ 		}
+ 		newDaySync.barrier("mail");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("mail"))
+ 		{
+ 			yield return 0;
+@@ -10337,6 +10357,7 @@
+ 			player.team.farmPerfect.Value = true;
+ 		}
+ 		newDaySync.barrier("checkcompletion");
++		yield return 0; // Yield between unchanged original overnight phases.
+ 		while (!newDaySync.isBarrierReady("checkcompletion"))
+ 		{
+ 			yield return 0;
+--- a/StardewValley/SaveGame.cs
++++ b/StardewValley/SaveGame.cs
+@@ -487,8 +487,7 @@
+ 		LogVerbose("SaveGame.Save() called.");
+ 		yield return 1;
+ 		obj.loader = getSaveEnumerator();
+-		Task saveTask = new Task(obj._003CSave_003Eb__0);
+-		Game1.hooks.StartTask(saveTask, "Save");
++		Task saveTask = StardewBrowser.Platform.CooperativeOperation.Run(obj.loader, stopAt: 100);
+ 		while (!saveTask.IsCanceled && !saveTask.IsCompleted && !saveTask.IsFaulted)
+ 		{
+ 			yield return 1;

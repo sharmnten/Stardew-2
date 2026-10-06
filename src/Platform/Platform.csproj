@@ -9,7 +9,8 @@
     <PackageReference Include="Microsoft.JSInterop" Version="10.0.12" />
     <ProjectReference Include="Compatibility/xTile.Browser.csproj" />
     <ProjectReference Include="Compatibility/BmFont/BmFont.Browser.csproj" />
-    <Compile Remove="Compatibility/**/bin/**;Compatibility/**/obj/**" />
+    <Compile Remove="Compatibility/**/bin/**;Compatibility/**/obj/**;Compatibility/LegacyEffect.cs;Compatibility/xTileAliases.cs" />
+    <Compile Remove="BrowserGameHost.cs" />
   </ItemGroup>
   <Target Name="ProjectOriginalXact" BeforeTargets="CoreCompile">
     <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/project_xact.py&quot;" />

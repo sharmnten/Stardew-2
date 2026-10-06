@@ -1,0 +1,32 @@
+[
+  {
+    "name": "SpriteBatch",
+    "original_sha256": "9b9b7c0487ac4771f9d623bfddba3153f65a3a63237c4124a9d08e14b1404ff2",
+    "projected_sha256": "306022eed23b36d2f91785aa5f036d4c55ef76c92c586fbfc63e42a26692e46b"
+  },
+  {
+    "name": "SpriteBatcher",
+    "original_sha256": "951df72042e37d32a3ca019bc081ed3b6f2807959d47111c0d3d3f9afb5646b1",
+    "projected_sha256": "90be85601bcd5b88dc9d19dd8733180784018752d9da9d037ded0646a4c8b466"
+  },
+  {
+    "name": "SpriteBatchItem",
+    "original_sha256": "e5d7ca37a463f790d27bc672263f45c6ed9b72741bdf90cd985597777d44bef6",
+    "projected_sha256": "2322631aa007646ee758b9e41989bd8810370134997275a27ac415ccd7de41fa"
+  },
+  {
+    "name": "SpriteEffect",
+    "original_sha256": "b06b4e9b75dac6a357384c0fa0a7f3ca5439fbb283da9d113cf4b0c0db987b64",
+    "projected_sha256": "c213600c6dffb6dedb995ac0cce81a830430773d8e1426d136dc173ebd1cb5ce"
+  },
+  {
+    "name": "DxtUtil",
+    "original_sha256": "0e0a262c9625bcab5041e4c8487160fa6586ab09b9ff932a7522ba43c3448a6d",
+    "projected_sha256": "a6afe684642c0d5da125942274f5c8e73921efd6304e3118cfaa942530ad51b8"
+  },
+  {
+    "name": "Texture2DReader",
+    "original_sha256": "5b8a1a974038fd86d7f19d341ebe7912cee06a04649127283b4843545214720c",
+    "projected_sha256": "e8292f1f6cad8d939e5c8f3193a548edcc8acd907f3fc49f042259cf1e32b81d"
+  }
+]

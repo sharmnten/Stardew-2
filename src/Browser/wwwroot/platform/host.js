@@ -8,10 +8,16 @@ window.portHost = {
     canvas.height = holder.clientHeight;
     canvas.addEventListener('contextmenu', event => event.preventDefault());
   },
+  size() {
+    const canvas = document.getElementById('theCanvas');
+    return { width: canvas.width, height: canvas.height };
+  },
   status(value) {
     window.portStatus = { ...value, ...window.portAudio.status() };
     document.getElementById('status').textContent = value.phase === 'failed'
       ? value.error
+      : value.phase === 'loading' ? value.message ?? 'Loading original game…'
+      : value.game ? 'Browser port in development: original game running; single-player parity checks are pending.'
       : 'Original assets: graphics verification. Use arrow keys and click the canvas. Gameplay integration is pending.';
   },
   start(instance) {

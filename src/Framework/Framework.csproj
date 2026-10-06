@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <Import Project="../Kni.props" />
+  <ItemGroup>
+    <Compile Include="../Platform/Compatibility/LegacyEffect.cs" Link="Graphics/LegacyEffect.cs" />
+    <EmbeddedResource Include="../Recovered/Graphics/Microsoft.Xna.Framework.Platform.Graphics.Effect.Resources.SpriteEffect.ogl.mgfxo" LogicalName="OriginalSpriteEffect" />
+  </ItemGroup>
+  <Target Name="ProjectOriginalRenderer" BeforeTargets="CoreCompile">
+    <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../tools/project_graphics.py&quot;" />
+    <ItemGroup><Compile Include="../../.port-cache/graphics-browser/*.cs" /></ItemGroup>
+  </Target>
+</Project>

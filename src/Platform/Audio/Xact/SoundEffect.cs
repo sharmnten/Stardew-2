@@ -23,6 +23,7 @@ public class SoundEffect(BrowserWave wave) : IDisposable
     public static float SpeedOfSound { get; set; } = 343.5f;
     public static HashSet<SoundEffect> EffectsToRemove { get; } = [];
     public SoundEffectInstance CreateInstance() => new() { _effect = this, _isPooled = false };
+    public static SoundEffect FromStream(Stream stream, bool vorbis = false) => new(StreamWave.Read(stream, vorbis));
     public virtual SoundEffectInstance GetPooledInstance(bool forXAct)
     {
         if (!SoundEffectInstancePool.SoundsAvailable) return null!;

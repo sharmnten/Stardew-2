@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework><AssemblyName>Lidgren.Network</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems><GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <Import Project="../../../Kni.props" />
+  <ItemGroup>
+    <Compile Include="../../../Recovered/Lidgren/**/*.cs" Exclude="../../../Recovered/Lidgren/bin/**;../../../Recovered/Lidgren/obj/**" />
+  </ItemGroup>
+</Project>

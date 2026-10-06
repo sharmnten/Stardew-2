@@ -8,6 +8,9 @@ test('original texture, font and map render through the browser framework', { ti
     await page.waitForFunction(() => ['ready', 'failed'].includes(window.portStatus?.phase), null, { timeout: 90000 });
     const status = await page.evaluate(() => window.portStatus);
     assert.equal(status.phase, 'ready', status.error);
+    assert.equal(status.renderer, 'StardewBrowser.Framework.Graphics.SpriteBatch');
+    assert.equal(status.desktopFrameworkLoaded, false, 'Desktop MonoGame must not participate in browser content loading');
+    assert.ok(status.originalTextureReads > 0, 'Original packed-size texture reader must load the probe assets');
     assert.ok(status.textureWidth > 0 && status.fontGlyphs > 0 && status.mapLayers > 0);
     assert.ok(status.renderedTiles > 0, 'Original map tiles must actually be drawn');
     assert.ok(status.targetDistinctColors > 20, 'Render target must contain original artwork');

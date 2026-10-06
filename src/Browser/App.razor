@@ -1,21 +1,28 @@
 @namespace StardewBrowser
 @using Microsoft.JSInterop
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components
 @using StardewBrowser.Platform
 @inject IJSRuntime Js
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @implements IAsyncDisposable
 
 <div id="canvasHolder"><canvas id="theCanvas" tabindex="0" aria-label="Stardew Valley browser graphics verification"></canvas></div>
-<button id="audioProbe" @onclick="PlayAudioProbe">Test original audio</button>
+@if (diagnostic)
+{
+    <button id="audioProbe" @onclick="PlayAudioProbe">Test original audio</button>
+}
 
 @code {
     private BrowserGameHost? host;
+    private bool diagnostic;
+    protected override void OnInitialized() => diagnostic = new Uri(Navigation.Uri).Query.Contains("diagnostic=1");
     private Task PlayAudioProbe() => host?.PlayAudioProbeAsync() ?? Task.CompletedTask;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
-        host = new BrowserGameHost(Js, Http);
+        host = new BrowserGameHost(Js, Http, diagnostic);
         await host.StartAsync(CancellationToken.None);
     }
     public ValueTask DisposeAsync() => host?.DisposeAsync() ?? ValueTask.CompletedTask;

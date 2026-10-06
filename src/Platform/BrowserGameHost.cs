@@ -10,12 +10,15 @@ using StardewBrowser.Platform.Compatibility;
 using StardewBrowser.Platform.Content;
 using System.Net.Http.Json;
 using StardewBrowser.Platform.Audio;
+using StardewValley;
+using StardewBrowser.Framework.Graphics;
 
 namespace StardewBrowser.Platform;
 
-public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisposable
+public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnostic = false) : IAsyncDisposable
 {
-    private GraphicsProbe? game;
+    private Game? game;
+    private GraphicsProbe? probe;
     private DotNetObjectReference<BrowserGameHost>? reference;
     private BrowserContentStore content = null!;
     private BrowserAudioAdapter audio = null!;
@@ -25,19 +28,52 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
         try
         {
             await js.InvokeVoidAsync("portHost.resize", cancellationToken);
-            var manifest = await http.GetFromJsonAsync<ContentManifest>("Content/manifest.json", cancellationToken)
+            StardewBrowser.Framework.Graphics.OriginalContentReaders.Register();
+            var manifest = await http.GetFromJsonAsync<StardewBrowser.Platform.Content.ContentManifest>("Content/manifest.json", cancellationToken)
                 ?? throw new InvalidDataException("The original content manifest is empty.");
             content = new BrowserContentStore(http, manifest);
             audio = new BrowserAudioAdapter(js, http);
             await audio.InitializeAsync(cancellationToken);
-            await audio.InitializeXactAsync(content, cancellationToken);
+            if (diagnostic) await audio.InitializeXactAsync(content, cancellationToken);
+            else await audio.ConfigureXactAsync(content, cancellationToken);
+            if (diagnostic)
+            {
             foreach (string name in new[] { "TileSheets/crops", "Fonts/SmallFont", "Fonts/Japanese", "Maps/Farm", "Effects/ShadowRemoveMG3.8.0" })
                 await FetchAsync(name, cancellationToken);
-            game = new GraphicsProbe(content);
+            game = probe = new GraphicsProbe(content);
             game.Run();
-            foreach (var sheet in game.Map.TileSheets)
+            foreach (var sheet in probe.Map.TileSheets)
                 await FetchAsync(sheet.ImageSource, cancellationToken);
-            game.Prepare();
+            probe.Prepare();
+            }
+            else
+            {
+                await js.InvokeVoidAsync("portHost.status", new { phase = "loading", message = "Verifying original game content…" });
+                await content.PreloadAsync(manifest.Assets.Where(entry => entry.Group != "audio-bank").Select(entry => entry.Name), cancellationToken);
+                OriginalContent.Configure(content);
+                Directory.CreateDirectory(OriginalContent.Root + "/Content");
+                Directory.SetCurrentDirectory(OriginalContent.Root);
+                foreach (var entry in manifest.Assets.Where(entry => entry.Group != "audio-bank" && !entry.Path.EndsWith(".xnb", StringComparison.OrdinalIgnoreCase)))
+                {
+                    string path = OriginalContent.Root + "/" + entry.Path;
+                    Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                    using var stream = content.Open(entry.Name);
+                    using var destination = File.Create(path);
+                    stream.CopyTo(destination);
+                }
+                var size = ((IJSInProcessRuntime)js).Invoke<CanvasSize>("portHost.size");
+                BrowserDisplay.Configure(() => {
+                    var current = ((IJSInProcessRuntime)js).Invoke<CanvasSize>("portHost.size");
+                    return new Point(current.Width, current.Height);
+                });
+                var runner = new GameRunner();
+                GameRunner.instance = runner;
+                Game1.graphics.GraphicsProfile = GraphicsProfile.HiDef;
+                Game1.graphics.PreferredBackBufferWidth = size.Width;
+                Game1.graphics.PreferredBackBufferHeight = size.Height;
+                game = runner;
+                game.Run();
+            }
             reference = DotNetObjectReference.Create(this);
             await js.InvokeVoidAsync("portHost.start", cancellationToken, reference);
         }
@@ -54,7 +90,9 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
         {
             game!.Tick();
             audio.UpdateFrame();
-            ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", game.Status(content.ResidentBytes));
+            object status = probe != null ? probe.Status(content.ResidentBytes)
+                : new { phase = "ready", verifiedContentBytes = content.ResidentBytes, game = GameSnapshot.Read() };
+            ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", status);
         }
         catch (Exception error)
         {
@@ -70,6 +108,8 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http) : IAsyncDisp
         reference?.Dispose();
     }
 }
+
+internal sealed record CanvasSize(int Width, int Height);
 
 internal sealed class ResidentContent(IServiceProvider services, BrowserContentStore store) : ContentManager(services)
 {
@@ -172,7 +212,7 @@ internal sealed class GraphicsProbe : Game
             effectVerified = filtered[0].A == 0 && filtered[1].G == 255 && filtered[1].A == 255;
             if (!effectVerified) effectError = "Original shadow filter changed the expected pixel alpha or color.";
         }
-        catch (Exception error) { effectError = error.Message; }
+        catch (Exception error) { effectError = error.ToString(); }
     }
 
     protected override void Update(GameTime time)
@@ -199,5 +239,7 @@ internal sealed class GraphicsProbe : Game
     public object Status(long verifiedContentBytes) => new { phase = "ready", error = (string?)null, textureWidth = crops.Width,
         fontGlyphs = font.Characters.Count, mapLayers = Map.Layers.Count, renderedTiles = display.TilesDrawn,
         targetDistinctColors = distinctColors, fontPixels, effectVerified, effectError, cursorX, pointerClicks = clicks,
-        customFontCharacters, verifiedContentBytes };
+        customFontCharacters, verifiedContentBytes, renderer = typeof(SpriteBatch).FullName,
+        originalTextureReads = StardewBrowser.Framework.Graphics.OriginalContentReaders.TextureReads,
+        desktopFrameworkLoaded = AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name == "MonoGame.Framework") };
 }

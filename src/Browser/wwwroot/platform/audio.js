@@ -197,4 +197,8 @@
   document.addEventListener('click', event => {
     if (event.target.closest('#audioProbe')) window.portAudio.unlock().catch(failure => window.portAudio.fail(failure.message));
   });
+  for (const type of ['pointerdown', 'keydown']) document.addEventListener(type, event => {
+    if (context?.state === 'suspended' && event.target.closest?.('#theCanvas'))
+      window.portAudio.unlock().catch(failure => window.portAudio.fail(failure.message));
+  });
 })();
