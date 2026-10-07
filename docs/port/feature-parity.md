@@ -206,3 +206,14 @@ checkbox spends40000 gold and queues vault/Joja mail. No completion state is
 injected. Reward collection, normal world/menu input, full routes, overnight
 project activation, quests/orders/museum/secrets remain required. Production
 excludes all twelve mutable fixture drivers (fresh audit1/1,1.2s).
+
+## Festival setup and calendar methods
+
+Desktop1/1 (57 seconds) and browser1/1 (68 seconds) match the original year2
+Egg Festival Town warp, event setup, actor names, tile sheets and return to
+player control. Ordinary browser keyboard input moves the player afterward.
+All eight festival scripts load with matching metadata/hashes. Original birthday
+gifting gives Linus640 friendship points; a Night Market date and four seasonal
+movie choices also match. Contests/rewards, full passive-festival world flows,
+movie screening, random events/cutscenes and persisted outcomes remain required.
+Production excludes all thirteen mutable fixture drivers (fresh audit1/1,2.7s).

@@ -491,15 +491,25 @@
       "id": "festivals-events-movies",
       "group": "calendar",
       "prerequisites": [
-        "Festival date/time and invitations",
-        "Passive festival and movie access"
+        "Original serialized year2 Spring13, stats125 and Linus750 friendship",
+        "Original clock900/Town warp begins Egg Festival setup",
+        "Birthday date is a controlled method input; calendar restored after gift"
       ],
       "expected": [
         "Original festival entry/minigames/rewards",
         "Birthdays/random events/cutscenes",
         "Movie selection and screening state"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop original festival warp/script/actors/free control and8 festival script data",
+        "Desktop original Linus birthday gift640, Night Market date and4 seasonal movie choices",
+        "Browser matches all recorded original desktop fields and normal keyboard movement works after festival setup"
+      ],
+      "remaining": [
+        "Festival contests/rewards, passive-festival world flows and original movie screening",
+        "Random events/cutscenes and persisted calendar outcomes"
+      ]
     },
     {
       "id": "island-qi-perfection",

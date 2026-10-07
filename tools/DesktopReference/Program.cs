@@ -111,7 +111,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     var choices = new Dictionary<string, string> {
         ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
         ["inventory-economy"] = "Standard", ["recipes-machines"] = "Standard",
-        ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
+        ["festivals-events-movies"] = "Standard", ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
         ["new-game-wilderness"] = "Wilderness", ["new-game-four-corners"] = "Four Corners",
         ["new-game-beach"] = "Beach", ["new-game-meadowlands"] = "ModFarm_MeadowlandsFarm"
@@ -149,7 +149,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum")
+    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "festivals-events-movies")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
         if (id == "animals-buildings") GoToFarm();
@@ -162,6 +162,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
             case "text-sign-clipboard": StardewBrowser.Testing.TextSignActions.Prepare(); break;
             case "animals-buildings": StardewBrowser.Testing.AnimalActions.Prepare(); break;
             case "fishing-gathering": StardewBrowser.Testing.FishingActions.Prepare(); break;
+            case "festivals-events-movies": StardewBrowser.Testing.CalendarActions.Prepare(); break;
             case "community-center": case "joja-orders-museum": StardewBrowser.Testing.StoryActions.Prepare(id); break;
             case "skills-mastery-achievements": StardewBrowser.Testing.ProgressionActions.Prepare(); break;
             case "characters-family": StardewBrowser.Testing.FamilyActions.Prepare(); break;
@@ -184,6 +185,12 @@ static object CreateFarm(string id, GameRunner runner, string report)
     if (id == "farming-season") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FarmingActions.Run());
     if (id == "inventory-economy") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.EconomyActions.Run());
     if (id == "recipes-machines") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProductionActions.Run());
+    if (id == "festivals-events-movies")
+    {
+        StardewBrowser.Testing.CalendarActions.BeginFestival();
+        Until(StardewBrowser.Testing.CalendarActions.FestivalReady, "finish original Egg Festival setup");
+        state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CalendarActions.Run());
+    }
     if (id is "community-center" or "joja-orders-museum") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.StoryActions.Run(id));
     if (id == "skills-mastery-achievements") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Run());
     if (id == "characters-family") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Run());

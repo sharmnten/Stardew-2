@@ -1807,6 +1807,186 @@
       "desktop": "Original supplied desktop1/1 GREEN21148ms",
       "browser": "Both method comparisons1/1 GREEN62635ms",
       "scope": "Original menu inventory/ingredient contributions and bundle reward eligibility, or Joja purchase cost/checkbox/queued mail. Normal world/menu input, collected rewards, full route endings, overnight activation, quests/orders/museum/secrets remain open."
+    },
+    {
+      "id": "festivals-events-movies",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 17174
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 3037200
+        }
+      ],
+      "observations": {
+        "festival": {
+          "id": "festival_spring13",
+          "name": "Egg Festival",
+          "freeMovement": true,
+          "actors": [
+            "Abigail",
+            "Alex",
+            "Caroline",
+            "Clint",
+            "Demetrius",
+            "Elliott",
+            "Emily",
+            "Evelyn",
+            "George",
+            "Gus",
+            "Haley",
+            "Harvey",
+            "Jas",
+            "Jodi",
+            "Kent",
+            "Leah",
+            "Lewis",
+            "Linus",
+            "Marlon",
+            "Marnie",
+            "Maru",
+            "Pam",
+            "Penny",
+            "Pierre",
+            "Robin",
+            "Sam",
+            "Sebastian",
+            "Shane",
+            "Vincent",
+            "Willy"
+          ],
+          "map": "Maps\\Town-EggFestival2",
+          "tileSheets": [
+            "characters",
+            "fest",
+            "Landscape",
+            "Paths",
+            "Town",
+            "v16_landscape2",
+            "v16_Shadows",
+            "v16_Waterfalls"
+          ]
+        },
+        "calendar": [
+          {
+            "id": "fall16",
+            "loaded": true,
+            "asset": "Data\\Festivals\\fall16",
+            "location": "Town",
+            "start": 900,
+            "end": 1500,
+            "scriptLength": 1085,
+            "scriptHash": "B28636A6000A3676EAC7B86D8EDFBBF2D79D18CCC0E9AF143D58E4CA83D6C4E0"
+          },
+          {
+            "id": "fall27",
+            "loaded": true,
+            "asset": "Data\\Festivals\\fall27",
+            "location": "Town",
+            "start": 2200,
+            "end": 2350,
+            "scriptLength": 686,
+            "scriptHash": "B78310D1D2EFEB13EC9959E52485A20AFA5C6F5D2F7C3D4E0C93434D080CD1EA"
+          },
+          {
+            "id": "spring13",
+            "loaded": true,
+            "asset": "Data\\Festivals\\spring13",
+            "location": "Town",
+            "start": 900,
+            "end": 1400,
+            "scriptLength": 709,
+            "scriptHash": "EDC93018FB49D8CC65FE40E512C7859542F84B2642DFD3AAC82F11530334DBA3"
+          },
+          {
+            "id": "spring24",
+            "loaded": true,
+            "asset": "Data\\Festivals\\spring24",
+            "location": "Forest",
+            "start": 900,
+            "end": 1400,
+            "scriptLength": 592,
+            "scriptHash": "AA1716C5D3AE5A1B9577EEBD9A422FC3B69F880453428940F3B1C46D9CF44B9A"
+          },
+          {
+            "id": "summer11",
+            "loaded": true,
+            "asset": "Data\\Festivals\\summer11",
+            "location": "Beach",
+            "start": 900,
+            "end": 1400,
+            "scriptLength": 745,
+            "scriptHash": "0B37EEDD0B5454B59171D050B1B51B8CE530E26EC96D3FBEA183343E61B705BA"
+          },
+          {
+            "id": "summer28",
+            "loaded": true,
+            "asset": "Data\\Festivals\\summer28",
+            "location": "Beach",
+            "start": 2200,
+            "end": 2400,
+            "scriptLength": 434,
+            "scriptHash": "8C27356B9E39D17D654ED60CEFD875589D15C0A8BBCF58E19097D8D33E2C1128"
+          },
+          {
+            "id": "winter25",
+            "loaded": true,
+            "asset": "Data\\Festivals\\winter25",
+            "location": "Town",
+            "start": 900,
+            "end": 1400,
+            "scriptLength": 194,
+            "scriptHash": "DC4BFF3A18EECB0E5429ABE1FEB09B329D44FDD747BB8093F1D34B3D40341B41"
+          },
+          {
+            "id": "winter8",
+            "loaded": true,
+            "asset": "Data\\Festivals\\winter8",
+            "location": "Forest",
+            "start": 900,
+            "end": 1400,
+            "scriptLength": 496,
+            "scriptHash": "0844013615CE31501B271060F34EADC01667E0E6F39F4A047FC830828DD208DD"
+          }
+        ],
+        "birthday": {
+          "isBirthday": true,
+          "pointsGained": 640
+        },
+        "passive": {
+          "available": true,
+          "id": "NightMarket",
+          "start": 15,
+          "end": 17
+        },
+        "movies": [
+          {
+            "season": "Spring",
+            "id": "spring_movie_1",
+            "title": "[LocalizedText Strings\\Movies:NaturalWonders_Title]"
+          },
+          {
+            "season": "Summer",
+            "id": "summer_movie_1",
+            "title": "[LocalizedText Strings\\Movies:Wumbus_Title]"
+          },
+          {
+            "season": "Fall",
+            "id": "fall_movie_1",
+            "title": "[LocalizedText Strings\\Movies:ItHowlsInTheRain_Title]"
+          },
+          {
+            "season": "Winter",
+            "id": "winter_movie_1",
+            "title": "[LocalizedText Strings\\Movies:ZuzuCityExpress_Title]"
+          }
+        ]
+      },
+      "desktop": "Original supplied desktop1/1 GREEN57262ms",
+      "browser": "Original comparison and normal festival movement1/1 GREEN67544ms",
+      "scope": "Actual original Egg Festival warp/setup/actors/free control plus normal browser movement;8 festival script metadata, birthday gift640, passive date and4 seasonal movie selections. Contests/rewards, full passive world flows, screening/random events and persisted outcomes remain open."
     }
   ],
   "advancedReference": {

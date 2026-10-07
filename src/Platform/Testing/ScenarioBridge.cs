@@ -80,6 +80,16 @@ internal sealed class ScenarioBridge(HttpClient http)
                 await Task.Delay(16);
             }
         }
+        if (id == "festivals-events-movies")
+        {
+            StardewBrowser.Testing.CalendarActions.BeginFestival();
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (!StardewBrowser.Testing.CalendarActions.FestivalReady())
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original festival setup did not finish.");
+                await Task.Delay(16);
+            }
+        }
         object observations = id switch {
             "farming-season" => StardewBrowser.Testing.FarmingActions.Run(),
             "inventory-economy" => StardewBrowser.Testing.EconomyActions.Run(),
@@ -87,6 +97,7 @@ internal sealed class ScenarioBridge(HttpClient http)
             "tailoring-automation-decoration" => StardewBrowser.Testing.DecorationActions.Run(),
             "animals-buildings" => StardewBrowser.Testing.AnimalActions.Run(),
             "fishing-gathering" => StardewBrowser.Testing.FishingActions.Run(),
+            "festivals-events-movies" => StardewBrowser.Testing.CalendarActions.Run(),
             "community-center" or "joja-orders-museum" => StardewBrowser.Testing.StoryActions.Run(id),
             "skills-mastery-achievements" => StardewBrowser.Testing.ProgressionActions.Run(),
             "characters-family" => StardewBrowser.Testing.FamilyActions.Run(),
@@ -114,7 +125,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum"];
+        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "festivals-events-movies"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);
