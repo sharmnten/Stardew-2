@@ -552,10 +552,11 @@
       "verifiedSubset": [
         "Desktop Prairie King starts, moves192px, fires2 bullets and records wave/lives progress",
         "Desktop both2/3 kart modes start, generate36/40 tracks and advance original physics/score",
-        "Browser original replay matches all desktop movement/firing/progress/kart physics/generation/score/lives observations"
+        "Browser original replay matches all desktop movement/firing/progress/kart physics/generation/score/lives observations",
+        "Normal browser original Continue resumes Prairie King; DOM D moves, Arrow Up fires and Escape exits"
       ],
       "remaining": [
-        "Normal DOM controls/rendering and complete arcade progression/rewards"
+        "Junimo Kart DOM controls, complete arcade progression/rewards and post-action persistence"
       ]
     },
     {

@@ -226,9 +226,10 @@ moves192 pixels, fires two bullets and records wave0/lives3 progress. Both
 Junimo Kart modes start, generate36/40 tracks and match player coordinates,
 physics, score110 and three lives. Endless mode deliberately creates no
 checkpoints; progression mode creates one. The replay overrides hardware input
-only during the synchronous test and restores it afterward. Normal DOM input/
-rendering, full arcade progression/rewards and post-action persistence remain
-required. Production excludes all fourteen mutable fixture drivers (1/1,1.2s).
+only during the synchronous test and restores it afterward. A subsequent normal browser check also passes (1/1,68 seconds): the original
+Continue menu resumes progress, DOM D moves, Arrow Up fires, and Escape exits.
+Junimo Kart DOM controls, full arcade progression/rewards and post-action
+persistence remain required. Production excludes all fourteen mutable fixture drivers (1/1,1.2s).
 
 ## Island, Qi and perfection methods
 

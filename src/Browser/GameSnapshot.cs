@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Minigames;
 
 namespace StardewBrowser.Platform;
 
@@ -37,6 +38,9 @@ internal static class GameSnapshot
             viewport = new { x = Game1.viewport.X, y = Game1.viewport.Y, zoom = Game1.options.zoomLevel },
             language = LocalizedContentManager.CurrentLanguageCode.ToString(),
             warping = Game1.isWarping,
+            minigame = Game1.currentMinigame is AbigailGame king ? new {
+                type = nameof(AbigailGame), x = king.playerPosition.X, y = king.playerPosition.Y,
+                lives = king.lives, bullets = king.bullets.Count } : null,
             preferences = Game1.activeClickableMenu is TitleMenu preferencesTitle ? new {
                 startMuted = preferencesTitle.startupPreferences.startMuted,
                 timesPlayed = preferencesTitle.startupPreferences.timesPlayed,

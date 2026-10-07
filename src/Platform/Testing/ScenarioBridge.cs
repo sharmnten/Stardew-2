@@ -106,6 +106,7 @@ internal sealed class ScenarioBridge(HttpClient http)
             "combat-dungeons" => StardewBrowser.Testing.CombatActions.Run(),
             _ => throw new ArgumentException("This scenario has no method comparison: " + id)
         };
+        if (id == "original-minigames") Game1.currentLocation.showPrairieKingMenu();
         return JsonSerializer.Serialize(observations, Json);
     }
 
