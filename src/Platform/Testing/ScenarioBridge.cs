@@ -65,14 +65,27 @@ internal sealed class ScenarioBridge(HttpClient http)
         finally { serial.Release(); }
     }
 
-    internal string RunAction(string id)
+    internal async Task<string> RunActionAsync(string id)
     {
         if (loadedScenario != id)
             throw new InvalidOperationException("Load the matching original fixture before running its actions.");
+        if (id == "animals-buildings")
+        {
+            Game1.warpFarmer("Farm", 62, 15, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != "Farm" || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original farm warp did not finish.");
+                await Task.Delay(16);
+            }
+        }
         object observations = id switch {
             "farming-season" => StardewBrowser.Testing.FarmingActions.Run(),
             "inventory-economy" => StardewBrowser.Testing.EconomyActions.Run(),
             "recipes-machines" => StardewBrowser.Testing.ProductionActions.Run(),
+            "tailoring-automation-decoration" => StardewBrowser.Testing.DecorationActions.Run(),
+            "animals-buildings" => StardewBrowser.Testing.AnimalActions.Run(),
             _ => throw new ArgumentException("This scenario has no method comparison: " + id)
         };
         return JsonSerializer.Serialize(observations, Json);
@@ -96,7 +109,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip"];
+        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);

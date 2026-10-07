@@ -273,7 +273,31 @@
         "Original machine completes overnight and survives browser cold reload/desktop export import"
       ],
       "remaining": [
-        "Automation, tailoring and decoration/persistence"
+        "Post-action tailoring/furniture persistence and normal UI workflows",
+        "Broader automation branches and full crafting gate"
+      ]
+    },
+    {
+      "id": "tailoring-automation-decoration",
+      "group": "crafting",
+      "status": "unverified",
+      "prerequisites": [
+        "Original serialized empty hopper over mayonnaise machine in FarmHouse",
+        "Cloth and parsnip tailoring inputs",
+        "Empty native FarmHouse floor for a chair"
+      ],
+      "expected": [
+        "Original hopper consumes one egg and starts mayonnaise with180-minute timer",
+        "Original tailoring produces qualified shirt1159",
+        "Original furniture placement adds one chair0"
+      ],
+      "verifiedSubset": [
+        "Unchanged desktop original methods1/1 GREEN23909ms",
+        "Browser original methods equal all desktop observations1/1 GREEN85448ms"
+      ],
+      "remaining": [
+        "Normal tailoring and furniture UI workflows",
+        "Post-action furniture/tailoring save persistence"
       ]
     },
     {
@@ -284,25 +308,43 @@
         "Readable clipboard permission"
       ],
       "expected": [
-        "Paste button replaces existing sign text with fresh clipboard text",
+        "Original sign keyboard paste accepts fresh clipboard text; original paste button remains hidden",
         "Late response cannot modify a closed editor",
         "Sign text persists after sleep/reload"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop sign editor commit/save/reload1/1 GREEN52936ms",
+        "Browser original editor Ctrl+V, ordinary bed sleep and cold normal Load retain fresh text1/1 GREEN218960ms",
+        "Platform unit replacement/late editor cancellation contract already GREEN in38-test suite"
+      ],
+      "remaining": [
+        "Full crafting/production final gate and browser late-response editor-close interaction"
+      ]
     },
     {
       "id": "animals-buildings",
       "group": "animals",
       "prerequisites": [
-        "Original livestock/pet/mount",
-        "Building upgrade and renovation prerequisites"
+        "Original serialized built coop with adult fed White Chicken and adopted dog",
+        "40000 starting gold,999 wood and999 stone; grant does not count as lifetime earnings",
+        "Cleared valid farm sites; original warp to Farm before native placement"
       ],
       "expected": [
-        "Original production/friendship and overnight changes",
-        "Construction/upgrade completion and interiors",
-        "Mount/pet interactions and persistence"
+        "Original carpenter resource consumption, safe barn placement and construction timers",
+        "Original Big Barn upgrade and capacity",
+        "Original chicken/cow production, pet friendship and stable horse ownership"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "remaining": [
+        "Normal construction/upgrade UI workflows and house renovations",
+        "Other livestock/production types and actual mounting",
+        "Full-day building/animal state persistence"
+      ],
+      "verifiedSubset": [
+        "Unchanged native construction/resource/upgrade/production/pet/stable1/1 GREEN25178ms",
+        "Browser full original-method observations match desktop1/1 GREEN56175ms"
+      ]
     },
     {
       "id": "fishing-gathering",

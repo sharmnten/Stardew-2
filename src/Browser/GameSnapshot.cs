@@ -60,7 +60,9 @@ internal static class GameSnapshot
                 tool = player.CurrentTool?.GetType().Name, facing = player.FacingDirection,
                 grab = new { x = player.GetGrabTile().X, y = player.GetGrabTile().Y },
                 tile = new { x = player.Tile.X, y = player.Tile.Y } },
-            location = location == null ? null : new { name = location.Name, exit, bed, houseEntrance = entrance },
+            location = location == null ? null : new { name = location.Name, exit, bed, houseEntrance = entrance,
+                signs = location.objects.Pairs.Where(pair => pair.Value.IsTextSign())
+                    .Select(pair => new { x = (int)pair.Key.X, y = (int)pair.Key.Y, text = pair.Value.signText.Value }).ToArray() },
             input = new { leftPressed = Game1.oldMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,
                 mouseX = Game1.oldMouseState.X, mouseY = Game1.oldMouseState.Y,
                 keys = Game1.oldKBState.GetPressedKeys().Select(key => key.ToString().ToLowerInvariant()).ToArray() },

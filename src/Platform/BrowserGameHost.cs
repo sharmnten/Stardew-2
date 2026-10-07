@@ -31,7 +31,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
     private StardewBrowser.Platform.Testing.ScenarioBridge? scenarios;
     [JSInvokable] public Task LoadScenario(string id) => scenarios!.LoadScenarioAsync(id);
     [JSInvokable] public string ScenarioSnapshot() => scenarios!.Snapshot();
-    [JSInvokable] public string RunScenarioAction(string id) => scenarios!.RunAction(id);
+    [JSInvokable] public Task<string> RunScenarioAction(string id) => scenarios!.RunActionAsync(id);
 #endif
 
     public async Task StartAsync(CancellationToken cancellationToken)

@@ -12,7 +12,7 @@ prerequisites, not injected successful outcomes.
 | Start and configuration | unverified | `new-game-*` for all eight layouts | Native configuration/creation, original starting map/buildings/items/animals, save/load and movement; compare desktop |
 | Farming | unverified | `farming-season` | Native tools, soil/watering, crop growth/season survival, weather, trees and greenhouse |
 | Economy and inventory | unverified | `inventory-economy` | Quality/stacking/chests, shop prices, shipping settlement, currencies and tool upgrades |
-| Crafting and production | unverified | `recipes-machines`, `text-sign-clipboard` | Recipe consumption/output, cooking, machine timers, automation, tailoring, decorations and persisted sign text |
+| Crafting and production | unverified | `recipes-machines`, `tailoring-automation-decoration`, `text-sign-clipboard` | Recipe consumption/output, cooking, machine timers, automation, tailoring, decorations and persisted sign text |
 | Animals and buildings | unverified | `animals-buildings` | Construction/upgrades/renovations, livestock/pets/mounts, production and friendship |
 | Fishing and gathering | unverified | `fishing-gathering` | Native fishing minigame, bait/tackle, pots/ponds, forage and resource regeneration |
 | Exploration and combat | unverified | `combat-dungeons` | Maps/warps, generated mines/Skull Cavern/volcano, monsters/weapons/buffs/drops |
@@ -88,8 +88,9 @@ chest stacking separates quality and splits999+11, parsnip quality prices are
 match, and the shipping parser totals157 gold. Original recipes consume50 wood
 for a Chest and one egg for Fried Egg. The original mayonnaise machine consumes
 one egg and becomes ready after its180-minute timer. These are method/menu
-comparisons; upgrade returns, overnight settlement, automation, tailoring and
-decoration remain open until their own scenarios pass.
+comparisons. Shipping settlement is verified below; automation/tailoring and
+furniture methods are verified in later sections. Tool upgrade returns and
+normal tailoring/furniture UI and persistence remain open.
 
 ## Populated advanced save and desktop export compatibility
 
@@ -114,3 +115,38 @@ decoration, animals/buildings, fishing, combat, family/events, progression,
 story routes, festivals, island/minigames and full presentation comparisons
 still require their planned checks. Genuine older advanced desktop saves,
 physical hardware and other browser engines remain comparison limits.
+
+## Hopper, tailoring and furniture methods
+
+A separate original serialized fixture compares the native hopper loading path,
+including its mutex event, cloth+parsnip tailoring and valid indoor furniture
+placement. Desktop1/1 (24 seconds) and browser1/1 (85 seconds) pass with identical
+observations: one egg consumed, mayonnaise output with180-minute timer, shirt
+1159 and one chair0 placed. Normal tailoring/furniture UI and post-action save
+persistence remain open. The original sign hides its paste button, so the clipboard scenario uses Ctrl+V.
+
+The desktop sign editor commits text and the original serializer/reload retains
+it (1/1, 53 seconds). The browser reaches the real sign with ordinary movement,
+clears its prior text with Backspace, pastes fresh clipboard text, commits through
+the original editor, sleeps normally and cold-loads the saved text unchanged
+(1/1, 219 seconds). Two initial failures were test-driver issues: leaving the
+loaded bed opens an original Sleep question, and MonoGame names Backspace as
+Keys.Back. Answering No and correcting the observed key name resolved them;
+no sign or save gameplay logic changed.
+
+## Construction and livestock reference
+
+The unchanged desktop game passes original barn placement/resource consumption,
+construction3→0days, Big Barn upgrade (12000gold, capacity8), chicken petting/egg
+production, cow petting/milk production, dog friendship12 and owned stable horse
+creation (1/1, 24 seconds). The browser matches every observed field (1/1, 56 seconds).
+The fixture grants starting capital without changing lifetime earnings, avoiding
+an unrelated earned-income event. Both runtimes use the original farm warp and
+construction safety checks. Construction/renovation UI, other livestock, actual
+mounting and full-day animal/building persistence remain open.
+
+The affected browser method gate passes6/6 in228 seconds after the asynchronous
+original farm-warp dispatch: animals56s, decoration52s, farming53s and inventory/
+recipes65s. Production excludes all seven mutable fixture drivers, the scenario
+bridge/module and reference saves (fresh audit1/1, 1.4 seconds). These checks
+remain subsets of the fourteen groups; the full parity gate is pending.

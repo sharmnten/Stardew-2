@@ -1174,7 +1174,13 @@
     "browser": "9/9 passing, 151412ms; eight native Load handler/import/state/location-name/movement comparisons",
     "production_bridge": "1/1 passing, 3080ms; fresh production-mode publish excludes bridge, all 4 mutable action drivers, JSmodule and fixtures",
     "browser_creation": "9/9 passing, 708375ms; actual original title/customization/text inputs/farm selectors/skip intro/OK, day-one saved state and native movement for all 8 layouts",
-    "browser_economy_production": "3/3 passing, 100559ms; loaded original desktop prerequisites, original shop row click/stacking/prices/currencies/shipping parser, crafting/cooking and machine methods"
+    "browser_economy_production": "3/3 passing, 100559ms; loaded original desktop prerequisites, original shop row click/stacking/prices/currencies/shipping parser, crafting/cooking and machine methods",
+    "task7AffectedMethods": {
+      "command": "node --test --test-concurrency=1 tests/browser/animals-buildings.spec.mjs tests/browser/decoration.spec.mjs tests/browser/farming.spec.mjs tests/browser/production-economy.spec.mjs",
+      "passed": 6,
+      "failed": 0,
+      "durationMs": 227516
+    }
   },
   "limits": [
     "Host .NET10 runtime, not supplied Windows .NET6 runtime",
@@ -1315,6 +1321,123 @@
       "desktop": "Original supplied desktop methods with original serializer and loader; inventory 22629ms corrected GREEN, production 37723ms GREEN",
       "browser": "Included in3/3 GREEN 100559ms",
       "scope": "Direct original methods and original shop menu purchase; tool upgrades, complete shipping settlement, automation/tailoring/decoration remain separately required."
+    },
+    {
+      "id": "tailoring-automation-decoration",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16843
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3031328
+        }
+      ],
+      "observations": {
+        "hopper": {
+          "inputConsumed": 1,
+          "output": "(O)306",
+          "minutes": 180,
+          "type": "AutoLoader"
+        },
+        "tailoring": {
+          "clothing": true,
+          "id": "(S)1159"
+        },
+        "furniture": {
+          "placed": true,
+          "added": 1,
+          "id": "(F)0"
+        }
+      },
+      "desktop": "Unchanged desktop1/1 GREEN23909ms",
+      "browser": "Initial1/1 GREEN85448ms; final async-action dispatch gate6/6 GREEN227516ms, decoration51682ms",
+      "scope": "Original hopper CheckAutoLoad/mutex, cloth+parsnip tailoring and chair placement; actual UI and post-action tailoring/furniture persistence remain required."
+    },
+    {
+      "id": "text-sign-clipboard",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16842
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3030870
+        }
+      ],
+      "observations": {
+        "x": 4,
+        "y": 7,
+        "text": "Fresh farm sign"
+      },
+      "afterActionReload": {
+        "x": 4,
+        "y": 7,
+        "text": "Fresh farm sign"
+      },
+      "desktop": "Original editor/serializer/reload1/1 GREEN52936ms",
+      "browser": "Normal original editor, Ctrl+V, sleep and cold Load1/1 GREEN218960ms",
+      "scope": "Fresh sign text retained through normal browser UI/save/reload; original sign paste button is hidden. Late-response browser interaction remains separate from unit cancellation checks."
+    },
+    {
+      "id": "animals-buildings",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 14628
+        },
+        {
+          "name": "Parity6_123456789",
+          "bytes": 2965154
+        }
+      ],
+      "observations": {
+        "construction": {
+          "built": true,
+          "couldAfford": true,
+          "cost": 6000,
+          "initialDays": 3,
+          "completedDays": 0
+        },
+        "upgrade": {
+          "type": "Big Barn",
+          "days": 0,
+          "capacity": 8,
+          "cost": 12000
+        },
+        "chicken": {
+          "friendship": 15,
+          "age": 4,
+          "produce": [
+            {
+              "id": "(O)176",
+              "quality": 0,
+              "stack": 1
+            }
+          ]
+        },
+        "cow": {
+          "friendship": 15,
+          "produce": "184",
+          "quality": 0,
+          "harvest": "HarvestWithTool"
+        },
+        "pet": {
+          "petted": true,
+          "friendship": 12,
+          "timesPet": 1
+        },
+        "stable": {
+          "built": true,
+          "days": 0,
+          "horseOwned": true
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN25178ms",
+      "browser": "Included in affected6/6 GREEN227516ms; animals56175ms",
+      "scope": "Original farm warp, safe barn placement/carpenter consumption/construction/upgrade, chicken and cow petting/production, dog mutex friendship and stable horse creation. Normal building UI/renovations/mounting/other livestock and full-day persistence remain open."
     }
   ],
   "advancedReference": {

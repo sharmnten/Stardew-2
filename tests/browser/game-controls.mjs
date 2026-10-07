@@ -28,7 +28,7 @@ export async function clickControl(page, name) {
   await page.waitForFunction(() => !window.portStatus.game.input.leftPressed, null, { timeout: 10000 });
 }
 export async function hold(page, key, milliseconds) {
-  const nativeKey = /^\d$/.test(key) ? `d${key}` : key.toLowerCase();
+  const nativeKey = key === 'Backspace' ? 'back' : /^\d$/.test(key) ? `d${key}` : key.toLowerCase();
   await page.locator('#theCanvas').focus();
   await page.keyboard.down(key);
   await page.waitForFunction(key => window.portStatus.game.input.keys.includes(key), nativeKey, { timeout: 10000 });

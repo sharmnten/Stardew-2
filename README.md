@@ -7,6 +7,8 @@ server.
 
 Development is on `browser-port`, in `.worktrees/browser-port`. The original
 runtime, creation, sleep/save/reload and browser platform adapters are running.
+Desktop/browser comparisons also cover farming, economy, recipes, hopper
+automation, tailoring, furniture, livestock/buildings, and sign editing saves.
 Feature parity is still being verified; this is not the final release. See the
 [parity ledger](docs/port/feature-parity.md) for checks and remaining work.
 

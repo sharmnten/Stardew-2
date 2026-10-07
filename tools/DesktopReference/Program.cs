@@ -111,7 +111,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     var choices = new Dictionary<string, string> {
         ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
         ["inventory-economy"] = "Standard", ["recipes-machines"] = "Standard",
-        ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
+        ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
         ["new-game-wilderness"] = "Wilderness", ["new-game-four-corners"] = "Four Corners",
         ["new-game-beach"] = "Beach", ["new-game-meadowlands"] = "ModFarm_MeadowlandsFarm"
@@ -149,28 +149,21 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip")
+    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
+        if (id == "animals-buildings") GoToFarm();
         switch (id)
         {
             case "farming-season": StardewBrowser.Testing.FarmingActions.Prepare(); break;
             case "inventory-economy": StardewBrowser.Testing.EconomyActions.Prepare(); break;
             case "recipes-machines": StardewBrowser.Testing.ProductionActions.Prepare(); break;
+            case "tailoring-automation-decoration": StardewBrowser.Testing.DecorationActions.Prepare(); break;
+            case "text-sign-clipboard": StardewBrowser.Testing.TextSignActions.Prepare(); break;
+            case "animals-buildings": StardewBrowser.Testing.AnimalActions.Prepare(); break;
             case "advanced-desktop-roundtrip": StardewBrowser.Testing.AdvancedActions.Prepare(); break;
         }
-        Game1.game1.IsSaving = true;
-        try
-        {
-            var saving = SaveGame.Save();
-            var saveTime = System.Diagnostics.Stopwatch.StartNew();
-            while (saving.MoveNext() && saving.Current < 100)
-            {
-                if (saveTime.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original fixture save did not finish.");
-                NativeWindow.Frame(runner); Thread.Sleep(1);
-            }
-        }
-        finally { Game1.game1.IsSaving = false; }
+        SaveCurrent();
     }
     string slot = SaveGame.FilterFileName(Game1.GetSaveGameName()) + "_" + Game1.uniqueIDForThisGame;
     string saved = Path.Combine(NativeProgram.GetSavesFolder(), slot);
@@ -186,6 +179,12 @@ static object CreateFarm(string id, GameRunner runner, string report)
     if (id == "farming-season") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FarmingActions.Run());
     if (id == "inventory-economy") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.EconomyActions.Run());
     if (id == "recipes-machines") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProductionActions.Run());
+    if (id == "animals-buildings")
+    {
+        GoToFarm();
+        state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AnimalActions.Run());
+    }
+    if (id == "tailoring-automation-decoration") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.DecorationActions.Run());
     if (id == "advanced-desktop-roundtrip")
     {
         state["advancedBefore"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AdvancedActions.Read());
@@ -201,7 +200,41 @@ static object CreateFarm(string id, GameRunner runner, string report)
         Reload();
         state["afterSleepReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AdvancedActions.Read());
     }
+    if (id == "text-sign-clipboard")
+    {
+        state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.TextSignActions.Run());
+        SaveCurrent();
+        Reload();
+        state["afterActionReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.TextSignActions.Read());
+    }
     return state;
+
+    void GoToFarm()
+    {
+        Game1.warpFarmer("Farm", 62, 15, false);
+        Until(() => {
+            if (Game1.eventUp)
+                throw new InvalidOperationException("Unexpected event before construction: " + Game1.currentLocation.currentEvent?.id);
+            return Game1.currentLocation.Name == "Farm" && !Game1.isWarping && Game1.player.CanMove
+                && Game1.activeClickableMenu == null;
+        }, "warp to original farm for construction");
+    }
+
+    void SaveCurrent()
+    {
+        Game1.game1.IsSaving = true;
+        try
+        {
+            var saving = SaveGame.Save();
+            var saveTime = System.Diagnostics.Stopwatch.StartNew();
+            while (saving.MoveNext() && saving.Current < 100)
+            {
+                if (saveTime.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original fixture save did not finish.");
+                NativeWindow.Frame(runner); Thread.Sleep(1);
+            }
+        }
+        finally { Game1.game1.IsSaving = false; }
+    }
 
     void Reload()
     {
@@ -223,7 +256,10 @@ static object CreateFarm(string id, GameRunner runner, string report)
         var timeout = System.Diagnostics.Stopwatch.StartNew();
         while (!done())
         {
-            if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Reference could not " + action);
+            if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Reference could not " + action
+                + $"; location={Game1.currentLocation?.Name}, mode={Game1.gameMode}, loading={SaveGame.IsProcessing},"
+                + $" warp={Game1.isWarping}, canMove={Game1.player.CanMove}, active={runner.IsActive},"
+                + $" event={Game1.eventUp}, menu={Game1.activeClickableMenu?.GetType().Name}");
             NativeWindow.Frame(runner);
             if (Game1.activeClickableMenu is ShippingMenu shipping && shipping.CanReceiveInput())
                 shipping.receiveLeftClick(shipping.okButton.bounds.Center.X, shipping.okButton.bounds.Center.Y);
