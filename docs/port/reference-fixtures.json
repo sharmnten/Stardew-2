@@ -1714,11 +1714,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 16847
+          "bytes": 16973
         },
         {
-          "name": "Parity_123456789",
-          "bytes": 3064203
+          "name": "Parity7_123456789",
+          "bytes": 3065732
         }
       ],
       "observations": {
@@ -1751,10 +1751,133 @@
           ]
         }
       },
-      "professionChoices": [0, 2, 6, 8, 12, 14, 18, 20, 24, 26],
-      "desktop": "Original supplied desktop1/1 GREEN33706ms",
-      "browser": "Original method comparison and all-skills profession DOM clicks1/1 GREEN61705ms",
-      "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. All five skills' original level5/10 menus select left profession branches through native mouse input and browser DOM clicks. Other branches, other plaques/unlocks and post-action save persistence remain open."
+      "professionChoices": [
+        0,
+        2,
+        6,
+        8,
+        12,
+        14,
+        18,
+        20,
+        24,
+        26
+      ],
+      "desktop": "Original supplied desktop1/1 GREEN46718ms",
+      "browser": "Original methods/profession and mastery DOM input/forty notices/overnight save/cold Load1/1 GREEN179540ms",
+      "scope": "Original skill gains, ten left-branch profession selections, all mastery claims/rewards, local achievement0 and fish collection. Normal browser reward clicks and level notice controls, full overnight save and cold Load match original desktop retained state. Other profession branches and broader collections/unlocks remain open.",
+      "afterAllMastery": {
+        "day": 1,
+        "levels": [
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "pendingLevels": 40,
+        "professions": [
+          0,
+          2,
+          6,
+          8,
+          12,
+          14,
+          18,
+          20,
+          24,
+          26
+        ],
+        "mastery": {
+          "experience": 100000,
+          "level": 5,
+          "claimed": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "spent": 5,
+          "trinketSlots": 1,
+          "complete": true,
+          "recipes": {
+            "Statue Of Blessings": true,
+            "Challenge Bait": true,
+            "Mystic Tree Seed": true,
+            "Treasure Totem": true,
+            "Heavy Furnace": true,
+            "Statue Of The Dwarf King": true,
+            "Anvil": true,
+            "Mini-Forge": true
+          },
+          "items": [
+            "(T)AdvancedIridiumRod",
+            "(W)66"
+          ]
+        },
+        "incomeAchievement": true,
+        "fish": [
+          1,
+          20
+        ]
+      },
+      "afterProgressReload": {
+        "day": 2,
+        "levels": [
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "pendingLevels": 0,
+        "professions": [
+          0,
+          2,
+          6,
+          8,
+          12,
+          14,
+          18,
+          20,
+          24,
+          26
+        ],
+        "mastery": {
+          "experience": 100000,
+          "level": 5,
+          "claimed": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "spent": 5,
+          "trinketSlots": 1,
+          "complete": true,
+          "recipes": {
+            "Statue Of Blessings": true,
+            "Challenge Bait": true,
+            "Mystic Tree Seed": true,
+            "Treasure Totem": true,
+            "Heavy Furnace": true,
+            "Statue Of The Dwarf King": true,
+            "Anvil": true,
+            "Mini-Forge": true
+          },
+          "items": [
+            "(T)AdvancedIridiumRod",
+            "(W)66"
+          ]
+        },
+        "incomeAchievement": true,
+        "fish": [
+          1,
+          20
+        ]
+      }
     },
     {
       "id": "community-center",

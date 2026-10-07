@@ -232,6 +232,29 @@ static object CreateFarm(string id, GameRunner runner, string report)
     if (id is "community-center" or "joja-orders-museum") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.StoryActions.Run(id));
     if (id == "skills-mastery-achievements") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Run());
     if (id == "skills-mastery-achievements") state["professionChoices"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.ChooseProfessions());
+    if (id == "skills-mastery-achievements")
+    {
+        StardewBrowser.Testing.ProgressionActions.EarnRemainingMastery();
+        GoToProgressLocation("MasteryCave", 7, 11);
+        foreach (int skill in new[] { 0, 1, 2, 4 })
+        {
+            StardewBrowser.Testing.ProgressionActions.ClaimMastery(skill);
+            Until(() => Game1.activeClickableMenu == null, "close original mastery reward menu");
+        }
+        state["afterAllMastery"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Read());
+        Until(() => Game1.player.CanMove, "finish original mastery celebration");
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is LevelUpMenu or SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 2 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original progression overnight", acknowledgeLevelNotices: true);
+        Reload();
+        state["afterProgressReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Read());
+    }
     if (id == "characters-family") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Run());
     if (id == "combat-dungeons") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.Run());
     if (id == "fishing-gathering") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Run());
@@ -330,7 +353,14 @@ static object CreateFarm(string id, GameRunner runner, string report)
             && !Game1.isWarping && Game1.activeClickableMenu == null, "reload original save");
     }
 
-    void Until(Func<bool> done, string action)
+    void GoToProgressLocation(string location, int x, int y)
+    {
+        Game1.warpFarmer(location, x, y, false);
+        Until(() => Game1.currentLocation.Name == location && !Game1.isWarping
+            && Game1.player.CanMove && Game1.activeClickableMenu == null, "warp to original " + location);
+    }
+
+    void Until(Func<bool> done, string action, bool acknowledgeLevelNotices = false)
     {
         var timeout = System.Diagnostics.Stopwatch.StartNew();
         while (!done())
@@ -342,6 +372,8 @@ static object CreateFarm(string id, GameRunner runner, string report)
             NativeWindow.Frame(runner);
             if (Game1.activeClickableMenu is ShippingMenu shipping && shipping.CanReceiveInput())
                 shipping.receiveLeftClick(shipping.okButton.bounds.Center.X, shipping.okButton.bounds.Center.Y);
+            if (acknowledgeLevelNotices && Game1.activeClickableMenu is LevelUpMenu level && level.CanReceiveInput())
+                level.okButtonClicked();
             Thread.Sleep(1);
         }
     }

@@ -29,4 +29,21 @@ test('original desktop skill gains, mastery reward and local achievement', { tim
   assert.deepEqual(actual.collection.fish, [1, 20]);
   assert.deepEqual(state.professionChoices, [0, 2, 6, 8, 12, 14, 18, 20, 24, 26],
     "Original level5/10 menus must select the left profession branch for every skill");
+  const mastery = state.afterAllMastery.mastery;
+  assert.equal(mastery.experience, 100000);
+  assert.equal(mastery.level, 5);
+  assert.deepEqual(mastery.claimed, [1, 1, 1, 1, 1]);
+  assert.equal(mastery.spent, 5);
+  assert.equal(mastery.trinketSlots, 1);
+  assert.equal(mastery.complete, true);
+  assert.equal(Object.keys(mastery.recipes).length, 8);
+  assert.ok(Object.values(mastery.recipes).every(Boolean));
+  assert.deepEqual(mastery.items, ['(T)AdvancedIridiumRod', '(W)66']);
+  assert.equal(state.afterProgressReload.day, 2);
+  assert.equal(state.afterProgressReload.pendingLevels, 0);
+  assert.deepEqual(state.afterProgressReload.mastery, mastery);
+  assert.deepEqual(state.afterProgressReload.professions, state.professionChoices);
+  assert.deepEqual(state.afterProgressReload.levels, [10, 10, 10, 10, 10]);
+  assert.equal(state.afterProgressReload.incomeAchievement, true);
+  assert.deepEqual(state.afterProgressReload.fish, [1, 20]);
 });

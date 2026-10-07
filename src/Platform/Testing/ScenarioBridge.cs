@@ -67,6 +67,31 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "mastery-prepare" or "progression-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.ProgressionActions.FixtureKey))
+                throw new InvalidOperationException("Load the progression fixture before its mastery UI setup.");
+            bool mastery = id == "mastery-prepare";
+            if (mastery) StardewBrowser.Testing.ProgressionActions.EarnRemainingMastery();
+            string target = mastery ? "MasteryCave" : "FarmHouse";
+            Game1.warpFarmer(target, 7, mastery ? 11 : 8, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original progression location warp did not finish.");
+                await Task.Delay(16);
+            }
+            return "{}";
+        }
+        if (id.StartsWith("mastery-", StringComparison.Ordinal))
+        {
+            if (loadedScenario != "skills-mastery-achievements") throw new InvalidOperationException("Load the progression fixture before mastery menus.");
+            if (!int.TryParse(id[8..], out int skill) || skill is < 0 or > 4)
+                throw new ArgumentException("Unknown mastery menu: " + id);
+            StardewBrowser.Testing.ProgressionActions.ShowMastery(skill);
+            return "{}";
+        }
         if (id.StartsWith("profession-", StringComparison.Ordinal))
         {
             if (loadedScenario != "skills-mastery-achievements") throw new InvalidOperationException("Load the progression fixture before profession menus.");
@@ -155,6 +180,8 @@ internal sealed class ScenarioBridge(HttpClient http)
             advanced = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AdvancedActions.FixtureKey)
                 ? StardewBrowser.Testing.AdvancedActions.Read() : null,
             professions = Game1.player.professions.Order().ToArray(),
+            progression = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ProgressionActions.FixtureKey)
+                ? StardewBrowser.Testing.ProgressionActions.Read() : null,
             morningQueueCount = Game1.morningQueue.Count,
             toolDiagnostics = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
                 ? StardewBrowser.Testing.ToolUpgradeActions.Diagnostics() : null,

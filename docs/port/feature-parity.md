@@ -186,20 +186,25 @@ persistence remain required.
 
 ## Skill, mastery and local achievement methods
 
-Desktop1/1 (72 seconds, CPU contended) and browser1/1 (71 seconds) match original
+Desktop1/1 (47 seconds) and browser1/1 (180 seconds) match original
 experience gains for all five skills, reaching level10 with50 queued notices.
 Original farming/foraging experience produces10000 mastery experience and one
 mastery level. The original mining reward button consumes that level and unlocks
 Heavy Furnace and Statue Of The Dwarf King recipes. Earning the final gold toward
 15000 lifetime income unlocks local achievement0; a Sunfish catch registers its
-collection entry. The extended desktop check passes1/1 (34 seconds) using original
-LevelUpMenu mouse input for both level5/10 menus of every skill. Browser1/1
-(62 seconds) clicks the same ten original menus and obtains professions
-0/2/6/8/12/14/18/20/24/26 while retaining the earlier method comparisons.
-The readonly input-readiness observation uses original CanReceiveInput().
-Other profession branches, other mastery rewards/unlocks and post-action
-persistence remain open. Production excludes all sixteen mutable fixture drivers,
-scenario module and reference saves (fresh audit1/1,1.4s).
+collection entry. Both original level5/10 menus of every skill select their left
+branches through native mouse input and actual browser clicks, obtaining
+professions0/2/6/8/12/14/18/20/24/26. Original gainExperience then earns the
+remaining90000 mastery XP. Both runtimes warp to the original mastery cave and
+use its map plaque actions; browser clicks claim the four remaining rewards.
+All five claims,100000 XP/level5/spent5, eight recipes, Advanced Iridium Rod,
+Iridium Scythe and one trinket slot match. The browser acknowledges forty original
+level notices, completes a normal overnight save, then cold-loads through the
+original Load menu. All observed progression fields match the unchanged desktop
+day2 reload with no pending notices. Input readiness uses original
+CanReceiveInput(). Other profession branches and broader collections/unlocks
+remain open. The complete progression group remains unverified pending its
+final gate. Production excludes the mutable fixture drivers and reference assets.
 
 ## Bundle and Joja contribution methods
 
