@@ -501,16 +501,16 @@
       ],
       "expected": [
         "Original museum inventory/world placement consumes the crystal and completes Archaeology",
-        "Original full-night save and cold Load retain exhibit and quest reward state"
+        "Original journal reward clicks collect250 gold and remove the completed quest; full-night save/cold Load retain both"
       ],
       "status": "unverified",
       "verifiedSubset": [
         "Unchanged desktop original museum warp/mutex/menu/fades/inventory and world tile clicks complete quest24",
         "Browser DOM donation and original menu close/bed question/full overnight save/cold Load match desktop",
-        "Exhibit86 at26,5, crystal consumed, quest completed and250 gold reward remains unclaimed after day6 reload"
+        "Exhibit86 at26,5, crystal consumed, actual journal reward raises gold500 to750 and removes quest24; day6 cold Load retains all"
       ],
       "remaining": [
-        "Broader donations/rewards/rearrangement and journal reward collection"
+        "Broader museum donations/rewards/rearrangement and other quests"
       ]
     },
     {

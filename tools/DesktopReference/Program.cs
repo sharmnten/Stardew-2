@@ -242,6 +242,9 @@ static object CreateFarm(string id, GameRunner runner, string report)
         state["afterDonation"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MuseumActions.Read());
         StardewBrowser.Testing.MuseumActions.Close();
         Until(() => Game1.activeClickableMenu == null && Game1.player.CanMove, "close original museum donation menu");
+        StardewBrowser.Testing.MuseumActions.ClaimQuestReward();
+        Until(() => Game1.activeClickableMenu == null && Game1.player.CanMove, "close original quest journal");
+        state["afterReward"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MuseumActions.Read());
         GoToProgressLocation("FarmHouse", 7, 8);
         StardewBrowser.Testing.AdvancedActions.BeginSleep();
         bool nightMenuSeen = false;

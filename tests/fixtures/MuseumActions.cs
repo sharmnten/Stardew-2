@@ -38,15 +38,30 @@ internal static class MuseumActions
         menu.receiveLeftClick(button.X, button.Y);
     }
 
+    internal static void ClaimQuestReward()
+    {
+        var menu = new QuestLog();
+        Game1.activeClickableMenu = menu;
+        var quest = menu.questLogButtons[0].bounds.Center;
+        menu.receiveLeftClick(quest.X, quest.Y);
+        var reward = menu.rewardBox.bounds.Center;
+        menu.receiveLeftClick(reward.X, reward.Y);
+        var back = menu.backButton.bounds.Center;
+        menu.receiveLeftClick(back.X, back.Y);
+        var close = menu.upperRightCloseButton.bounds.Center;
+        menu.receiveLeftClick(close.X, close.Y);
+    }
+
     internal static object Read()
     {
-        var quest = Game1.player.questLog.Single(quest => quest.id.Value == "24");
+        var quest = Game1.player.questLog.SingleOrDefault(quest => quest.id.Value == "24");
         return new {
             day = Game1.dayOfMonth,
+            money = Game1.player.Money,
             crystals = Game1.player.Items.Where(item => item?.QualifiedItemId == "(O)86").Sum(item => item.Stack),
             pieces = Museum.museumPieces.Pairs.OrderBy(piece => piece.Key.X).ThenBy(piece => piece.Key.Y)
                 .Select(piece => new { x = (int)piece.Key.X, y = (int)piece.Key.Y, id = piece.Value }).ToArray(),
-            quest = new { id = quest.id.Value, completed = quest.completed.Value, moneyReward = quest.moneyReward.Value }
+            quest = quest == null ? null : new { id = quest.id.Value, completed = quest.completed.Value, moneyReward = quest.moneyReward.Value }
         };
     }
 }

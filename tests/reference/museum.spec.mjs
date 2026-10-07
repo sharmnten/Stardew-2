@@ -4,7 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-test('original museum donation completes Archaeology and survives a full night', { timeout: 180000 }, () => {
+test('original museum donation and journal reward survive a full night', { timeout: 180000 }, () => {
   const id = 'museum-quests';
   const root = resolve(`.port-cache/reference/users/${id}`);
   mkdirSync(`${root}/data`, { recursive: true }); mkdirSync(`${root}/config`, { recursive: true });
@@ -21,8 +21,13 @@ test('original museum donation completes Archaeology and survives a full night',
   assert.equal(state.afterDonation.pieces[0].id, '86');
   assert.equal(state.afterDonation.quest.completed, true);
   assert.ok(state.afterDonation.quest.moneyReward > 0);
+  assert.ok(state.afterReward, 'Record collection through the original quest journal');
+  assert.equal(state.afterReward.money, state.afterDonation.money + 250);
+  assert.equal(state.afterReward.quest, null);
+  assert.deepEqual(state.afterReward.pieces, state.afterDonation.pieces);
   assert.equal(state.afterReload.day, 6);
   assert.deepEqual(state.afterReload.pieces, state.afterDonation.pieces);
-  assert.deepEqual(state.afterReload.quest, state.afterDonation.quest);
+  assert.equal(state.afterReload.quest, null);
+  assert.equal(state.afterReload.money, state.afterReward.money);
   assert.equal(state.afterReload.crystals, 0);
 });

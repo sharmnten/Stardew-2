@@ -2759,15 +2759,16 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 17919
+          "bytes": 17920
         },
         {
-          "name": "Parity_123456789",
-          "bytes": 3019581
+          "name": "Parity3_123456789",
+          "bytes": 3041036
         }
       ],
       "afterDonation": {
         "day": 5,
+        "money": 500,
         "crystals": 0,
         "pieces": [
           {
@@ -2784,6 +2785,7 @@
       },
       "afterReload": {
         "day": 6,
+        "money": 750,
         "crystals": 0,
         "pieces": [
           {
@@ -2792,15 +2794,24 @@
             "id": "86"
           }
         ],
-        "quest": {
-          "id": "24",
-          "completed": true,
-          "moneyReward": 250
-        }
+        "quest": null
       },
-      "desktop": "Original supplied desktop1/1 GREEN51799ms",
-      "browser": "Original donation DOM input/quest/full overnight save/cold Load1/1 GREEN173818ms",
-      "scope": "Original LibraryMuseum warp/OpenDonationMenu mutex/fades and actual slot/world placement consume Earth Crystal86, complete Archaeology24 and retain exhibit/quest/unclaimed250 gold reward after day6 reload. Intro0 is an explicit already-seen prerequisite. Broader donations/rewards/rearrangement/journal reward collection remain open."
+      "desktop": "Original supplied desktop1/1 GREEN60961ms",
+      "browser": "Original donation and journal DOM input/full overnight save/cold Load1/1 GREEN228777ms",
+      "scope": "Original LibraryMuseum warp/OpenDonationMenu mutex/fades and actual slot/world placement consume Earth Crystal86 and complete Archaeology24. Actual QuestLog reward/back/close clicks collect250 gold (500 to750) and remove the quest; original full night/day6 cold Load retains exhibit/gold/removed quest. Intro0 is an explicit already-seen prerequisite. Broader museum donations/rewards/rearrangement and other quests remain open.",
+      "afterReward": {
+        "day": 5,
+        "money": 750,
+        "crystals": 0,
+        "pieces": [
+          {
+            "x": 26,
+            "y": 5,
+            "id": "86"
+          }
+        ],
+        "quest": null
+      }
     }
   ],
   "advancedReference": {

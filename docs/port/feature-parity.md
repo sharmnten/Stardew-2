@@ -229,17 +229,18 @@ excludes all twelve mutable fixture drivers (fresh audit1/1,1.2s).
 
 ## Museum donation, quest and persistence
 
-Desktop1/1 (52 seconds) and browser1/1 (174 seconds) pass original museum donation
+Desktop1/1 (61 seconds) and browser1/1 (229 seconds) pass original museum donation
 and saved quest state. The original save supplies one undonated Earth Crystal and
 active Archaeology quest24; the museum introduction is an already-seen prerequisite.
 Both runtimes warp to the actual LibraryMuseum and open its original donation menu
 through the original mutex/fade flow. Browser clicks the inventory slot and real
 exhibit tile, consumes the crystal and completes the quest. Normal menu close,
-bed question, overnight save and cold original Load retain exhibit86 at26,5 and
-the completed quest with its250 gold reward still unclaimed, matching desktop.
+original journal quest/reward/back/close clicks collect250 gold (500→750) and
+remove the completed quest. The bed question, overnight save and cold original
+Load retain exhibit86 at26,5,750 gold and the removed quest, matching desktop.
 An initial browser failure was missing nested inventory bounds in the readonly
 control snapshot; exposing the actual original controls corrected the harness.
-Broader museum donations/rewards/rearrangement and journal reward collection
+Broader museum donations/rewards/rearrangement and other quests
 remain open; the overall story/quest group is still unverified.
 
 ## Festival setup and calendar methods

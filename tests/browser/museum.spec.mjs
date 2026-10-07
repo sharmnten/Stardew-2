@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { withGame } from './driver.mjs';
-import { clickControl, pointAtWorld, walkToBed, waitForAsync } from './game-controls.mjs';
+import { clickControl, hold, pointAtWorld, walkToBed, waitForAsync } from './game-controls.mjs';
 
 test('original museum donation input, quest and saved display match desktop', { timeout: 300000 }, async () => {
   await withGame(async page => {
@@ -24,6 +24,18 @@ test('original museum donation input, quest and saved display match desktop', { 
     assert.deepEqual(await museum(page), expected.afterDonation);
     await clickControl(page, 'okButton');
     await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
+    await hold(page, 'f', 0);
+    await page.waitForFunction(() => portStatus.game.menu.type === 'QuestLog');
+    await clickControl(page, '0');
+    await clickControl(page, 'rewardBox');
+    await waitForAsync(page, async () => (await portScenarios.snapshot()).museum.quest?.moneyReward === 0);
+    await clickControl(page, 'backButton');
+    await clickControl(page, 'upperRightCloseButton');
+    await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
+    const collected = await museum(page);
+    assert.equal(collected.money, expected.afterDonation.money + 250);
+    assert.equal(collected.quest, null);
+    assert.deepEqual(collected, expected.afterReward);
     await page.evaluate(() => portScenarios.run('museum-home'));
     await walkToBed(page);
     await clickControl(page, 'Yes');
