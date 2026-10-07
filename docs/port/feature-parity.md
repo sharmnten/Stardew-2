@@ -217,3 +217,15 @@ gifting gives Linus640 friendship points; a Night Market date and four seasonal
 movie choices also match. Contests/rewards, full passive-festival world flows,
 movie screening, random events/cutscenes and persisted outcomes remain required.
 Production excludes all thirteen mutable fixture drivers (fresh audit1/1,2.7s).
+
+## Original arcade replay
+
+Desktop1/1 (56 seconds) and browser1/1 (52 seconds) match controlled keyboard
+input and16ms updates interpreted by the original games. Prairie King starts,
+moves192 pixels, fires two bullets and records wave0/lives3 progress. Both
+Junimo Kart modes start, generate36/40 tracks and match player coordinates,
+physics, score110 and three lives. Endless mode deliberately creates no
+checkpoints; progression mode creates one. The replay overrides hardware input
+only during the synchronous test and restores it afterward. Normal DOM input/
+rendering, full arcade progression/rewards and post-action persistence remain
+required. Production excludes all fourteen mutable fixture drivers (1/1,1.2s).

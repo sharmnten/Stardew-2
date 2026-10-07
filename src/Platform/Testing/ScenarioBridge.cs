@@ -97,6 +97,7 @@ internal sealed class ScenarioBridge(HttpClient http)
             "tailoring-automation-decoration" => StardewBrowser.Testing.DecorationActions.Run(),
             "animals-buildings" => StardewBrowser.Testing.AnimalActions.Run(),
             "fishing-gathering" => StardewBrowser.Testing.FishingActions.Run(),
+            "original-minigames" => StardewBrowser.Testing.MinigameActions.Run(),
             "festivals-events-movies" => StardewBrowser.Testing.CalendarActions.Run(),
             "community-center" or "joja-orders-museum" => StardewBrowser.Testing.StoryActions.Run(id),
             "skills-mastery-achievements" => StardewBrowser.Testing.ProgressionActions.Run(),
@@ -125,7 +126,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "festivals-events-movies"];
+        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "festivals-events-movies", "original-minigames"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);

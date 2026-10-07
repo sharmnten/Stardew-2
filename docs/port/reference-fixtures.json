@@ -1987,6 +1987,66 @@
       "desktop": "Original supplied desktop1/1 GREEN57262ms",
       "browser": "Original comparison and normal festival movement1/1 GREEN67544ms",
       "scope": "Actual original Egg Festival warp/setup/actors/free control plus normal browser movement;8 festival script metadata, birthday gift640, passive date and4 seasonal movie selections. Contests/rewards, full passive world flows, screening/random events and persisted outcomes remain open."
+    },
+    {
+      "id": "original-minigames",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16871
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3042782
+        }
+      ],
+      "observations": {
+        "king": {
+          "started": true,
+          "moved": 192,
+          "x": 576,
+          "y": 384,
+          "bullets": 2,
+          "lives": 3,
+          "coins": 0,
+          "wave": 0,
+          "savedWave": 0,
+          "savedLives": 3
+        },
+        "kart": [
+          {
+            "mode": 2,
+            "started": true,
+            "startX": 8,
+            "furthestX": 190.40005,
+            "x": 190.40005,
+            "y": 134.69232,
+            "state": "Ingame",
+            "theme": 0,
+            "tracks": 36,
+            "checkpoints": 0,
+            "score": 110,
+            "lives": 3
+          },
+          {
+            "mode": 3,
+            "started": true,
+            "startX": 9.52,
+            "furthestX": 191.92006,
+            "x": 191.92006,
+            "y": 134.69232,
+            "state": "Ingame",
+            "theme": 0,
+            "tracks": 40,
+            "checkpoints": 1,
+            "score": 110,
+            "lives": 3
+          }
+        ]
+      },
+      "desktop": "Original supplied desktop1/1 GREEN55802ms",
+      "browser": "Original replay comparison1/1 GREEN51544ms",
+      "scope": "Original InputState receives controlled keyboard states and16ms ticks: Prairie King start/move/fire/local progress; both Junimo Kart modes start and generate matching tracks/physics/score/lives. Normal DOM rendering/input, full progression, rewards and post-action persistence remain open."
     }
   ],
   "advancedReference": {

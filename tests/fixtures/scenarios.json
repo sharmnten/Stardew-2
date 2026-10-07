@@ -529,13 +529,23 @@
       "id": "original-minigames",
       "group": "late-game",
       "prerequisites": [
-        "Prairie King and Junimo Kart access"
+        "Original serialized skull-key prerequisite",
+        "Controlled original global random input1729",
+        "Timed16ms keyboard state replay through original InputState virtual hardware boundary"
       ],
       "expected": [
         "Original input, collisions and progression",
         "Quit/restart, rewards and saved minigame progress"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop Prairie King starts, moves192px, fires2 bullets and records wave/lives progress",
+        "Desktop both2/3 kart modes start, generate36/40 tracks and advance original physics/score",
+        "Browser original replay matches all desktop movement/firing/progress/kart physics/generation/score/lives observations"
+      ],
+      "remaining": [
+        "Normal DOM controls/rendering and complete arcade progression/rewards"
+      ]
     },
     {
       "id": "advanced-desktop-roundtrip",
