@@ -85,13 +85,16 @@ internal sealed class ScenarioBridge(HttpClient http)
             if (visit) Game1.player.faceDirection(2);
             return JsonSerializer.Serialize(new { x = Game1.player.Position.X + 32, y = Game1.player.Position.Y + 160 }, Json);
         }
-        if (id is "fishing-shore" or "fishing-home")
+        if (id is "fishing-shore" or "fishing-home" or "fishing-pond")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingActions.FixtureKey))
                 throw new InvalidOperationException("Load the fishing fixture before its location setup.");
             bool visit = id == "fishing-shore";
-            var shore = visit ? StardewBrowser.Testing.FishingActions.ShoreSpot() : new Microsoft.Xna.Framework.Vector2(7, 8);
-            string target = visit ? "Beach" : "FarmHouse";
+            bool pondVisit = id == "fishing-pond";
+            var pondSpot = pondVisit ? StardewBrowser.Testing.FishingActions.PondSpot() : default;
+            var shore = visit ? StardewBrowser.Testing.FishingActions.ShoreSpot()
+                : pondVisit ? pondSpot.Shore : new Microsoft.Xna.Framework.Vector2(7, 8);
+            string target = visit ? "Beach" : pondVisit ? "Farm" : "FarmHouse";
             Game1.warpFarmer(target, (int)shore.X, (int)shore.Y, false);
             var timeout = System.Diagnostics.Stopwatch.StartNew();
             while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
@@ -100,7 +103,7 @@ internal sealed class ScenarioBridge(HttpClient http)
                 if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original fishing location warp did not finish.");
                 await Task.Delay(16);
             }
-            var tile = StardewBrowser.Testing.FishingActions.Pot.TileLocation;
+            var tile = pondVisit ? pondSpot.Target : StardewBrowser.Testing.FishingActions.Pot.TileLocation;
             return JsonSerializer.Serialize(new { x = (int)tile.X, y = (int)tile.Y }, Json);
         }
         if (id is "museum-visit" or "museum-donate-menu" or "museum-home")

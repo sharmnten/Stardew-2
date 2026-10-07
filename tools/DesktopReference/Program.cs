@@ -328,6 +328,21 @@ static object CreateFarm(string id, GameRunner runner, string report)
         }, "complete original trap overnight");
         Reload();
         state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+        var pondSpot = StardewBrowser.Testing.FishingActions.PondSpot();
+        GoToProgressLocation("Farm", (int)pondSpot.Shore.X, (int)pondSpot.Shore.Y);
+        StardewBrowser.Testing.FishingActions.HarvestPond();
+        state["afterPondHarvest"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 3 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original pond harvest overnight");
+        Reload();
+        state["afterPondReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
     }
     if (id == "fishing-cast")
     {

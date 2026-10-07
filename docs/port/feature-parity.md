@@ -151,9 +151,9 @@ recipes65s. Production excludes all seven mutable fixture drivers, the scenario
 bridge/module and reference saves (fresh audit1/1, 1.4 seconds). These checks
 remain subsets of the fourteen groups; the full parity gate is pending.
 
-## Fishing methods and trap persistence
+## Fishing methods, trap and pond persistence
 
-Desktop1/1 (42 seconds) and browser1/1 (162 seconds) match original bait/tackle
+Desktop1/1 (41 seconds) and browser1/1 (288 seconds) match original bait/tackle
 attachments, crab-pot input/catch, fish-pond spawning and32 fixed16ms fishing-bar
 updates under a controlled seed. The fixture now places its trap at58,13 beside
 original passable shore and records level5/2150XP/already-selected Fisher6.
@@ -163,13 +163,17 @@ rebaiting consumes the last inventory bait. An adjacent original bridge-repair
 dialogue is dismissed through normal input before continuing. The original bed
 question, full overnight save, durable IndexedDB day2 and cold Load retain the
 catch,2155 XP and Fisher6. The trap has its original next-day171 output; the pond
-grows1→2→3 and produces812, all equal to desktop.
+grows1→2→3 and produces812, all equal to desktop. After that cold reload,
+normal right-click collection clears the pond output and adds two Sunfish roe,
+with11 XP (2166). A second actual night, durable day3 bytes and cold Load
+preserve owned stacks/quality and flavored parent145/preserveRoe/price45 exactly,
+while the pond generates its next output. No successful harvest/output is injected.
 
 An initial desktop night stopped at the original missed-profession choice because
 the level5 fixture lacked its selected profession. Correcting that serialized
 prerequisite needed no gameplay or save-repair change. Fresh production exclusion
-passes for all17 mutable drivers (1/1,1.0s). Pond harvest, gathering and broader
-fishing workflows remain open; the whole group is unverified.
+passes for all18 mutable drivers (1/1,2.4s). Gathering, pond variants/population
+requests and broader fishing workflows remain open; the whole group is unverified.
 
 ## Rod casting and fishing minigame
 
@@ -190,7 +194,10 @@ and exact persistence within each runtime rather than identical trajectories.
 The fixture selector was corrected to inspect landing water, and the input
 sequence releases for hooking after original controls have processed C down.
 The repeat trace observes the bite at80ms and processed-down at160ms within the
-original800ms nibble window; raw-input acknowledgment alone was intermittent.
+original800ms nibble window. The earlier shared zero-length tap was intermittent;
+its failed timing was not captured. The shared helper also reads processed keys,
+so the precise failure cause remains unconfirmed. Direct input removes extra
+focus/wait steps and has passed twice.
 The repeat awards19XP and preserves it exactly, while the desktop awards45XP.
 Original gameplay is unchanged. Production excludes all18 mutable drivers
 (fresh audit1/1,2.6s). Broader species,

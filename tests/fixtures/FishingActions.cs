@@ -76,6 +76,30 @@ internal static class FishingActions
     }
 
     internal static CrabPot Pot => Game1.getLocationFromName("Beach").objects.Values.OfType<CrabPot>().Single();
+    internal static FishPond Pond => Game1.getFarm().buildings.OfType<FishPond>().Single();
+
+    internal static (Vector2 Shore, Vector2 Target) PondSpot()
+    {
+        var pond = Pond;
+        var farm = Game1.getFarm();
+        for (int x = pond.tileX.Value; x < pond.tileX.Value + pond.tilesWide.Value; x++)
+        foreach (bool above in new[] { true, false })
+        {
+            int y = above ? pond.tileY.Value - 1 : pond.tileY.Value + pond.tilesHigh.Value;
+            var shore = new Vector2(x, y);
+            if (!farm.isWaterTile(x, y) && farm.isTilePassable(shore)
+                && !farm.objects.ContainsKey(shore) && !farm.terrainFeatures.ContainsKey(shore))
+                return (shore, new Vector2(x, above ? y + 1 : y - 1));
+        }
+        throw new InvalidOperationException("The original pond needs an adjacent passable collection tile.");
+    }
+
+    internal static void HarvestPond()
+    {
+        Game1.player.CurrentToolIndex = 0;
+        if (Pond.output.Value == null || !Pond.doAction(PondSpot().Target, Game1.player))
+            throw new InvalidOperationException("Original pond produce harvest was rejected.");
+    }
     internal static Vector2 ShoreSpot() => FindShore(Game1.getLocationFromName("Beach"), Pot.TileLocation)
         ?? throw new InvalidOperationException("The original trap needs an adjacent passable shore tile.");
 
@@ -115,6 +139,9 @@ internal static class FishingActions
                 output = pot.heldObject.Value?.QualifiedItemId, quality = pot.heldObject.Value?.Quality },
             @catch = Game1.player.Items.Where(item => item != null && item is not FishingRod && item.QualifiedItemId != "(O)685")
                 .Select(item => new { id = item.QualifiedItemId, stack = item.Stack, quality = item.Quality }).ToArray(),
+            roe = Game1.player.Items.OfType<NativeObject>().Where(item => item.QualifiedItemId == "(O)812")
+                .Select(item => new { parent = item.preservedParentSheetIndex.Value,
+                    preserve = item.preserve.Value.ToString(), price = item.Price }).ToArray(),
             pond = new { population = pond.FishCount, days = pond.daysSinceSpawn.Value, output = pond.output.Value?.QualifiedItemId }
         };
     }

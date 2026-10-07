@@ -361,11 +361,12 @@
       ],
       "status": "unverified",
       "verifiedSubset": [
-        "Unchanged original bait/tackle/trap/pond/first-catch physics plus actual harvest/rebait/full-night reload1/1 GREEN41831ms",
-        "Browser original method comparison plus DOM right-click harvest/rebait, bridge dialogue dismiss, full-night save and cold Load matches desktop1/1 GREEN162104ms"
+        "Unchanged original bait/tackle/trap/pond/bar plus actual trap and pond harvest/two nights/cold reloads1/1 GREEN41200ms",
+        "Browser method comparison, DOM trap harvest/rebait/dialogue/pond produce collection and two full-night saves/cold Loads match desktop1/1 GREEN288435ms",
+        "Two Sunfish Roe812/parent145/preserveRoe/price45, fishingXP2166 and original newly generated pond output persist day3"
       ],
       "remaining": [
-        "Pond harvest and broader species/weather/tackle behavior",
+        "Broader species/weather/tackle behavior and pond variants/population requests",
         "Forage/resource regeneration and broader gathering workflows"
       ]
     },

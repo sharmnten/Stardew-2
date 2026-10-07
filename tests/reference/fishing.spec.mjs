@@ -48,4 +48,18 @@ test('original desktop bait, tackle, crab pot, fish pond and fishing physics', {
   assert.equal(scenario.afterReload.experience, 2155);
   assert.deepEqual(scenario.afterReload.professions, [6]);
   assert.deepEqual(scenario.afterReload.catch, scenario.afterHarvest.catch);
+  assert.ok(scenario.afterPondHarvest, 'Collect the original pond produce after the first cold reload');
+  assert.equal(scenario.afterPondHarvest.day, 2);
+  assert.equal(scenario.afterPondHarvest.pond.population, 3);
+  assert.equal(scenario.afterPondHarvest.pond.output, null);
+  assert.equal(scenario.afterPondHarvest.experience, 2166);
+  assert.deepEqual(scenario.afterPondHarvest.catch, [
+    { id: '(O)812', stack: 2, quality: 0 },
+    { id: '(O)717', stack: 1, quality: 0 }
+  ]);
+  assert.deepEqual(scenario.afterPondHarvest.roe, [{ parent: '145', preserve: 'Roe', price: 45 }]);
+  assert.equal(scenario.afterPondReload.day, 3);
+  assert.equal(scenario.afterPondReload.experience, 2166);
+  assert.deepEqual(scenario.afterPondReload.catch, scenario.afterPondHarvest.catch);
+  assert.deepEqual(scenario.afterPondReload.roe, scenario.afterPondHarvest.roe);
 });

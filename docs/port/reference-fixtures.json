@@ -1447,8 +1447,8 @@
           "bytes": 14319
         },
         {
-          "name": "Parity5_123456789",
-          "bytes": 3070791
+          "name": "Parity8_123456789",
+          "bytes": 3019356
         }
       ],
       "observations": {
@@ -1487,9 +1487,9 @@
           }
         }
       },
-      "desktop": "Original supplied desktop1/1 GREEN41831ms",
-      "browser": "Original method comparison and shore DOM harvest/rebait/full night/cold Load1/1 GREEN162104ms",
-      "scope": "Original bait/tackle attachments, reachable trap58,13 input/catch, pond spawning and32 fixed16ms BobberBar updates under seed1729. Level5/2150XP/Fisher6 are serialized prerequisites. Normal browser right-click harvest yields717/XP2155, bait consumes last inventory unit, original bridge dialogue dismissed, real bed/night/save/cold Load retains catch/XP/Fisher and new171 trap output; pond reaches3 and produces812. Casting/catching UI, pond harvest, gathering and broader fishing behavior remain open.",
+      "desktop": "Original trap/pond actions and two nights/cold reloads1/1 GREEN41200ms",
+      "browser": "Original methods, DOM trap/pond harvest, two full-night saves and cold Loads1/1 GREEN288435ms",
+      "scope": "Original bait/tackle/trap/spawn and fixed first-catch bar physics compare with desktop. Serialized level5/2150XP/Fisher6, original trap58,13 and pond35,35 are prerequisites. DOM right-click trap717/XP2155/rebait, normal dialogue dismissal, actual bed/full night/durable day2/cold Load retain catch/Fisher/trap171 and pond3/output812. Original adjacent pond setup only warps; normal right-click collects two original night-generated Sunfish Roe812, clears output, grants11XP (2166). Actual second bed/night/durable day3/cold Load exactly preserve owned stacks/quality, flavored parent145/preserveRoe/price45, XP and new pond output. No successful harvest or output injected. Original rod cast/catch separately verified by fishing-cast. Gathering, broader species/weather/tackle and pond variants/requests remain open.",
       "afterHarvest": {
         "day": 1,
         "experience": 2155,
@@ -1512,6 +1512,7 @@
             "quality": 0
           }
         ],
+        "roe": [],
         "pond": {
           "population": 2,
           "days": 0,
@@ -1540,6 +1541,7 @@
             "quality": 0
           }
         ],
+        "roe": [],
         "pond": {
           "population": 2,
           "days": 0,
@@ -1568,12 +1570,94 @@
             "quality": 0
           }
         ],
+        "roe": [],
         "pond": {
           "population": 3,
           "days": 0,
           "output": "(O)812"
         }
-      }
+      },
+      "afterPondHarvest": {
+        "day": 2,
+        "experience": 2166,
+        "baitCount": 0,
+        "professions": [
+          6
+        ],
+        "pot": {
+          "x": 58,
+          "y": 13,
+          "bait": "(O)685",
+          "ready": true,
+          "output": "(O)171",
+          "quality": 0
+        },
+        "catch": [
+          {
+            "id": "(O)812",
+            "stack": 2,
+            "quality": 0
+          },
+          {
+            "id": "(O)717",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "roe": [
+          {
+            "parent": "145",
+            "preserve": "Roe",
+            "price": 45
+          }
+        ],
+        "pond": {
+          "population": 3,
+          "days": 0,
+          "output": null
+        }
+      },
+      "afterPondReload": {
+        "day": 3,
+        "experience": 2166,
+        "baitCount": 0,
+        "professions": [
+          6
+        ],
+        "pot": {
+          "x": 58,
+          "y": 13,
+          "bait": "(O)685",
+          "ready": true,
+          "output": "(O)171",
+          "quality": 0
+        },
+        "catch": [
+          {
+            "id": "(O)812",
+            "stack": 2,
+            "quality": 0
+          },
+          {
+            "id": "(O)717",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "roe": [
+          {
+            "parent": "145",
+            "preserve": "Roe",
+            "price": 45
+          }
+        ],
+        "pond": {
+          "population": 3,
+          "days": 1,
+          "output": "(O)812"
+        }
+      },
+      "production": "Fresh18-driver exclusion1/1 GREEN2449ms"
     },
     {
       "id": "combat-dungeons",
@@ -2956,7 +3040,7 @@
       },
       "desktop": "Original supplied desktop hardware input1/1 GREEN52697ms",
       "browser": "Original DOM cast/hook/bar/reel/accept/night/cold Load corrected-input1/1 GREEN174028ms, repeat1/1 GREEN183759ms",
-      "scope": "Original Town91,13 shore and serialized level5/Fisher6/IridiumRod/two bait/empty history are prerequisites. No fish selection, successful bite/hook/catch, fish item, XP or consumption injected. Both runtimes charge/cast once into water using7.5 stamina, wait for a real bite, hook on tool release, play original BobberBar with ordinary input, reel/accept Sunfish145/count1/XP gain and consume one bait. Each original night/reload retains all observed inventory/quality, collection/count/size, bait, XP and cast-count fields. Live RNG/input-dependent fish size and XP are compared as contracts and as exact within-runtime persistence, not asserted identical across different input trajectories. Broader species/weather/tackles/treasure remain open. The browser hook test waits until original oldKBState has processed C down before releasing it; repeat trace observes nibble80ms and processed-down160ms within the original800ms window. Earlier zero-length raw-input acknowledgment was intermittent; original runtime input remains unchanged.",
+      "scope": "Original Town91,13 shore and serialized level5/Fisher6/IridiumRod/two bait/empty history are prerequisites. No fish selection, successful bite/hook/catch, fish item, XP or consumption injected. Both runtimes charge/cast once into water using7.5 stamina, wait for a real bite, hook on tool release, play original BobberBar with ordinary input, reel/accept Sunfish145/count1/XP gain and consume one bait. Each original night/reload retains all observed inventory/quality, collection/count/size, bait, XP and cast-count fields. Live RNG/input-dependent fish size and XP are compared as contracts and as exact within-runtime persistence, not asserted identical across different input trajectories. Broader species/weather/tackles/treasure remain open. The browser hook test waits until original oldKBState has processed C down before releasing it; repeat trace observes nibble80ms and processed-down160ms within the original800ms window. Earlier shared zero-length tapping was intermittent. That helper already reads original oldKBState; the failed tap timing was not captured, so its exact cause is unconfirmed. Direct key input removes the extra focus/wait steps and the repeat trace confirms timely processing; original runtime input remains unchanged.",
       "browserObservations": {
         "afterCast": {
           "timesFished": 1,
