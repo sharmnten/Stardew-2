@@ -10,6 +10,19 @@ internal static class MinigameActions
 {
     internal static void Prepare() => Game1.player.hasSkullKey = true;
 
+    internal static object ReadKart(MineCart cart)
+    {
+        var player = Field<MineCart.MineCartCharacter>(cart, "player");
+        return new {
+            mode = Field<int>(cart, "gameMode"), state = cart.gameState.ToString(), paused = cart.gamePaused,
+            x = player?.position.X ?? 0, y = player?.position.Y ?? 0,
+            velocityY = player?.velocity.Y ?? 0, grounded = player?.IsGrounded() ?? false,
+            jumpPressed = cart.isJumpPressed,
+            canStart = cart.gameState == MineCart.GameStates.Title && cart.pauseBeforeTitleFadeOutTimer == 0
+                && Field<float>(cart, "screenDarkness") == 0 && cart.fadeDelta <= 0
+        };
+    }
+
     internal static object Run()
     {
         Random savedRandom = Game1.random;

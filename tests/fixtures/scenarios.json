@@ -602,10 +602,11 @@
         "Desktop Prairie King starts, moves192px, fires2 bullets and records wave/lives progress",
         "Desktop both2/3 kart modes start, generate36/40 tracks and advance original physics/score",
         "Browser original replay matches all desktop movement/firing/progress/kart physics/generation/score/lives observations",
-        "Normal browser original Continue resumes Prairie King; DOM D moves, Arrow Up fires and Escape exits"
+        "Normal browser original Continue resumes Prairie King; DOM D moves, Arrow Up fires and Escape exits",
+        "Browser native Endless2/Progress3 menu choices, Space start/move/jump/release, P pause/resume and Escape quit both modes; original comparison/Prairie King remain passing1/1 GREEN126641ms"
       ],
       "remaining": [
-        "Junimo Kart DOM controls, complete arcade progression/rewards and post-action persistence"
+        "Physical cabinet world interaction and full arcade progression/wins/rewards/save persistence"
       ]
     },
     {

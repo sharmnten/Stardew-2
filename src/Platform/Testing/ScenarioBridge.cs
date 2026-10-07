@@ -67,6 +67,14 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id == "minigames-kart")
+        {
+            if (loadedScenario != "original-minigames" || Game1.currentMinigame != null || Game1.activeClickableMenu != null)
+                throw new InvalidOperationException("Load the arcade fixture and finish its active game before opening the kart menu.");
+            Game1.currentLocation.performAction("Arcade_Minecart", Game1.player,
+                new xTile.Dimensions.Location((int)Game1.player.Tile.X, (int)Game1.player.Tile.Y));
+            return "{}";
+        }
         if (id is "fishing-cast-shore" or "fishing-cast-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingCastActions.FixtureKey))
@@ -272,6 +280,8 @@ internal sealed class ScenarioBridge(HttpClient http)
                 ? StardewBrowser.Testing.FishingActions.Read() : null,
             fishingCast = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingCastActions.FixtureKey)
                 ? StardewBrowser.Testing.FishingCastActions.Read() : null,
+            kart = Game1.currentMinigame is StardewValley.Minigames.MineCart cart
+                ? StardewBrowser.Testing.MinigameActions.ReadKart(cart) : null,
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,

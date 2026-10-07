@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { withGame } from './driver.mjs';
-import { snapshot, hold, clickControl } from './game-controls.mjs';
+import { snapshot, hold, clickControl, waitForAsync } from './game-controls.mjs';
 
 test('original arcade input, firing and generated kart physics match desktop', { timeout: 240000 }, async () => {
   await withGame(async page => {
@@ -24,5 +24,37 @@ test('original arcade input, firing and generated kart physics match desktop', {
     await page.keyboard.up('ArrowUp');
     await hold(page, 'Escape', 100);
     await page.waitForFunction(() => !portStatus.game.minigame);
+    for (const [choice, mode] of [['Endless', 2], ['Progress', 3]]) {
+      await page.evaluate(() => portScenarios.run('minigames-kart'));
+      await clickControl(page, choice);
+      await waitForAsync(page, async () => (await portScenarios.snapshot()).kart?.canStart);
+      assert.equal((await kart(page)).mode, mode);
+      for (let tap = 0; tap < 20 && (await kart(page)).state !== 'Ingame'; tap++) {
+        await hold(page, 'Space', 100);
+        await page.waitForTimeout(500);
+      }
+      assert.equal((await kart(page)).state, 'Ingame', 'Normal Space input must start the selected kart mode');
+      await waitForAsync(page, async () => (await portScenarios.snapshot()).kart.grounded);
+      await hold(page, 'p', 100);
+      assert.equal((await kart(page)).paused, true);
+      const paused = await kart(page);
+      await page.waitForTimeout(150);
+      assert.equal((await kart(page)).x, paused.x, 'Paused kart physics must stop advancing');
+      await hold(page, 'p', 100);
+      assert.equal((await kart(page)).paused, false);
+      await page.keyboard.down('Space');
+      await waitForAsync(page, async () => {
+        const cart = (await portScenarios.snapshot()).kart;
+        return cart.jumpPressed && cart.velocityY < 0;
+      });
+      assert.ok((await kart(page)).x > paused.x, 'The unpaused original kart must move forward');
+      await page.keyboard.up('Space');
+      await waitForAsync(page, async () => !(await portScenarios.snapshot()).kart.jumpPressed);
+      await hold(page, 'Escape', 100);
+      await waitForAsync(page, async () => !(await portScenarios.snapshot()).kart);
+      assert.equal((await snapshot(page)).menu.type, null);
+    }
   }, undefined, '/');
 });
+
+const kart = page => page.evaluate(async () => (await portScenarios.snapshot()).kart);

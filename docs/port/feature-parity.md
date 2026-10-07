@@ -296,7 +296,7 @@ Production excludes all thirteen mutable fixture drivers (fresh audit1/1,2.7s).
 
 ## Original arcade replay
 
-Desktop1/1 (56 seconds) and browser1/1 (52 seconds) match controlled keyboard
+Fresh desktop1/1 (71 seconds) and extended browser1/1 (127 seconds) match controlled keyboard
 input and16ms updates interpreted by the original games. Prairie King starts,
 moves192 pixels, fires two bullets and records wave0/lives3 progress. Both
 Junimo Kart modes start, generate36/40 tracks and match player coordinates,
@@ -304,8 +304,14 @@ physics, score110 and three lives. Endless mode deliberately creates no
 checkpoints; progression mode creates one. The replay overrides hardware input
 only during the synchronous test and restores it afterward. A subsequent normal browser check also passes (1/1,68 seconds): the original
 Continue menu resumes progress, DOM D moves, Arrow Up fires, and Escape exits.
-Junimo Kart DOM controls, full arcade progression/rewards and post-action
-persistence remain required. Production excludes all fourteen mutable fixture drivers (1/1,1.2s).
+The extended browser run opens the original Kart mode menu and chooses both
+Endless2 and Progress3 through their normal responses. Ordinary Space passes
+title/map/cutscene into Ingame, forward motion follows original physics, P stops
+exact X and resumes, Space produces an upward jump and release clears it, and
+Escape quits both games. Setup opens the original menu only; all game-state and
+physics outcomes come from normal input. Physical cabinet interaction, full arcade
+progression/wins/rewards and post-action persistence remain required. Fresh
+production excludes all18 mutable fixture drivers (1/1,3.7s).
 
 ## Island, Qi and perfection methods
 
