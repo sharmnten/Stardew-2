@@ -192,9 +192,13 @@ Original farming/foraging experience produces10000 mastery experience and one
 mastery level. The original mining reward button consumes that level and unlocks
 Heavy Furnace and Statue Of The Dwarf King recipes. Earning the final gold toward
 15000 lifetime income unlocks local achievement0; a Sunfish catch registers its
-collection entry. Normal profession selection, other mastery rewards/unlocks and
-post-action persistence remain open. Production excludes all eleven mutable
-fixture drivers, scenario module and reference saves (fresh audit1/1,0.9s).
+collection entry. An extended desktop check passes1/1 (29 seconds) using original
+LevelUpMenu mouse input to choose Rancher then Coopmaster. Browser1/1 (58 seconds)
+clicks the same original level5/10 menus and obtains professions0/2 while retaining
+the earlier method comparisons. Other skills' profession menus, other mastery
+rewards/unlocks and post-action persistence remain open. Production excludes all
+sixteen mutable fixture drivers, scenario module and reference saves (fresh
+audit1/1,1.8s).
 
 ## Bundle and Joja contribution methods
 

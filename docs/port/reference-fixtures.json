@@ -1751,9 +1751,10 @@
           ]
         }
       },
-      "desktop": "Original supplied desktop1/1 GREEN72280ms",
-      "browser": "Original method comparison1/1 GREEN70762ms",
-      "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. Normal profession UI, other plaques/unlocks and post-action save persistence remain open."
+      "professionChoices": [0, 2],
+      "desktop": "Original supplied desktop1/1 GREEN29081ms",
+      "browser": "Original method comparison and profession DOM clicks1/1 GREEN58071ms",
+      "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. Original farming level5/10 profession menus choose Rancher0/Coopmaster2 using native mouse input and browser DOM clicks. Other skills' profession menus, other plaques/unlocks and post-action save persistence remain open."
     },
     {
       "id": "community-center",

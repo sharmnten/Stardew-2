@@ -231,6 +231,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     }
     if (id is "community-center" or "joja-orders-museum") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.StoryActions.Run(id));
     if (id == "skills-mastery-achievements") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Run());
+    if (id == "skills-mastery-achievements") state["professionChoices"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.ChooseProfessions());
     if (id == "characters-family") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Run());
     if (id == "combat-dungeons") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.Run());
     if (id == "fishing-gathering") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Run());

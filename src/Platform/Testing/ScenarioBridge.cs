@@ -67,7 +67,12 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
-
+        if (id is "profession-farming-5" or "profession-farming-10")
+        {
+            if (loadedScenario != "skills-mastery-achievements") throw new InvalidOperationException("Load the progression fixture before profession menus.");
+            StardewBrowser.Testing.ProgressionActions.ShowProfession(id == "profession-farming-5" ? 5 : 10);
+            return "{}";
+        }
         if (id is "tool-upgrades-shop" or "tool-upgrades-visit" or "tool-upgrades-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey))
@@ -145,6 +150,7 @@ internal sealed class ScenarioBridge(HttpClient http)
             animals = farm.getAllFarmAnimals().Select(animal => new { type = animal.type.Value, name = animal.Name }).OrderBy(animal => animal.type).ToArray(),
             advanced = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AdvancedActions.FixtureKey)
                 ? StardewBrowser.Testing.AdvancedActions.Read() : null,
+            professions = Game1.player.professions.Order().ToArray(),
             morningQueueCount = Game1.morningQueue.Count,
             toolDiagnostics = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
                 ? StardewBrowser.Testing.ToolUpgradeActions.Diagnostics() : null,

@@ -14,7 +14,8 @@ test('original desktop skill gains, mastery reward and local achievement', { tim
     env: { ...process.env, ALSOFT_DRIVERS: 'null', LIBGL_ALWAYS_SOFTWARE: '1', XDG_DATA_HOME: `${root}/data`, XDG_CONFIG_HOME: `${root}/config` }
   });
   assert.equal(result.status, 0, result.stdout + result.stderr);
-  const actual = JSON.parse(readFileSync(report)).scenario.observations;
+  const state = JSON.parse(readFileSync(report)).scenario;
+  const actual = state.observations;
   assert.deepEqual(actual.skills.levels, [10, 10, 10, 10, 10]);
   assert.equal(actual.skills.pendingLevels, 50);
   assert.equal(actual.mastery.experience, 10000);
@@ -26,4 +27,5 @@ test('original desktop skill gains, mastery reward and local achievement', { tim
   assert.deepEqual(actual.achievements, [0]);
   assert.equal(actual.collection.fishRegistered, true);
   assert.deepEqual(actual.collection.fish, [1, 20]);
+  assert.deepEqual(state.professionChoices, [0, 2], "Original profession input must choose Rancher then Coopmaster");
 });
