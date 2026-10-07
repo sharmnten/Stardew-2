@@ -195,3 +195,14 @@ Heavy Furnace and Statue Of The Dwarf King recipes. Earning the final gold towar
 collection entry. Normal profession selection, other mastery rewards/unlocks and
 post-action persistence remain open. Production excludes all eleven mutable
 fixture drivers, scenario module and reference saves (fresh audit1/1,0.9s).
+
+## Bundle and Joja contribution methods
+
+The unchanged desktop passes both checks (2/2,44 seconds); the browser matches
+both original saved prerequisites and menu outcomes (1/1,63 seconds). Original
+inventory clicks and ingredient slots consume the four Spring Crops items,
+complete bundle0 and make20 spring seeds available. The original Joja vault
+checkbox spends40000 gold and queues vault/Joja mail. No completion state is
+injected. Reward collection, normal world/menu input, full routes, overnight
+project activation, quests/orders/museum/secrets remain required. Production
+excludes all twelve mutable fixture drivers (fresh audit1/1,1.2s).

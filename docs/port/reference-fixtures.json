@@ -1754,6 +1754,59 @@
       "desktop": "Original supplied desktop1/1 GREEN72280ms",
       "browser": "Original method comparison1/1 GREEN70762ms",
       "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. Normal profession UI, other plaques/unlocks and post-action save persistence remain open."
+    },
+    {
+      "id": "community-center",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16596
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3009516
+        }
+      ],
+      "observations": {
+        "bundle": {
+          "completed": true,
+          "consumed": 4,
+          "rewardAvailable": true,
+          "rewardId": "(O)465",
+          "rewardStack": 20
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN22933ms",
+      "browser": "Both method comparisons1/1 GREEN62635ms",
+      "scope": "Original menu inventory/ingredient contributions and bundle reward eligibility, or Joja purchase cost/checkbox/queued mail. Normal world/menu input, collected rewards, full route endings, overnight activation, quests/orders/museum/secrets remain open."
+    },
+    {
+      "id": "joja-orders-museum",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 12177
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3020357
+        }
+      ],
+      "observations": {
+        "project": {
+          "cost": 40000,
+          "completedCheckbox": true,
+          "mail": [
+            "ccVault%&NL&%",
+            "foundLostTools",
+            "hatter",
+            "jojaVault%&NL&%"
+          ]
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN21148ms",
+      "browser": "Both method comparisons1/1 GREEN62635ms",
+      "scope": "Original menu inventory/ingredient contributions and bundle reward eligibility, or Joja purchase cost/checkbox/queued mail. Normal world/menu input, collected rewards, full route endings, overnight activation, quests/orders/museum/secrets remain open."
     }
   ],
   "advancedReference": {

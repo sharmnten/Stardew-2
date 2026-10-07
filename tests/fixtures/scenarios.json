@@ -447,28 +447,45 @@
       "id": "community-center",
       "group": "story",
       "prerequisites": [
-        "Bundle ingredients and center access"
+        "Original serialized starting capital50000 without lifetime-income increase",
+        "Original Junimo-text reading mail and four Spring Crops items"
       ],
       "expected": [
         "Original bundle acceptance and rewards",
         "Room restoration and story mail/events",
         "Route state survives sleep/reload"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop original inventory/menu donations consume4 crops and complete bundle0",
+        "Original reward available: spring seeds465/stack20",
+        "Browser original-method comparison equals all recorded unchanged desktop observations"
+      ],
+      "remaining": [
+        "Normal world entry and donations/reward collection UI, all areas and route ending"
+      ]
     },
     {
       "id": "joja-orders-museum",
       "group": "story",
       "prerequisites": [
-        "Joja membership prerequisites",
-        "Special order and museum donations"
+        "Original serialized starting capital50000 without lifetime-income increase",
+        "Original Joja membership mail"
       ],
       "expected": [
         "Original purchases and Joja completion",
         "Quest/order and museum progress/rewards",
         "Mail and secret flags persist"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop original Joja form purchase consumes40000 and queues vault/Joja mail",
+        "Browser original-method comparison equals all recorded unchanged desktop observations"
+      ],
+      "remaining": [
+        "Normal membership/project UI, full completion/cutscenes",
+        "Quests/orders/museum/secrets and overnight project activation"
+      ]
     },
     {
       "id": "festivals-events-movies",
