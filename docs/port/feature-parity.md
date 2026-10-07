@@ -11,7 +11,7 @@ prerequisites, not injected successful outcomes.
 | --- | --- | --- | --- |
 | Start and configuration | unverified | `new-game-*` for all eight layouts | Native configuration/creation, original starting map/buildings/items/animals, save/load and movement; compare desktop |
 | Farming | unverified | `farming-season` | Native tools, soil/watering, crop growth/season survival, weather, trees and greenhouse |
-| Economy and inventory | unverified | `inventory-economy` | Quality/stacking/chests, shop prices, shipping settlement, currencies and tool upgrades |
+| Economy and inventory | unverified | `inventory-economy`, `tool-upgrades` | Quality/stacking/chests, shop prices, shipping settlement, currencies and tool upgrades |
 | Crafting and production | unverified | `recipes-machines`, `tailoring-automation-decoration`, `text-sign-clipboard` | Recipe consumption/output, cooking, machine timers, automation, tailoring, decorations and persisted sign text |
 | Animals and buildings | unverified | `animals-buildings` | Construction/upgrades/renovations, livestock/pets/mounts, production and friendship |
 | Fishing and gathering | unverified | `fishing-gathering` | Native fishing minigame, bait/tackle, pots/ponds, forage and resource regeneration |
@@ -244,3 +244,15 @@ perfection rises0→0.0019230769. These are method checks, including null-locati
 reward crediting; physical island collection/warps, player UI, Qi completion/
 rewards, full perfection/ending and post-action persistence remain open.
 Production excludes all fifteen mutable fixture drivers (fresh audit1/1,1.1s).
+
+## Tool upgrade purchase and collection
+
+The unchanged desktop passes1/1 (39 seconds): the original ClintUpgrade shop
+charges2000 gold and five copper bars, removes the basic axe and starts the
+CopperAxe level1 upgrade. Two original farmer day updates decrement2→1→0; the
+original blacksmith interaction returns the axe and clears the pending upgrade.
+Browser1/1 (52 seconds) matches every field; the accompanying normal arcade
+regression also passes1/1 (54 seconds). Normal world/shop DOM input, two actual full
+nights and persisted handoff/return remain open. Production excludes all sixteen
+mutable fixture drivers (fresh audit1/1,1.4s). Fresh tooling17/17, platform38/38
+and game3/3 checks pass.

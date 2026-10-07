@@ -600,6 +600,27 @@
         "Record startup/overnight performance"
       ],
       "status": "unverified"
+    },
+    {
+      "id": "tool-upgrades",
+      "group": "economy",
+      "prerequisites": [
+        "Original year2 Spring5 save with a basic axe,2000 gold and five copper bars",
+        "No tool upgrade in progress and available inventory space"
+      ],
+      "expected": [
+        "Original ClintUpgrade shop consumes2000 gold/five bars and removes the old axe",
+        "Original farmer day updates decrement upgrade days2\u21921\u21920",
+        "Original blacksmith interaction returns CopperAxe level1 and clears the pending tool"
+      ],
+      "status": "unverified",
+      "verifiedSubset": [
+        "Unchanged desktop original purchase, daily countdown and blacksmith collection pass1/1",
+        "Browser original purchase, countdown and collection match all unchanged desktop observations"
+      ],
+      "remaining": [
+        "Normal browser world/shop input, two full nights and persisted tool handoff/return"
+      ]
     }
   ]
 }

@@ -110,7 +110,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
 {
     var choices = new Dictionary<string, string> {
         ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
-        ["inventory-economy"] = "Standard", ["recipes-machines"] = "Standard",
+        ["inventory-economy"] = "Standard", ["tool-upgrades"] = "Standard", ["recipes-machines"] = "Standard",
         ["island-qi-perfection"] = "Standard", ["original-minigames"] = "Standard", ["festivals-events-movies"] = "Standard", ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
         ["new-game-wilderness"] = "Wilderness", ["new-game-four-corners"] = "Four Corners",
@@ -149,7 +149,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
+    if (id is "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
         if (id == "animals-buildings") GoToFarm();
@@ -157,6 +157,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
         {
             case "farming-season": StardewBrowser.Testing.FarmingActions.Prepare(); break;
             case "inventory-economy": StardewBrowser.Testing.EconomyActions.Prepare(); break;
+            case "tool-upgrades": StardewBrowser.Testing.ToolUpgradeActions.Prepare(); break;
             case "recipes-machines": StardewBrowser.Testing.ProductionActions.Prepare(); break;
             case "tailoring-automation-decoration": StardewBrowser.Testing.DecorationActions.Prepare(); break;
             case "text-sign-clipboard": StardewBrowser.Testing.TextSignActions.Prepare(); break;
@@ -186,6 +187,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     state["afterLoad"] = JsonSerializer.SerializeToElement(ReadFarm());
     if (id == "farming-season") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FarmingActions.Run());
     if (id == "inventory-economy") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.EconomyActions.Run());
+    if (id == "tool-upgrades") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ToolUpgradeActions.Run());
     if (id == "recipes-machines") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProductionActions.Run());
     if (id == "island-qi-perfection") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.IslandActions.Run());
     if (id == "original-minigames") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.Run());
