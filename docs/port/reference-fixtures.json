@@ -1438,6 +1438,58 @@
       "desktop": "Original supplied desktop1/1 GREEN25178ms",
       "browser": "Included in affected6/6 GREEN227516ms; animals56175ms",
       "scope": "Original farm warp, safe barn placement/carpenter consumption/construction/upgrade, chicken and cow petting/production, dog mutex friendship and stable horse creation. Normal building UI/renovations/mounting/other livestock and full-day persistence remain open."
+    },
+    {
+      "id": "fishing-gathering",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 14174
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 3048597
+        }
+      ],
+      "observations": {
+        "rod": {
+          "bait": "(O)685",
+          "baitStack": 20,
+          "tackle": [
+            "(O)686"
+          ]
+        },
+        "pot": {
+          "accepted": true,
+          "inputConsumed": 1,
+          "ready": true,
+          "output": "(O)718",
+          "quality": 0
+        },
+        "pond": {
+          "before": 1,
+          "after": 2,
+          "days": 0,
+          "capacity": 3,
+          "output": null
+        },
+        "bar": {
+          "initial": {
+            "height": 136,
+            "difficulty": 50,
+            "size": 11
+          },
+          "after": {
+            "scale": 1,
+            "position": 482.1255,
+            "barPosition": 432,
+            "distance": 0.124
+          }
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN50678ms",
+      "browser": "Original method comparison1/1 GREEN54452ms",
+      "scope": "Bait/tackle attachments, crab-pot bait consumption/catch, pond spawning and32 fixed16ms original BobberBar updates under seed1729. Includes original first-catch difficulty50; casting/catching UI, gathering and full fishing flow remain open."
     }
   ],
   "advancedReference": {

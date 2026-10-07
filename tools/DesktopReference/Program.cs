@@ -111,7 +111,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     var choices = new Dictionary<string, string> {
         ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
         ["inventory-economy"] = "Standard", ["recipes-machines"] = "Standard",
-        ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
+        ["fishing-gathering"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
         ["new-game-wilderness"] = "Wilderness", ["new-game-four-corners"] = "Four Corners",
         ["new-game-beach"] = "Beach", ["new-game-meadowlands"] = "ModFarm_MeadowlandsFarm"
@@ -149,7 +149,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings")
+    if (id is "farming-season" or "inventory-economy" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
         if (id == "animals-buildings") GoToFarm();
@@ -161,6 +161,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
             case "tailoring-automation-decoration": StardewBrowser.Testing.DecorationActions.Prepare(); break;
             case "text-sign-clipboard": StardewBrowser.Testing.TextSignActions.Prepare(); break;
             case "animals-buildings": StardewBrowser.Testing.AnimalActions.Prepare(); break;
+            case "fishing-gathering": StardewBrowser.Testing.FishingActions.Prepare(); break;
             case "advanced-desktop-roundtrip": StardewBrowser.Testing.AdvancedActions.Prepare(); break;
         }
         SaveCurrent();
@@ -179,6 +180,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     if (id == "farming-season") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FarmingActions.Run());
     if (id == "inventory-economy") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.EconomyActions.Run());
     if (id == "recipes-machines") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProductionActions.Run());
+    if (id == "fishing-gathering") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Run());
     if (id == "animals-buildings")
     {
         GoToFarm();

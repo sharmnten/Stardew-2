@@ -150,3 +150,15 @@ original farm-warp dispatch: animals56s, decoration52s, farming53s and inventory
 recipes65s. Production excludes all seven mutable fixture drivers, the scenario
 bridge/module and reference saves (fresh audit1/1, 1.4 seconds). These checks
 remain subsets of the fourteen groups; the full parity gate is pending.
+
+## Fishing method reference
+
+Desktop1/1 (51 seconds) and browser1/1 (54 seconds) match for original bait/tackle
+attachments, crab-pot input/catch, fish-pond spawning and32 fixed16ms fishing-bar
+updates under a controlled seed. The trap consumes one bait and produces
+item718; the Sunfish pond grows1→2 fish. The original first-catch branch raises
+difficulty30→50 while preserving the level5 bar height136. An initial test
+expectation omitted that native branch; correcting the expectation needed no
+gameplay change. Production excludes all eight fixture drivers (1/1, 2.3s).
+Normal casting/catching/harvest, gathering and broader fishing workflows remain
+required; the fishing group is not yet verified overall.

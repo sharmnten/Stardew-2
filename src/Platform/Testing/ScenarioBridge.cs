@@ -86,6 +86,7 @@ internal sealed class ScenarioBridge(HttpClient http)
             "recipes-machines" => StardewBrowser.Testing.ProductionActions.Run(),
             "tailoring-automation-decoration" => StardewBrowser.Testing.DecorationActions.Run(),
             "animals-buildings" => StardewBrowser.Testing.AnimalActions.Run(),
+            "fishing-gathering" => StardewBrowser.Testing.FishingActions.Run(),
             _ => throw new ArgumentException("This scenario has no method comparison: " + id)
         };
         return JsonSerializer.Serialize(observations, Json);
@@ -109,7 +110,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings"];
+        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);

@@ -350,15 +350,24 @@
       "id": "fishing-gathering",
       "group": "fishing",
       "prerequisites": [
-        "Rod, bait/tackle and crab pot",
-        "Fish pond and forage access"
+        "Original serialized Iridium Rod and level5, bait inventory, empty valid beach crab pot",
+        "Original built Sunfish pond with one fish and spawn timer due next day",
+        "Controlled seed1729 and32 updates of16ms for the original first-catch fishing bar"
       ],
       "expected": [
         "Original fishing minigame catches a fish",
         "Bait/tackle consumption and crab pot harvest",
         "Pond and resource regeneration match desktop"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Unchanged original bait/tackle/trap/pond/first-catch physics1/1 GREEN50678ms",
+        "Browser original bait/tackle/trap/pond/fixed-step fishing physics matches desktop1/1 GREEN54452ms"
+      ],
+      "remaining": [
+        "Normal casting/catching UI and harvest",
+        "Forage/resource regeneration and broader species/tackle behavior"
+      ]
     },
     {
       "id": "combat-dungeons",
