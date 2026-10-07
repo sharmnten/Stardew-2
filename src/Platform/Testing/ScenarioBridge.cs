@@ -67,6 +67,24 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "fishing-shore" or "fishing-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingActions.FixtureKey))
+                throw new InvalidOperationException("Load the fishing fixture before its location setup.");
+            bool visit = id == "fishing-shore";
+            var shore = visit ? StardewBrowser.Testing.FishingActions.ShoreSpot() : new Microsoft.Xna.Framework.Vector2(7, 8);
+            string target = visit ? "Beach" : "FarmHouse";
+            Game1.warpFarmer(target, (int)shore.X, (int)shore.Y, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original fishing location warp did not finish.");
+                await Task.Delay(16);
+            }
+            var tile = StardewBrowser.Testing.FishingActions.Pot.TileLocation;
+            return JsonSerializer.Serialize(new { x = (int)tile.X, y = (int)tile.Y }, Json);
+        }
         if (id is "museum-visit" or "museum-donate-menu" or "museum-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.MuseumActions.FixtureKey))
@@ -229,6 +247,8 @@ internal sealed class ScenarioBridge(HttpClient http)
                 ? StardewBrowser.Testing.FamilyActions.Read() : null,
             museum = Game1.player.modData.ContainsKey(StardewBrowser.Testing.MuseumActions.FixtureKey)
                 ? StardewBrowser.Testing.MuseumActions.Read() : null,
+            fishing = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingActions.FixtureKey)
+                ? StardewBrowser.Testing.FishingActions.Read() : null,
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,

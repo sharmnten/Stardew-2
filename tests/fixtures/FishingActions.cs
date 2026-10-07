@@ -10,20 +10,24 @@ namespace StardewBrowser.Testing;
 
 internal static class FishingActions
 {
+    internal const string FixtureKey = "StardewBrowser.FishingFixture";
+
     internal static void Prepare()
     {
+        Game1.player.modData[FixtureKey] = "1";
         for (int i = 0; i < Game1.player.Items.Count; i++) Game1.player.Items[i] = null;
         Game1.player.Items[0] = ItemRegistry.Create<FishingRod>("(T)IridiumRod");
         Game1.player.Items[1] = ItemRegistry.Create("(O)685", 2);
         Game1.player.CurrentToolIndex = 0;
         Game1.player.fishingLevel.Value = 5;
         Game1.player.experiencePoints[1] = 2150;
+        Game1.player.professions.Add(6); // This level-5 reference farmer has already selected Fisher.
         var beach = Game1.getLocationFromName("Beach");
         var pot = new CrabPot();
         bool placed = false;
         for (int y = 1; y < beach.Map.Layers[0].LayerHeight - 1 && !placed; y++)
         for (int x = 1; x < beach.Map.Layers[0].LayerWidth - 1 && !placed; x++)
-            if (CrabPot.IsValidCrabPotLocationTile(beach, x, y))
+            if (CrabPot.IsValidCrabPotLocationTile(beach, x, y) && FindShore(beach, new Vector2(x, y)) != null)
                 placed = pot.placementAction(beach, x * 64, y * 64, Game1.player);
         if (!placed) throw new InvalidOperationException("Original beach has no valid trap site.");
         var pond = new FishPond(new Vector2(35, 35));
@@ -69,6 +73,50 @@ internal static class FishingActions
         }
         finally { Game1.random = savedRandom; }
         return new { rod = attachment, pot = trap, pond = pondResult, bar = physics };
+    }
+
+    internal static CrabPot Pot => Game1.getLocationFromName("Beach").objects.Values.OfType<CrabPot>().Single();
+    internal static Vector2 ShoreSpot() => FindShore(Game1.getLocationFromName("Beach"), Pot.TileLocation)
+        ?? throw new InvalidOperationException("The original trap needs an adjacent passable shore tile.");
+
+    private static Vector2? FindShore(GameLocation beach, Vector2 tile)
+    {
+        foreach (var offset in new[] { new Vector2(-1, 0), new Vector2(1, 0), new Vector2(0, 1), new Vector2(0, -1) })
+        {
+            var shore = tile + offset;
+            if (shore.X > 0 && shore.Y > 0 && shore.X < beach.Map.Layers[0].LayerWidth - 1
+                && shore.Y < beach.Map.Layers[0].LayerHeight - 1 && !beach.isWaterTile((int)shore.X, (int)shore.Y)
+                && beach.isTilePassable(shore) && !beach.objects.ContainsKey(shore)
+                && !beach.terrainFeatures.ContainsKey(shore)) return shore;
+        }
+        return null;
+    }
+
+    internal static void Harvest()
+    {
+        if (!Pot.checkForAction(Game1.player)) throw new InvalidOperationException("Original crab pot harvest was rejected.");
+    }
+
+    internal static void Rebait()
+    {
+        if (!Pot.AttemptAutoLoad(Game1.player.Items, Game1.player))
+            throw new InvalidOperationException("Original crab pot rebait was rejected.");
+    }
+
+    internal static object Read()
+    {
+        var pot = Pot;
+        var pond = Game1.getFarm().buildings.OfType<FishPond>().Single();
+        return new {
+            day = Game1.dayOfMonth, experience = Game1.player.experiencePoints[1], baitCount = CountBait(),
+            professions = Game1.player.professions.Order().ToArray(),
+            pot = new { x = (int)pot.TileLocation.X, y = (int)pot.TileLocation.Y,
+                bait = pot.bait.Value?.QualifiedItemId, ready = pot.readyForHarvest.Value,
+                output = pot.heldObject.Value?.QualifiedItemId, quality = pot.heldObject.Value?.Quality },
+            @catch = Game1.player.Items.Where(item => item != null && item is not FishingRod && item.QualifiedItemId != "(O)685")
+                .Select(item => new { id = item.QualifiedItemId, stack = item.Stack, quality = item.Quality }).ToArray(),
+            pond = new { population = pond.FishCount, days = pond.daysSinceSpawn.Value, output = pond.output.Value?.QualifiedItemId }
+        };
     }
 
     private static int CountBait() => Game1.player.Items.Where(item => item?.QualifiedItemId == "(O)685").Sum(item => item.Stack);

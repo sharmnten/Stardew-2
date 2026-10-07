@@ -1444,11 +1444,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 14174
+          "bytes": 14319
         },
         {
-          "name": "Parity2_123456789",
-          "bytes": 3048597
+          "name": "Parity5_123456789",
+          "bytes": 3070791
         }
       ],
       "observations": {
@@ -1463,7 +1463,7 @@
           "accepted": true,
           "inputConsumed": 1,
           "ready": true,
-          "output": "(O)718",
+          "output": "(O)717",
           "quality": 0
         },
         "pond": {
@@ -1487,9 +1487,93 @@
           }
         }
       },
-      "desktop": "Original supplied desktop1/1 GREEN50678ms",
-      "browser": "Original method comparison1/1 GREEN54452ms",
-      "scope": "Bait/tackle attachments, crab-pot bait consumption/catch, pond spawning and32 fixed16ms original BobberBar updates under seed1729. Includes original first-catch difficulty50; casting/catching UI, gathering and full fishing flow remain open."
+      "desktop": "Original supplied desktop1/1 GREEN41831ms",
+      "browser": "Original method comparison and shore DOM harvest/rebait/full night/cold Load1/1 GREEN162104ms",
+      "scope": "Original bait/tackle attachments, reachable trap58,13 input/catch, pond spawning and32 fixed16ms BobberBar updates under seed1729. Level5/2150XP/Fisher6 are serialized prerequisites. Normal browser right-click harvest yields717/XP2155, bait consumes last inventory unit, original bridge dialogue dismissed, real bed/night/save/cold Load retains catch/XP/Fisher and new171 trap output; pond reaches3 and produces812. Casting/catching UI, pond harvest, gathering and broader fishing behavior remain open.",
+      "afterHarvest": {
+        "day": 1,
+        "experience": 2155,
+        "baitCount": 1,
+        "professions": [
+          6
+        ],
+        "pot": {
+          "x": 58,
+          "y": 13,
+          "bait": null,
+          "ready": false,
+          "output": null,
+          "quality": null
+        },
+        "catch": [
+          {
+            "id": "(O)717",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "pond": {
+          "population": 2,
+          "days": 0,
+          "output": null
+        }
+      },
+      "afterRebait": {
+        "day": 1,
+        "experience": 2155,
+        "baitCount": 0,
+        "professions": [
+          6
+        ],
+        "pot": {
+          "x": 58,
+          "y": 13,
+          "bait": "(O)685",
+          "ready": false,
+          "output": null,
+          "quality": null
+        },
+        "catch": [
+          {
+            "id": "(O)717",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "pond": {
+          "population": 2,
+          "days": 0,
+          "output": null
+        }
+      },
+      "afterReload": {
+        "day": 2,
+        "experience": 2155,
+        "baitCount": 0,
+        "professions": [
+          6
+        ],
+        "pot": {
+          "x": 58,
+          "y": 13,
+          "bait": "(O)685",
+          "ready": true,
+          "output": "(O)171",
+          "quality": 0
+        },
+        "catch": [
+          {
+            "id": "(O)717",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "pond": {
+          "population": 3,
+          "days": 0,
+          "output": "(O)812"
+        }
+      }
     },
     {
       "id": "combat-dungeons",

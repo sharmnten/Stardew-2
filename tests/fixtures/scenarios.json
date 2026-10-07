@@ -350,7 +350,7 @@
       "id": "fishing-gathering",
       "group": "fishing",
       "prerequisites": [
-        "Original serialized Iridium Rod and level5, bait inventory, empty valid beach crab pot",
+        "Original serialized Iridium Rod, level5/2150XP/already-selected Fisher6, bait inventory and empty valid beach crab pot beside passable shore",
         "Original built Sunfish pond with one fish and spawn timer due next day",
         "Controlled seed1729 and32 updates of16ms for the original first-catch fishing bar"
       ],
@@ -361,11 +361,11 @@
       ],
       "status": "unverified",
       "verifiedSubset": [
-        "Unchanged original bait/tackle/trap/pond/first-catch physics1/1 GREEN50678ms",
-        "Browser original bait/tackle/trap/pond/fixed-step fishing physics matches desktop1/1 GREEN54452ms"
+        "Unchanged original bait/tackle/trap/pond/first-catch physics plus actual harvest/rebait/full-night reload1/1 GREEN41831ms",
+        "Browser original method comparison plus DOM right-click harvest/rebait, bridge dialogue dismiss, full-night save and cold Load matches desktop1/1 GREEN162104ms"
       ],
       "remaining": [
-        "Normal casting/catching UI and harvest",
+        "Normal casting/catching UI and pond harvest",
         "Forage/resource regeneration and broader species/tackle behavior"
       ]
     },

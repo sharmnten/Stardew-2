@@ -307,6 +307,27 @@ static object CreateFarm(string id, GameRunner runner, string report)
     }
     if (id == "combat-dungeons") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.Run());
     if (id == "fishing-gathering") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Run());
+    if (id == "fishing-gathering")
+    {
+        var shore = StardewBrowser.Testing.FishingActions.ShoreSpot();
+        GoToProgressLocation("Beach", (int)shore.X, (int)shore.Y);
+        StardewBrowser.Testing.FishingActions.Harvest();
+        state["afterHarvest"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+        StardewBrowser.Testing.FishingActions.Rebait();
+        state["afterRebait"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+        Until(() => Game1.player.CanMove, "finish original crab pot harvest animation");
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 2 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original trap overnight");
+        Reload();
+        state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+    }
     if (id == "animals-buildings")
     {
         GoToFarm();

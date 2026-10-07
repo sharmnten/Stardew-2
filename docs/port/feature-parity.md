@@ -151,17 +151,25 @@ recipes65s. Production excludes all seven mutable fixture drivers, the scenario
 bridge/module and reference saves (fresh audit1/1, 1.4 seconds). These checks
 remain subsets of the fourteen groups; the full parity gate is pending.
 
-## Fishing method reference
+## Fishing methods and trap persistence
 
-Desktop1/1 (51 seconds) and browser1/1 (54 seconds) match for original bait/tackle
+Desktop1/1 (42 seconds) and browser1/1 (162 seconds) match original bait/tackle
 attachments, crab-pot input/catch, fish-pond spawning and32 fixed16ms fishing-bar
-updates under a controlled seed. The trap consumes one bait and produces
-item718; the Sunfish pond grows1→2 fish. The original first-catch branch raises
-difficulty30→50 while preserving the level5 bar height136. An initial test
-expectation omitted that native branch; correcting the expectation needed no
-gameplay change. Production excludes all eight fixture drivers (1/1, 2.3s).
-Normal casting/catching/harvest, gathering and broader fishing workflows remain
-required; the fishing group is not yet verified overall.
+updates under a controlled seed. The fixture now places its trap at58,13 beside
+original passable shore and records level5/2150XP/already-selected Fisher6.
+The original first-catch branch raises difficulty30→50 while preserving bar
+height136. Browser normal right-click harvesting adds item717 and5 XP; normal
+rebaiting consumes the last inventory bait. An adjacent original bridge-repair
+dialogue is dismissed through normal input before continuing. The original bed
+question, full overnight save, durable IndexedDB day2 and cold Load retain the
+catch,2155 XP and Fisher6. The trap has its original next-day171 output; the pond
+grows1→2→3 and produces812, all equal to desktop.
+
+An initial desktop night stopped at the original missed-profession choice because
+the level5 fixture lacked its selected profession. Correcting that serialized
+prerequisite needed no gameplay or save-repair change. Fresh production exclusion
+passes for all17 mutable drivers (1/1,1.0s). Normal casting/catching, pond harvest,
+gathering and broader fishing workflows remain open; the whole group is unverified.
 
 ## Dungeon generation and combat methods
 

@@ -14,7 +14,8 @@ test('original desktop bait, tackle, crab pot, fish pond and fishing physics', {
     env: { ...process.env, ALSOFT_DRIVERS: 'null', LIBGL_ALWAYS_SOFTWARE: '1', XDG_DATA_HOME: `${root}/data`, XDG_CONFIG_HOME: `${root}/config` }
   });
   assert.equal(result.status, 0, result.stdout + result.stderr);
-  const actual = JSON.parse(readFileSync(report)).scenario.observations;
+  const scenario = JSON.parse(readFileSync(report)).scenario;
+  const actual = scenario.observations;
   assert.equal(actual.rod.bait, '(O)685');
   assert.equal(actual.rod.baitStack, 20);
   assert.deepEqual(actual.rod.tackle, ['(O)686']);
@@ -30,4 +31,21 @@ test('original desktop bait, tackle, crab pot, fish pond and fishing physics', {
   assert.equal(actual.bar.after.scale, 1);
   assert.equal(Number.isFinite(actual.bar.after.position), true);
   assert.equal(Number.isFinite(actual.bar.after.distance), true);
+  assert.ok(scenario.afterHarvest, 'Record original shore harvesting');
+  assert.equal(scenario.afterHarvest.experience, 2155);
+  assert.deepEqual(scenario.afterHarvest.professions, [6]);
+  assert.equal(scenario.afterHarvest.baitCount, 1);
+  assert.equal(scenario.afterHarvest.pot.ready, false);
+  assert.equal(scenario.afterHarvest.pot.bait, null);
+  assert.equal(scenario.afterHarvest.pot.output, null);
+  assert.deepEqual(scenario.afterHarvest.catch, [{ id: actual.pot.output, stack: 1, quality: 0 }]);
+  assert.equal(scenario.afterRebait.baitCount, 0);
+  assert.equal(scenario.afterRebait.pot.bait, '(O)685');
+  assert.equal(scenario.afterRebait.pot.ready, false);
+  assert.equal(scenario.afterReload.day, 2);
+  assert.equal(scenario.afterReload.pot.ready, true);
+  assert.match(scenario.afterReload.pot.output, /^\(O\)/);
+  assert.equal(scenario.afterReload.experience, 2155);
+  assert.deepEqual(scenario.afterReload.professions, [6]);
+  assert.deepEqual(scenario.afterReload.catch, scenario.afterHarvest.catch);
 });
