@@ -255,7 +255,29 @@ static object CreateFarm(string id, GameRunner runner, string report)
         Reload();
         state["afterProgressReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Read());
     }
-    if (id == "characters-family") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Run());
+    if (id == "characters-family")
+    {
+        state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Run());
+        Reload();
+        var linus = Game1.getCharacterFromName("Linus");
+        GoToProgressLocation(linus.currentLocation.NameOrUniqueName, (int)linus.Tile.X, (int)linus.Tile.Y + 1);
+        StardewBrowser.Testing.FamilyActions.GiveHeldGift();
+        DismissToolDialogue();
+        state["afterNormalGift"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Read());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        state["bedRoute"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.BedRoute()
+            .Select(point => new { x = point.X, y = point.Y }).ToArray());
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 6 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original family overnight");
+        Reload();
+        state["afterFamilyReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Read());
+    }
     if (id == "combat-dungeons") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.Run());
     if (id == "fishing-gathering") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Run());
     if (id == "animals-buildings")

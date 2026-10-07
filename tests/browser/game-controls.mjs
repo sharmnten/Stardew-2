@@ -36,15 +36,16 @@ export async function hold(page, key, milliseconds) {
   await page.keyboard.up(key);
   await page.waitForFunction(key => !window.portStatus.game.input.keys.includes(key), nativeKey, { timeout: 10000 });
 }
-export async function walkTo(page, x, y, until = () => false) {
+export async function walkTo(page, x, y, until = () => false, tolerance = 20) {
   const location = (await snapshot(page)).location.name;
   for (let step = 0; step < 120; step++) {
     const state = await snapshot(page);
     if (until(state)) return;
     assert.equal(state.location.name, location, 'A location transition must end the current walking route');
     const dx = x - state.player.positionX, dy = y - state.player.positionY;
-    if (Math.abs(dx) <= 20 && Math.abs(dy) <= 20) return;
-    await hold(page, Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'a' : 'd') : (dy < 0 ? 'w' : 's'), 80);
+    if (Math.abs(dx) <= tolerance && Math.abs(dy) <= tolerance) return;
+    const duration = tolerance < 20 && Math.max(Math.abs(dx), Math.abs(dy)) < 32 ? 0 : 80;
+    await hold(page, Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'a' : 'd') : (dy < 0 ? 'w' : 's'), duration);
   }
   assert.fail(`Original farmer could not walk to ${x},${y}`);
 }

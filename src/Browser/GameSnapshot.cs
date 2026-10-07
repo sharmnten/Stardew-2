@@ -23,8 +23,11 @@ internal static class GameSnapshot
         {
             var warp = house.warps.FirstOrDefault(warp => warp.TargetName == "Farm");
             if (warp != null) exit = new { x = warp.X * 64, y = (warp.Y - 1) * 64 };
-            var spot = house.GetPlayerBedSpot();
-            bed = new { x = spot.X * 64, y = spot.Y * 64 };
+            if (house.GetPlayerBed() is { } playerBed)
+            {
+                var spot = playerBed.GetBedSpot();
+                bed = new { x = spot.X * 64, y = spot.Y * 64 };
+            }
         }
         if (location is Farm farm)
         {

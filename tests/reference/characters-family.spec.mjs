@@ -14,7 +14,8 @@ test('original desktop NPC gifts, schedules, dialogue and child growth', { timeo
     env: { ...process.env, ALSOFT_DRIVERS: 'null', LIBGL_ALWAYS_SOFTWARE: '1', XDG_DATA_HOME: `${root}/data`, XDG_CONFIG_HOME: `${root}/config` }
   });
   assert.equal(result.status, 0, result.stdout + result.stderr);
-  const actual = JSON.parse(readFileSync(report)).scenario.observations;
+  const state = JSON.parse(readFileSync(report)).scenario;
+  const actual = state.observations;
   assert.equal(actual.gift.taste, 0);
   assert.equal(actual.gift.pointsGained, 100);
   assert.equal(actual.gift.giftsToday, 1);
@@ -28,4 +29,20 @@ test('original desktop NPC gifts, schedules, dialogue and child growth', { timeo
   assert.equal(actual.family.children, 1);
   assert.deepEqual(actual.child.stages.map(stage => [stage.days, stage.age]), [[13, 1], [27, 2], [55, 3]]);
   assert.equal(actual.child.stages.at(-1).speed, 4);
+  assert.equal(state.afterNormalGift.coconuts, 0);
+  assert.equal(state.afterNormalGift.linus.points, 850);
+  assert.equal(state.afterNormalGift.linus.giftsToday, 1);
+  assert.equal(state.afterNormalGift.linus.giftsThisWeek, 1);
+  assert.equal(state.afterNormalGift.giftsGiven, 1);
+  assert.equal(state.afterNormalGift.bedType, 'Double');
+  assert.ok(state.bedRoute.length > 0, 'Original pathfinder must find the upgraded player bed');
+  assert.equal(state.afterFamilyReload.day, 6);
+  assert.equal(state.afterFamilyReload.coconuts, 0);
+  assert.equal(state.afterFamilyReload.married, true);
+  assert.equal(state.afterFamilyReload.spouse, 'Abigail');
+  assert.equal(state.afterFamilyReload.houseLevel, 2);
+  assert.equal(state.afterFamilyReload.bedType, 'Double');
+  assert.deepEqual(state.afterFamilyReload.children, [{ name: 'PortChild', days: 13, age: 1 }]);
+  assert.equal(state.afterFamilyReload.linus.giftsThisWeek, 1);
+  assert.equal(state.afterFamilyReload.giftsGiven, 1);
 });

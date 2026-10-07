@@ -1601,11 +1601,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 17622
+          "bytes": 17935
         },
         {
-          "name": "Parity_123456789",
-          "bytes": 3029875
+          "name": "Parity5_123456789",
+          "bytes": 3027095
         }
       ],
       "observations": {
@@ -1705,9 +1705,149 @@
           ]
         }
       },
-      "desktop": "Original supplied desktop1/1 GREEN31941ms",
-      "browser": "Original method comparison1/1 GREEN54270ms",
-      "scope": "Original quality2 loved gift/counters, dialogue/schedule routes and child dayUpdate stages. Marriage/upgraded house/child are saved prerequisites. Normal conversations, heart events, courtship/wedding/birth and full family persistence remain open."
+      "desktop": "Original supplied desktop1/1 GREEN62121ms",
+      "browser": "Original method comparison/held gift/Double bed native-key path/full night/cold Load1/1 GREEN206770ms",
+      "scope": "Original quality2 loved gift/counters/dialogue/schedule routes and child stages. Actual browser gift consumes saved item; original upgraded-home double bed and pathfinder route lead to normal overnight save/cold Load. Day6 friend848/giftToday0/week1/marriage/home2/Double bed/child13daysAge1 match desktop. Marriage and initial child are prerequisites; courtship/wedding/birth and broader heart events remain open.",
+      "afterNormalGift": {
+        "day": 5,
+        "coconuts": 0,
+        "linus": {
+          "points": 850,
+          "giftsToday": 1,
+          "giftsThisWeek": 1
+        },
+        "giftsGiven": 1,
+        "married": true,
+        "spouse": "Abigail",
+        "houseLevel": 2,
+        "bedType": "Double",
+        "children": [
+          {
+            "name": "PortChild",
+            "days": 12,
+            "age": 0
+          }
+        ]
+      },
+      "bedRoute": [
+        {
+          "x": 27,
+          "y": 30
+        },
+        {
+          "x": 27,
+          "y": 29
+        },
+        {
+          "x": 28,
+          "y": 29
+        },
+        {
+          "x": 29,
+          "y": 29
+        },
+        {
+          "x": 30,
+          "y": 29
+        },
+        {
+          "x": 31,
+          "y": 29
+        },
+        {
+          "x": 32,
+          "y": 29
+        },
+        {
+          "x": 33,
+          "y": 29
+        },
+        {
+          "x": 34,
+          "y": 29
+        },
+        {
+          "x": 35,
+          "y": 29
+        },
+        {
+          "x": 35,
+          "y": 28
+        },
+        {
+          "x": 36,
+          "y": 28
+        },
+        {
+          "x": 37,
+          "y": 28
+        },
+        {
+          "x": 38,
+          "y": 28
+        },
+        {
+          "x": 39,
+          "y": 28
+        },
+        {
+          "x": 40,
+          "y": 28
+        },
+        {
+          "x": 41,
+          "y": 28
+        },
+        {
+          "x": 41,
+          "y": 27
+        },
+        {
+          "x": 41,
+          "y": 26
+        },
+        {
+          "x": 41,
+          "y": 25
+        },
+        {
+          "x": 41,
+          "y": 24
+        },
+        {
+          "x": 41,
+          "y": 23
+        },
+        {
+          "x": 42,
+          "y": 23
+        },
+        {
+          "x": 43,
+          "y": 23
+        }
+      ],
+      "afterFamilyReload": {
+        "day": 6,
+        "coconuts": 0,
+        "linus": {
+          "points": 848,
+          "giftsToday": 0,
+          "giftsThisWeek": 1
+        },
+        "giftsGiven": 1,
+        "married": true,
+        "spouse": "Abigail",
+        "houseLevel": 2,
+        "bedType": "Double",
+        "children": [
+          {
+            "name": "PortChild",
+            "days": 13,
+            "age": 1
+          }
+        ]
+      }
     },
     {
       "id": "skills-mastery-achievements",

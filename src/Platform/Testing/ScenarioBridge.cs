@@ -67,6 +67,24 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "family-visit-linus" or "family-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey))
+                throw new InvalidOperationException("Load the family fixture before its location setup.");
+            bool visit = id == "family-visit-linus";
+            var linus = Game1.getCharacterFromName("Linus");
+            string target = visit ? linus.currentLocation.NameOrUniqueName : "FarmHouse";
+            Game1.warpFarmer(target, visit ? (int)linus.Tile.X : 7, visit ? (int)linus.Tile.Y + 1 : 8, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.NameOrUniqueName != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original family location warp did not finish.");
+                await Task.Delay(16);
+            }
+            return visit ? "{}" : JsonSerializer.Serialize(StardewBrowser.Testing.FamilyActions.BedRoute()
+                .Select(point => new { x = point.X, y = point.Y }).ToArray(), Json);
+        }
         if (id is "mastery-prepare" or "progression-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.ProgressionActions.FixtureKey))
@@ -182,6 +200,10 @@ internal sealed class ScenarioBridge(HttpClient http)
             professions = Game1.player.professions.Order().ToArray(),
             progression = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ProgressionActions.FixtureKey)
                 ? StardewBrowser.Testing.ProgressionActions.Read() : null,
+            family = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
+                ? StardewBrowser.Testing.FamilyActions.Read() : null,
+            linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
+                ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,
             toolDiagnostics = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
                 ? StardewBrowser.Testing.ToolUpgradeActions.Diagnostics() : null,

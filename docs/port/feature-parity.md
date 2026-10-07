@@ -180,9 +180,19 @@ Desktop1/1 (32 seconds) and browser1/1 (54 seconds) match a loved gold-quality
 coconut gift to Linus:100 friendship points, gift counters and original reaction
 dialogue. Original schedule times, destinations, facing and route lengths also
 match. A serialized Abigail marriage, upgraded home and child are explicit
-prerequisites; original child updates reach ages1/2/3 at days13/27/55. Courtship,
-wedding, birth/adoption, normal conversations/heart events and full-day family
-persistence remain required.
+prerequisites; original child updates reach ages1/2/3 at days13/27/55. The extended
+desktop check passes1/1 (62 seconds), and browser1/1 (207 seconds) gives the saved
+gold-quality coconut to Linus through normal input. The item is consumed and
+friendship becomes850, with gift counters1. The original upgraded home has a
+double bed; browser movement follows the original pathfinder's24-tile route around
+its furniture, accepts the bed question and completes the original overnight save.
+Cold Load matches the desktop day6 state: Linus848/giftsToday0/giftsThisWeek1,
+marriage/house level2/double bed retained, and child13days/age1. Initial failures
+identified fixture and routing mistakes: the fixture had omitted original
+moveObjectsForHouseUpgrade, and a fixed entrance route hit upgraded furniture.
+Both corrections preserve original gameplay, collision and serialization.
+Courtship, wedding, birth/adoption and broader conversations/heart events remain
+required; the entire character/family group is still unverified.
 
 ## Skill, mastery and local achievement methods
 
