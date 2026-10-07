@@ -252,7 +252,18 @@ charges2000 gold and five copper bars, removes the basic axe and starts the
 CopperAxe level1 upgrade. Two original farmer day updates decrement2→1→0; the
 original blacksmith interaction returns the axe and clears the pending upgrade.
 Browser1/1 (52 seconds) matches every field; the accompanying normal arcade
-regression also passes1/1 (54 seconds). Normal world/shop DOM input, two actual full
-nights and persisted handoff/return remain open. Production excludes all sixteen
+regression also passes1/1 (54 seconds). The extended original desktop test also
+passes1/1 (78 seconds) across three actual nights and normal reloads. The full
+browser check passes1/1 (304 seconds): original shop DOM purchase, first-night
+pending upgrade/cold Load, second-night completion, counter interaction/animation/
+popup/service Leave, normal walk from the farmhouse entrance to the bed, and
+third-night save/cold Load retain the original concrete CopperAxe level1.
+A focused original ready-save check covers counter/popup/home/bed input (1/1,
+63 seconds). The original new-game/save-failure/import/migration regression also
+passes1/1 (173 seconds). Tests await original night menus, queued morning messages
+and durable IndexedDB XML before accepting completion. Async interop/storage
+predicates use explicit awaited polling because the installed Playwright polling
+implementation treats returned Promises as immediately truthy. These checks
+preserve original gameplay and collision behavior. Production excludes all sixteen
 mutable fixture drivers (fresh audit1/1,1.4s). Fresh tooling17/17, platform38/38
 and game3/3 checks pass.

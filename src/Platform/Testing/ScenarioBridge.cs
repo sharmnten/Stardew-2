@@ -67,6 +67,29 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+
+        if (id is "tool-upgrades-shop" or "tool-upgrades-visit" or "tool-upgrades-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey))
+                throw new InvalidOperationException("Load the tool-upgrade fixture before its UI setup.");
+            if (id == "tool-upgrades-shop")
+            {
+                StardewBrowser.Testing.ToolUpgradeActions.OpenShop();
+                return "{}";
+            }
+            bool visit = id == "tool-upgrades-visit";
+            var counter = StardewBrowser.Testing.ToolUpgradeActions.Counter();
+            string target = visit ? "Blacksmith" : "FarmHouse";
+            Game1.warpFarmer(target, visit ? counter.X : 7, visit ? counter.Y + 1 : 8, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original tool upgrade location warp did not finish.");
+                await Task.Delay(16);
+            }
+            return JsonSerializer.Serialize(new { x = counter.X, y = counter.Y }, Json);
+        }
         if (loadedScenario != id)
             throw new InvalidOperationException("Load the matching original fixture before running its actions.");
         if (id == "animals-buildings")
@@ -122,6 +145,11 @@ internal sealed class ScenarioBridge(HttpClient http)
             animals = farm.getAllFarmAnimals().Select(animal => new { type = animal.type.Value, name = animal.Name }).OrderBy(animal => animal.type).ToArray(),
             advanced = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AdvancedActions.FixtureKey)
                 ? StardewBrowser.Testing.AdvancedActions.Read() : null,
+            morningQueueCount = Game1.morningQueue.Count,
+            toolDiagnostics = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
+                ? StardewBrowser.Testing.ToolUpgradeActions.Diagnostics() : null,
+            toolUpgrade = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
+                ? StardewBrowser.Testing.ToolUpgradeActions.Read() : null,
             locationCount = Game1.locations.Count,
             locations = Game1.locations.Select(location => location.NameOrUniqueName).Order().ToArray()
         }, Json);
@@ -129,7 +157,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "tool-upgrades", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
+        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);

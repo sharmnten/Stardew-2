@@ -48,3 +48,28 @@ export async function walkTo(page, x, y, until = () => false) {
   }
   assert.fail(`Original farmer could not walk to ${x},${y}`);
 }
+
+// This Playwright build treats a returned Promise as truthy in waitForFunction.
+// Poll asynchronous .NET/storage observations from Node and await their results.
+export async function waitForAsync(page, predicate, arg, timeout = 30000) {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    if (await page.evaluate(predicate, arg)) return;
+    await page.waitForTimeout(50);
+  }
+  throw new Error(`Timed out waiting for asynchronous game state after ${timeout}ms`);
+}
+
+export async function walkToBed(page) {
+  const start = await snapshot(page), house = start.location;
+  assert.ok(house.bed, 'Sleep route requires an original farmhouse bed');
+  const sleeping = state => state.menu.type === 'DialogueBox';
+  // Original FarmHouse.resetLocalState puts returning players in the entrance.
+  // Move into the room before crossing horizontally past the doorway wall.
+  if (start.player.positionY > house.bed.y + 64)
+    await walkTo(page, start.player.positionX, house.bed.y - 64, sleeping);
+  if ((await snapshot(page)).menu.type !== 'DialogueBox')
+    await walkTo(page, house.bed.x - 128, (await snapshot(page)).player.positionY, sleeping);
+  if ((await snapshot(page)).menu.type !== 'DialogueBox') await walkTo(page, house.bed.x - 128, house.bed.y, sleeping);
+  if ((await snapshot(page)).menu.type !== 'DialogueBox') await walkTo(page, house.bed.x, house.bed.y, sleeping);
+}

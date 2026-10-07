@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { deflateSync } from 'node:zlib';
 import { withGame } from './driver.mjs';
 
-import { snapshot, clickControl, hold, walkTo, pointAtWorld } from './game-controls.mjs';
+import { snapshot, clickControl, hold, walkTo, pointAtWorld, waitForAsync } from './game-controls.mjs';
 
 test('the original new-game journey persists, recovers a failed save, reloads and migrates imported saves', { timeout: 360000 }, async () => {
   await withGame(async page => {
@@ -147,8 +147,8 @@ test('the original new-game journey persists, recovers a failed save, reloads an
       { name: morning.save.slot, mimeType: 'application/octet-stream', buffer: compressedLegacy },
       { name: 'SaveGameInfo', mimeType: 'application/xml', buffer: Buffer.from(legacy.info, 'base64') }
     ]);
-    await page.waitForFunction(async ({ slot, bytes }) => (await portStorage.readForDotNet(slot)).files[slot] === bytes,
-      { slot: morning.save.slot, bytes: compressedLegacy.toString('base64') }, { timeout: 60000 });
+    await waitForAsync(page, async ({ slot, bytes }) => (await portStorage.readForDotNet(slot)).files[slot] === bytes,
+      { slot: morning.save.slot, bytes: compressedLegacy.toString('base64') }, 60000);
     await page.waitForFunction(() => document.querySelector('#saveMessage')?.textContent.includes('Save imported'), null, { timeout: 60000 });
     await page.locator('#savePanel button').first().click();
     await hold(page, 'Escape', 100);

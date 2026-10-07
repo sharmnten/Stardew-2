@@ -2411,6 +2411,84 @@
       "desktop": "Original supplied desktop1/1 GREEN23894ms",
       "browser": "Original method comparison1/1 GREEN52748ms",
       "scope": "Original null-location limited walnut requests/team update, Hut perch mutex/construction/animation, Qi catalog constructors/tags and perfection metric. Twelve catalog entries include eleven implemented and unused QiChallenge11 tagged NOT_IMPLEMENTED. Physical island play, Qi completion/rewards, perfection ending and post-action persistence remain open."
+    },
+    {
+      "id": "tool-upgrades",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 14149
+        },
+        {
+          "name": "Parity5_123456789",
+          "bytes": 3045192
+        }
+      ],
+      "observations": {
+        "purchase": {
+          "id": "(T)CopperAxe",
+          "moneySpent": 2000,
+          "barsSpent": 5,
+          "level": 1,
+          "originalRemoved": true
+        },
+        "countdown": [
+          2,
+          1,
+          0
+        ],
+        "collection": {
+          "handled": true,
+          "pending": false,
+          "id": "(T)CopperAxe",
+          "level": 1
+        }
+      },
+      "prerequisites": "Original serializer: year2 Spring5, basic axe,2000 gold and five copper bars; no pending upgrade.",
+      "scope": "Original ClintUpgrade menu purchase, original farmer daily countdown and original blacksmith return; extended to actual3 full nights and original cold reloads.",
+      "desktop": "1/1 GREEN77554ms; full original nights and reloads preserve pending/countdown/collected concrete CopperAxe1.",
+      "browser": "Full normal original shop/counter/animation/popup/Leave/bed controls,3 full nights,2 cold Loads and durableXML compare1/1 GREEN304294ms. Focused actual desktop ready-save/counter/home/bed1/1 GREEN63201ms; original newgame/save-failure/import/migration regression1/1 GREEN172682ms.",
+      "afterFirstNight": {
+        "day": 6,
+        "money": 0,
+        "bars": 0,
+        "pendingId": "(T)CopperAxe",
+        "pendingLevel": 1,
+        "days": 1,
+        "axes": []
+      },
+      "afterFirstReload": {
+        "day": 6,
+        "money": 0,
+        "bars": 0,
+        "pendingId": "(T)CopperAxe",
+        "pendingLevel": 1,
+        "days": 1,
+        "axes": []
+      },
+      "afterSecondNight": {
+        "day": 7,
+        "money": 0,
+        "bars": 0,
+        "pendingId": "(T)CopperAxe",
+        "pendingLevel": 1,
+        "days": 0,
+        "axes": []
+      },
+      "afterCollectedReload": {
+        "day": 8,
+        "money": 0,
+        "bars": 0,
+        "pendingId": null,
+        "pendingLevel": null,
+        "days": 0,
+        "axes": [
+          {
+            "id": "(T)CopperAxe",
+            "level": 1
+          }
+        ]
+      }
     }
   ],
   "advancedReference": {

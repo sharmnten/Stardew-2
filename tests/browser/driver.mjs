@@ -33,7 +33,12 @@ export async function withGame(testBody, setupPage = async () => {}, route = '/?
       const output = resolve('.port-cache/browser-failures');
       await mkdir(output, { recursive: true });
       const mode = route.includes('diagnostic=1') ? 'diagnostic' : 'game';
-      await writeFile(resolve(output, `${mode}.json`), JSON.stringify(await page.evaluate(() => window.portStatus), null, 2));
+      await writeFile(resolve(output, `${mode}.json`), JSON.stringify(await page.evaluate(async () => {
+        let scenario = null;
+        try { if (window.portScenarios) scenario = await window.portScenarios.snapshot(); }
+        catch (error) { scenario = { error: String(error) }; }
+        return { ...window.portStatus, scenario };
+      }), null, 2));
       await page.screenshot({ path: resolve(output, `${mode}.png`) });
       throw error;
     }

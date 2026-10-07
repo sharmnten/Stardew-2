@@ -188,6 +188,38 @@ static object CreateFarm(string id, GameRunner runner, string report)
     if (id == "farming-season") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FarmingActions.Run());
     if (id == "inventory-economy") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.EconomyActions.Run());
     if (id == "tool-upgrades") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ToolUpgradeActions.Run());
+    if (id == "tool-upgrades")
+    {
+        Reload();
+        StardewBrowser.Testing.ToolUpgradeActions.OpenShop();
+        StardewBrowser.Testing.ToolUpgradeActions.Purchase();
+        DismissToolDialogue();
+        ToolNight(6);
+        state["afterFirstNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ToolUpgradeActions.Read());
+        Reload();
+        state["afterFirstReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ToolUpgradeActions.Read());
+        ToolNight(7);
+        state["afterSecondNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ToolUpgradeActions.Read());
+        string readyId = "tool-upgrades-ready";
+        string readyFixture = Path.Combine(Path.GetDirectoryName(report)!, "fixtures", readyId, slot);
+        Directory.CreateDirectory(readyFixture);
+        foreach (string name in new[] { slot, "SaveGameInfo" }) File.Copy(Path.Combine(saved, name), Path.Combine(readyFixture, name), true);
+        File.WriteAllText(Path.Combine(Path.GetDirectoryName(report)!, "fixtures", readyId + ".json"),
+            JsonSerializer.Serialize(new { gameVersion = typeof(Game1).Assembly.GetName().Version!.ToString(),
+                scenario = new { id = readyId, saveFiles = Directory.GetFiles(readyFixture)
+                    .Select(file => new { name = Path.GetFileName(file), bytes = new FileInfo(file).Length }).ToArray(),
+                    observations = StardewBrowser.Testing.ToolUpgradeActions.Read() } }));
+        var counter = StardewBrowser.Testing.ToolUpgradeActions.Counter();
+        Game1.warpFarmer("Blacksmith", counter.X, counter.Y + 1, false);
+        Until(() => Game1.currentLocation.Name == "Blacksmith" && !Game1.isWarping && Game1.player.CanMove, "visit original blacksmith");
+        if (!StardewBrowser.Testing.ToolUpgradeActions.Collect()) throw new InvalidOperationException("Original blacksmith did not return the tool.");
+        DismissToolDialogue();
+        Game1.warpFarmer("FarmHouse", 7, 8, false);
+        Until(() => Game1.currentLocation.Name == "FarmHouse" && !Game1.isWarping && Game1.player.CanMove, "return home with upgraded tool");
+        ToolNight(8);
+        Reload();
+        state["afterCollectedReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ToolUpgradeActions.Read());
+    }
     if (id == "recipes-machines") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProductionActions.Run());
     if (id == "island-qi-perfection") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.IslandActions.Run());
     if (id == "original-minigames") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.Run());
@@ -231,6 +263,29 @@ static object CreateFarm(string id, GameRunner runner, string report)
         state["afterActionReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.TextSignActions.Read());
     }
     return state;
+
+
+    void DismissToolDialogue()
+    {
+        Until(() => {
+            if (Game1.activeClickableMenu is DialogueBox dialogue && !dialogue.transitioning && dialogue.safetyTimer <= 0
+                && dialogue.characterIndexInDialogue >= dialogue.getCurrentString().Length - 1)
+                dialogue.receiveLeftClick(0, 0);
+            return Game1.player.CanMove && Game1.activeClickableMenu == null;
+        }, "finish original tool dialogue/animation");
+    }
+
+    void ToolNight(int day)
+    {
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is ShippingMenu or SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == day && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.morningQueue.Count == 0
+                && Game1.player.CanMove && Game1.activeClickableMenu == null;
+        }, "complete original tool upgrade overnight");
+    }
 
     void GoToFarm()
     {
