@@ -12,7 +12,7 @@ fi
 python3 tools/build_audio.py
 dotnet test tests/Platform.Tests --nologo
 dotnet test tests/Game.Tests --nologo
-node --test --test-concurrency=1 tests/reference/desktop.spec.mjs tests/reference/farming.spec.mjs tests/reference/production-economy.spec.mjs tests/reference/decoration.spec.mjs tests/reference/text-sign.spec.mjs tests/reference/animals-buildings.spec.mjs tests/reference/fishing.spec.mjs tests/reference/combat.spec.mjs tests/reference/characters-family.spec.mjs tests/reference/progression.spec.mjs tests/reference/story.spec.mjs tests/reference/calendar.spec.mjs tests/reference/minigames.spec.mjs tests/reference/advanced-roundtrip.spec.mjs
+node --test --test-concurrency=1 tests/reference/desktop.spec.mjs tests/reference/farming.spec.mjs tests/reference/production-economy.spec.mjs tests/reference/decoration.spec.mjs tests/reference/text-sign.spec.mjs tests/reference/animals-buildings.spec.mjs tests/reference/fishing.spec.mjs tests/reference/combat.spec.mjs tests/reference/characters-family.spec.mjs tests/reference/progression.spec.mjs tests/reference/story.spec.mjs tests/reference/calendar.spec.mjs tests/reference/minigames.spec.mjs tests/reference/island.spec.mjs tests/reference/advanced-roundtrip.spec.mjs
 dotnet publish src/Browser/Browser.csproj -c Release -p:BrowserPortTesting=true --nologo
 node --test --test-concurrency=1 tests/browser/*.spec.mjs
 node --test tests/reference/browser-export.spec.mjs

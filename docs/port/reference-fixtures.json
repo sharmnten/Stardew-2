@@ -2047,6 +2047,370 @@
       "desktop": "Original supplied desktop1/1 GREEN55802ms",
       "browser": "Original replay comparison1/1 GREEN51544ms",
       "scope": "Original InputState receives controlled keyboard states and16ms ticks: Prairie King start/move/fire/local progress; both Junimo Kart modes start and generate matching tracks/physics/score/lives. Normal DOM rendering/input, full progression, rewards and post-action persistence remain open."
+    },
+    {
+      "id": "island-qi-perfection",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16874
+        },
+        {
+          "name": "Parity3_123456789",
+          "bytes": 3026011
+        }
+      ],
+      "observations": {
+        "walnuts": {
+          "limitedDrops": 5,
+          "found": 5,
+          "balance": 4
+        },
+        "parrot": {
+          "cost": 1,
+          "complete": true,
+          "state": "Complete",
+          "mail": [
+            "Island_FirstParrot%&NL&%"
+          ]
+        },
+        "qi": [
+          {
+            "id": "QiChallenge",
+            "type": "Qi",
+            "name": "FivePlagues",
+            "condition": "",
+            "tags": "NOT_IMPLEMENTED, !rule_QI_BEANS",
+            "tagsMatch": false,
+            "definedObjectives": [
+              "Ship"
+            ],
+            "objectives": [
+              {
+                "type": "ShipObjective",
+                "count": 0,
+                "required": 500,
+                "description": "[QiChallenge_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge10",
+            "type": "Qi",
+            "name": "Skull Cavern Invasion",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "ReachMineFloor"
+            ],
+            "objectives": [
+              {
+                "type": "ReachMineFloorObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge10_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge11",
+            "type": "Qi",
+            "name": "Find Qi's Double",
+            "condition": "",
+            "tags": "NOT_IMPLEMENTED",
+            "tagsMatch": false,
+            "definedObjectives": [
+              "Custom"
+            ],
+            "objectives": [],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge12",
+            "type": "Qi",
+            "name": "Qi's Prismatic Grange",
+            "condition": "",
+            "tags": "!dropbox_QiChallengeBox",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "Donate",
+              "Donate",
+              "Donate",
+              "Donate",
+              "Donate",
+              "Donate"
+            ],
+            "objectives": [
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge12_Objective_0_Text]"
+              },
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge12_Objective_1_Text]"
+              },
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge12_Objective_2_Text]"
+              },
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge12_Objective_3_Text]"
+              },
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge12_Objective_4_Text]"
+              },
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge12_Objective_5_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge2",
+            "type": "Qi",
+            "name": "Qi's Crop",
+            "condition": "",
+            "tags": "!rule_QI_BEANS",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "Ship"
+            ],
+            "objectives": [
+              {
+                "type": "ShipObjective",
+                "count": 0,
+                "required": 500,
+                "description": "[QiChallenge2_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge3",
+            "type": "Qi",
+            "name": "Let's Play A Game",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "JKScore"
+            ],
+            "objectives": [
+              {
+                "type": "JKScoreObjective",
+                "count": 0,
+                "required": 50000,
+                "description": "[QiChallenge3_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge4",
+            "type": "Qi",
+            "name": "Four Precious Stones",
+            "condition": "",
+            "tags": "!dropbox_QiChallengeBox",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "Collect",
+              "Donate"
+            ],
+            "objectives": [
+              {
+                "type": "CollectObjective",
+                "count": 0,
+                "required": 4,
+                "description": "[Marlon_DF_2_Objective]"
+              },
+              {
+                "type": "DonateObjective",
+                "count": 0,
+                "required": 4,
+                "description": "[QiChallenge4_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge5",
+            "type": "Qi",
+            "name": "Qi's Hungry Challenge",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "ReachMineFloor"
+            ],
+            "objectives": [
+              {
+                "type": "ReachMineFloorObjective",
+                "count": 0,
+                "required": 100,
+                "description": "[QiChallenge5_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge6",
+            "type": "Qi",
+            "name": "Qi's Cuisine",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "Ship"
+            ],
+            "objectives": [
+              {
+                "type": "ShipObjective",
+                "count": 0,
+                "required": 100000,
+                "description": "[QiChallenge6_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge7",
+            "type": "Qi",
+            "name": "Qi's Kindness",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "Gift"
+            ],
+            "objectives": [
+              {
+                "type": "GiftObjective",
+                "count": 0,
+                "required": 50,
+                "description": "[QiChallenge7_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge8",
+            "type": "Qi",
+            "name": "Extended Family",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "Fish",
+              "Fish",
+              "Fish",
+              "Fish",
+              "Fish"
+            ],
+            "objectives": [
+              {
+                "type": "FishObjective",
+                "count": 0,
+                "required": 1,
+                "description": "[QiChallenge8_Objective_0_Text]"
+              },
+              {
+                "type": "FishObjective",
+                "count": 0,
+                "required": 1,
+                "description": "[QiChallenge8_Objective_1_Text]"
+              },
+              {
+                "type": "FishObjective",
+                "count": 0,
+                "required": 1,
+                "description": "[QiChallenge8_Objective_2_Text]"
+              },
+              {
+                "type": "FishObjective",
+                "count": 0,
+                "required": 1,
+                "description": "[QiChallenge8_Objective_3_Text]"
+              },
+              {
+                "type": "FishObjective",
+                "count": 0,
+                "required": 1,
+                "description": "[QiChallenge8_Objective_4_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          },
+          {
+            "id": "QiChallenge9",
+            "type": "Qi",
+            "name": "Danger In The Deep",
+            "condition": "",
+            "tags": "",
+            "tagsMatch": true,
+            "definedObjectives": [
+              "ReachMineFloor"
+            ],
+            "objectives": [
+              {
+                "type": "ReachMineFloorObjective",
+                "count": 0,
+                "required": 120,
+                "description": "[QiChallenge9_Objective_0_Text]"
+              }
+            ],
+            "rewards": [
+              "GemsReward"
+            ]
+          }
+        ],
+        "perfection": {
+          "before": 0,
+          "after": 0.0019230769
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN23894ms",
+      "browser": "Original method comparison1/1 GREEN52748ms",
+      "scope": "Original null-location limited walnut requests/team update, Hut perch mutex/construction/animation, Qi catalog constructors/tags and perfection metric. Twelve catalog entries include eleven implemented and unused QiChallenge11 tagged NOT_IMPLEMENTED. Physical island play, Qi completion/rewards, perfection ending and post-action persistence remain open."
     }
   ],
   "advancedReference": {

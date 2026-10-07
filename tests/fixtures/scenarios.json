@@ -515,15 +515,26 @@
       "id": "island-qi-perfection",
       "group": "late-game",
       "prerequisites": [
-        "Island access and walnut sources",
-        "Qi challenge and perfection prerequisites"
+        "Original serialized repaired-boat mail",
+        "Original capped IslandFishing reward API and team update, null location credits via native API",
+        "Original Hut perch construction/mutex/animation timers and random input1729"
       ],
       "expected": [
         "Original island warp and walnut unlocks",
         "Qi challenge rewards and expiry",
         "Perfection accounting matches desktop"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop original limited walnut pool caps5; original parrot spends1, completes and queues mail",
+        "Desktop all12 Qi catalog entries constructed,11 implemented objectives/rewards and unused NOT_IMPLEMENTED entry remains rejected",
+        "Desktop original perfection score0\u21920.0019230769",
+        "Browser original method comparison equals all desktop walnut/parrot/Qi/perfection fields"
+      ],
+      "remaining": [
+        "Physical island warps/collection and parrot/Qi player UI",
+        "Qi challenge completion/rewards, full perfection/ending and overnight persistence"
+      ]
     },
     {
       "id": "original-minigames",

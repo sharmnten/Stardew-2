@@ -10,7 +10,7 @@ test('production browser assembly excludes the mutable ScenarioBridge and its JS
   const types = spawnSync('dotnet', ['tool', 'run', 'ilspycmd', '-l', 'c', assembly], { encoding: 'utf8', timeout: 45000 });
   assert.equal(types.status, 0, types.stderr);
   assert.ok(!types.stdout.includes('StardewBrowser.Platform.Testing.ScenarioBridge'), 'Production must exclude ScenarioBridge at compile time');
-  for (const driver of ['FarmingActions', 'EconomyActions', 'ProductionActions', 'AdvancedActions', 'DecorationActions', 'TextSignActions', 'AnimalActions', 'FishingActions', 'CombatActions', 'FamilyActions', 'ProgressionActions', 'StoryActions', 'CalendarActions', 'MinigameActions'])
+  for (const driver of ['FarmingActions', 'EconomyActions', 'ProductionActions', 'AdvancedActions', 'DecorationActions', 'TextSignActions', 'AnimalActions', 'FishingActions', 'CombatActions', 'FamilyActions', 'ProgressionActions', 'StoryActions', 'CalendarActions', 'MinigameActions', 'IslandActions'])
     assert.ok(!types.stdout.includes(`StardewBrowser.Testing.${driver}`), 'Production must exclude mutable gameplay test drivers');
   assert.ok(existsSync(resolve(root, 'wwwroot/index.html')), 'Publish the production-mode host before checking its assets');
   assert.ok(!existsSync(resolve(root, 'wwwroot/platform/scenarios.js')), 'Production must omit the scenario module');

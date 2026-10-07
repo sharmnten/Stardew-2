@@ -229,3 +229,17 @@ checkpoints; progression mode creates one. The replay overrides hardware input
 only during the synchronous test and restores it afterward. Normal DOM input/
 rendering, full arcade progression/rewards and post-action persistence remain
 required. Production excludes all fourteen mutable fixture drivers (1/1,1.2s).
+
+## Island, Qi and perfection methods
+
+Desktop1/1 (24 seconds) and browser1/1 (53 seconds) match the original limited
+IslandFishing reward API/team update: seven requests credit five walnuts.
+The original Hut perch mutex and animation/construction timers spend one walnut,
+complete the upgrade and queue its mail; four walnuts remain. Original Qi order
+constructors produce matching objectives/rewards for eleven implemented entries.
+The supplied catalog also contains unused QiChallenge11, tagged NOT_IMPLEMENTED;
+its original rejection and unconstructed Custom objective are preserved. Original
+perfection rises0→0.0019230769. These are method checks, including null-location
+reward crediting; physical island collection/warps, player UI, Qi completion/
+rewards, full perfection/ending and post-action persistence remain open.
+Production excludes all fifteen mutable fixture drivers (fresh audit1/1,1.1s).
