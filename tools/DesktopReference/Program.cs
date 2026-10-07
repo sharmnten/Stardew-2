@@ -111,7 +111,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
     var choices = new Dictionary<string, string> {
         ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
         ["inventory-economy"] = "Standard", ["tool-upgrades"] = "Standard", ["recipes-machines"] = "Standard", ["museum-quests"] = "Standard",
-        ["island-qi-perfection"] = "Standard", ["original-minigames"] = "Standard", ["festivals-events-movies"] = "Standard", ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
+        ["island-qi-perfection"] = "Standard", ["original-minigames"] = "Standard", ["festivals-events-movies"] = "Standard", ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["fishing-cast"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
         ["new-game-wilderness"] = "Wilderness", ["new-game-four-corners"] = "Four Corners",
         ["new-game-beach"] = "Beach", ["new-game-meadowlands"] = "ModFarm_MeadowlandsFarm"
@@ -149,7 +149,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "museum-quests" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
+    if (id is "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "fishing-cast" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "museum-quests" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
         if (id == "animals-buildings") GoToFarm();
@@ -164,6 +164,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
             case "text-sign-clipboard": StardewBrowser.Testing.TextSignActions.Prepare(); break;
             case "animals-buildings": StardewBrowser.Testing.AnimalActions.Prepare(); break;
             case "fishing-gathering": StardewBrowser.Testing.FishingActions.Prepare(); break;
+            case "fishing-cast": StardewBrowser.Testing.FishingCastActions.Prepare(); break;
             case "island-qi-perfection": StardewBrowser.Testing.IslandActions.Prepare(); break;
             case "original-minigames": StardewBrowser.Testing.MinigameActions.Prepare(); break;
             case "festivals-events-movies": StardewBrowser.Testing.CalendarActions.Prepare(); break;
@@ -327,6 +328,26 @@ static object CreateFarm(string id, GameRunner runner, string report)
         }, "complete original trap overnight");
         Reload();
         state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+    }
+    if (id == "fishing-cast")
+    {
+        var shore = StardewBrowser.Testing.FishingCastActions.Shore();
+        GoToProgressLocation("Town", (int)shore.X, (int)shore.Y);
+        state["afterCast"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingCastActions.Run(() => {
+            NativeWindow.Frame(runner); Thread.Sleep(1);
+        }));
+        state["afterCatch"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingCastActions.ReadState());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 2 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original caught-fish overnight");
+        Reload();
+        state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingCastActions.ReadState());
     }
     if (id == "animals-buildings")
     {

@@ -2896,6 +2896,141 @@
         ],
         "quest": null
       }
+    },
+    {
+      "id": "fishing-cast",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 14216
+        },
+        {
+          "name": "Parity3_123456789",
+          "bytes": 3049664
+        }
+      ],
+      "afterCast": {
+        "timesFished": 1,
+        "stamina": 262.5,
+        "water": true
+      },
+      "afterCatch": {
+        "day": 1,
+        "timesFished": 1,
+        "experience": 2195,
+        "bait": 1,
+        "inventory": [
+          {
+            "id": "(O)145",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "collection": [
+          {
+            "id": "(O)145",
+            "count": 1,
+            "size": 7
+          }
+        ]
+      },
+      "afterReload": {
+        "day": 2,
+        "timesFished": 1,
+        "experience": 2195,
+        "bait": 1,
+        "inventory": [
+          {
+            "id": "(O)145",
+            "stack": 1,
+            "quality": 0
+          }
+        ],
+        "collection": [
+          {
+            "id": "(O)145",
+            "count": 1,
+            "size": 7
+          }
+        ]
+      },
+      "desktop": "Original supplied desktop hardware input1/1 GREEN52697ms",
+      "browser": "Original DOM cast/hook/bar/reel/accept/night/cold Load corrected-input1/1 GREEN174028ms, repeat1/1 GREEN183759ms",
+      "scope": "Original Town91,13 shore and serialized level5/Fisher6/IridiumRod/two bait/empty history are prerequisites. No fish selection, successful bite/hook/catch, fish item, XP or consumption injected. Both runtimes charge/cast once into water using7.5 stamina, wait for a real bite, hook on tool release, play original BobberBar with ordinary input, reel/accept Sunfish145/count1/XP gain and consume one bait. Each original night/reload retains all observed inventory/quality, collection/count/size, bait, XP and cast-count fields. Live RNG/input-dependent fish size and XP are compared as contracts and as exact within-runtime persistence, not asserted identical across different input trajectories. Broader species/weather/tackles/treasure remain open. The browser hook test waits until original oldKBState has processed C down before releasing it; repeat trace observes nibble80ms and processed-down160ms within the original800ms window. Earlier zero-length raw-input acknowledgment was intermittent; original runtime input remains unchanged.",
+      "browserObservations": {
+        "afterCast": {
+          "timesFished": 1,
+          "stamina": 262.5,
+          "water": true
+        },
+        "afterCatch": {
+          "day": 1,
+          "timesFished": 1,
+          "experience": 2169,
+          "bait": 1,
+          "inventory": [
+            {
+              "id": "(O)145",
+              "stack": 1,
+              "quality": 0
+            }
+          ],
+          "collection": [
+            {
+              "id": "(O)145",
+              "count": 1,
+              "size": 7
+            }
+          ]
+        },
+        "afterReload": {
+          "day": 2,
+          "timesFished": 1,
+          "experience": 2169,
+          "bait": 1,
+          "inventory": [
+            {
+              "id": "(O)145",
+              "stack": 1,
+              "quality": 0
+            }
+          ],
+          "collection": [
+            {
+              "id": "(O)145",
+              "count": 1,
+              "size": 7
+            }
+          ]
+        },
+        "hookInput": [
+          {
+            "stage": "bite",
+            "time": 77152.6000000001,
+            "power": 0.8240003,
+            "fishing": true,
+            "nibbling": true,
+            "hit": false,
+            "caught": false,
+            "keyDownSeen": false,
+            "nibbleElapsed": 80,
+            "nibbleLimit": 800
+          },
+          {
+            "stage": "processedDown",
+            "time": 77235.69999999972,
+            "power": 0.8240003,
+            "fishing": true,
+            "nibbling": true,
+            "hit": false,
+            "caught": false,
+            "keyDownSeen": true,
+            "nibbleElapsed": 160,
+            "nibbleLimit": 800
+          }
+        ]
+      },
+      "production": "Fresh18-driver exclusion1/1 GREEN2584ms"
     }
   ],
   "advancedReference": {

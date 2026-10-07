@@ -14,7 +14,7 @@ prerequisites, not injected successful outcomes.
 | Economy and inventory | unverified | `inventory-economy`, `tool-upgrades` | Quality/stacking/chests, shop prices, shipping settlement, currencies and tool upgrades |
 | Crafting and production | unverified | `recipes-machines`, `tailoring-automation-decoration`, `text-sign-clipboard` | Recipe consumption/output, cooking, machine timers, automation, tailoring, decorations and persisted sign text |
 | Animals and buildings | unverified | `animals-buildings` | Construction/upgrades/renovations, livestock/pets/mounts, production and friendship |
-| Fishing and gathering | unverified | `fishing-gathering` | Native fishing minigame, bait/tackle, pots/ponds, forage and resource regeneration |
+| Fishing and gathering | unverified | `fishing-gathering`, `fishing-cast` | Native fishing minigame, bait/tackle, pots/ponds, forage and resource regeneration |
 | Exploration and combat | unverified | `combat-dungeons` | Maps/warps, generated mines/Skull Cavern/volcano, monsters/weapons/buffs/drops |
 | Characters and family | unverified | `characters-family` | Schedules/dialogue/gifts/friendship/events, marriage and children |
 | Progression | unverified | `skills-mastery-achievements` | Skills/professions/mastery, original local achievements/collections/unlocks |
@@ -168,8 +168,33 @@ grows1→2→3 and produces812, all equal to desktop.
 An initial desktop night stopped at the original missed-profession choice because
 the level5 fixture lacked its selected profession. Correcting that serialized
 prerequisite needed no gameplay or save-repair change. Fresh production exclusion
-passes for all17 mutable drivers (1/1,1.0s). Normal casting/catching, pond harvest,
-gathering and broader fishing workflows remain open; the whole group is unverified.
+passes for all17 mutable drivers (1/1,1.0s). Pond harvest, gathering and broader
+fishing workflows remain open; the whole group is unverified.
+
+## Rod casting and fishing minigame
+
+Desktop1/1 (53 seconds) and corrected browser1/1 (174 seconds), repeated1/1
+(184 seconds), pass the complete original
+rod flow. The serialized level5/Fisher6 farmer has an Iridium Rod, two bait and
+no previous catch. Original Town shore91,13 and orientation are setup; normal
+input charges and releases the cast. Both runtimes cast once into fishable water,
+spend7.5 stamina, wait for the real bite and hook by releasing the tool button.
+Ordinary input plays the original BobberBar, followed by the original reel/accept
+animation. Sunfish145/count1, a collection record and XP gain are awarded; one
+bait is consumed. The actual bed question, overnight save, durable browser day2
+bytes and cold original Load retain each runtime's full observed catch state.
+
+No successful bite, hook, fish choice, catch or reward is injected. Live RNG and
+input can affect fish size and XP, so those are checked as original contracts
+and exact persistence within each runtime rather than identical trajectories.
+The fixture selector was corrected to inspect landing water, and the input
+sequence releases for hooking after original controls have processed C down.
+The repeat trace observes the bite at80ms and processed-down at160ms within the
+original800ms nibble window; raw-input acknowledgment alone was intermittent.
+The repeat awards19XP and preserves it exactly, while the desktop awards45XP.
+Original gameplay is unchanged. Production excludes all18 mutable drivers
+(fresh audit1/1,2.6s). Broader species,
+weather, tackle, treasure and pond/gathering workflows remain open.
 
 ## Dungeon generation and combat methods
 

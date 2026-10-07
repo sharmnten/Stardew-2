@@ -365,8 +365,30 @@
         "Browser original method comparison plus DOM right-click harvest/rebait, bridge dialogue dismiss, full-night save and cold Load matches desktop1/1 GREEN162104ms"
       ],
       "remaining": [
-        "Normal casting/catching UI and pond harvest",
-        "Forage/resource regeneration and broader species/tackle behavior"
+        "Pond harvest and broader species/weather/tackle behavior",
+        "Forage/resource regeneration and broader gathering workflows"
+      ]
+    },
+    {
+      "id": "fishing-cast",
+      "group": "fishing",
+      "prerequisites": [
+        "Original serialized level5/2150XP/Fisher6, Iridium Rod with two bait and empty first-catch history",
+        "Original Town shore91,13 above fishable landing tiles; original warp/orientation only"
+      ],
+      "expected": [
+        "Original charge/release lands a cast, real bite and release hook open the original fishing bar",
+        "Ordinary input completes the minigame/reel/accept and awards a Sunfish, XP, collection record and consumes one bait",
+        "Original full-night save and cold Load retain inventory, bait, XP and fish count/size"
+      ],
+      "status": "unverified",
+      "verifiedSubset": [
+        "Unchanged desktop controlled hardware C drives charge/bite/hook/original bar/reel/accept/night/reload1/1 GREEN52697ms",
+        "Browser DOM C with original processed hook input drives full fishing/night/save/cold Load1/1 GREEN174028ms and repeat1/1 GREEN183759ms",
+        "Both runtimes cast once into water, use7.5 stamina, consume one bait, awardSunfish145/count1/XP gain and retain every observed catch field after day2 reload"
+      ],
+      "remaining": [
+        "Broader species/weather/tackle behavior, treasure and other catch branches"
       ]
     },
     {

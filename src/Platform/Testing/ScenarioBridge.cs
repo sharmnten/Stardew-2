@@ -67,6 +67,24 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "fishing-cast-shore" or "fishing-cast-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingCastActions.FixtureKey))
+                throw new InvalidOperationException("Load the casting fixture before its location setup.");
+            bool visit = id == "fishing-cast-shore";
+            var shore = visit ? StardewBrowser.Testing.FishingCastActions.Shore() : new Microsoft.Xna.Framework.Vector2(7, 8);
+            string target = visit ? "Town" : "FarmHouse";
+            Game1.warpFarmer(target, (int)shore.X, (int)shore.Y, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original casting location warp did not finish.");
+                await Task.Delay(16);
+            }
+            if (visit) Game1.player.faceDirection(2);
+            return JsonSerializer.Serialize(new { x = Game1.player.Position.X + 32, y = Game1.player.Position.Y + 160 }, Json);
+        }
         if (id is "fishing-shore" or "fishing-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingActions.FixtureKey))
@@ -249,6 +267,8 @@ internal sealed class ScenarioBridge(HttpClient http)
                 ? StardewBrowser.Testing.MuseumActions.Read() : null,
             fishing = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingActions.FixtureKey)
                 ? StardewBrowser.Testing.FishingActions.Read() : null,
+            fishingCast = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingCastActions.FixtureKey)
+                ? StardewBrowser.Testing.FishingCastActions.Read() : null,
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,
@@ -263,7 +283,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "museum-quests", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
+        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "fishing-cast", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "museum-quests", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);
