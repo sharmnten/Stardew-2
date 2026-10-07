@@ -2477,9 +2477,10 @@
         ]
       },
       "desktop": "Fresh original arcade replay1/1 GREEN70603ms",
-      "browser": "Original method comparison plus Prairie King and both2/3 Kart DOM menu/start/move/jump/pause/resume/quit1/1 GREEN126641ms",
-      "scope": "Original InputState receives controlled keyboard states and16ms ticks: Prairie King start/move/fire/local progress; both Junimo Kart modes start and generate matching tracks/physics/score/lives. Normal DOM rendering/input, full progression, rewards and post-action persistence remain open. Browser original Arcade_Minecart action opens its normal menu; actual Endless/Progress responses choose modes2/3. Ordinary Space advances original title/map/cutscene to Ingame, native kart moves, P freezes exact X then resumes, held Space produces jumpPressed/upward velocity, release clears jumpPressed and Escape quits both modes. Setup opens original menu only; no game-state/movement/jump/pause/quit outcome injected. Actual cabinet world interaction, complete arcade wins/rewards and post-action save persistence remain open.",
-      "production": "Fresh18-driver exclusion1/1 GREEN3659ms"
+      "browser": "Original comparison/Prairie King plus actual Saloon Kart cabinet right-click/both2/3 modes/start/move/jump/pause/resume/quit1/1 GREEN84221ms",
+      "scope": "Controlled original hardware-boundary replay compares Prairie King movement/firing/saved wave/lives and both kart modes generation/physics/score/lives with unchanged desktop; input/random are restored afterward. Normal original Continue resumes Prairie King, DOM D moves/ArrowUp fires/Escape quits. Original Saloon warp only places the farmer beside the actual Buildings Action Arcade_Minecart tile, without opening a menu. Ordinary world right-click opens the original mode question; actual Endless/Progress responses choose2/3. Ordinary Space passes title/map/cutscene into Ingame; native kart advances, P freezes exact X then resumes, held Space produces jumpPressed/upward velocity, release clears jumpPressed and Escape quits both modes. Tests await original noMenu/CanMove after quit transitions. No successful game-state/movement/jump/pause/quit outcome injected and no original runtime/input changes. Complete arcade wins/rewards, Prairie King cabinet world input and post-action save persistence remain open.",
+      "production": "Fresh18-driver exclusion1/1 GREEN2691ms",
+      "supportTests": "Fresh Tools17/17, Platform38/38, Game3/3 GREEN"
     },
     {
       "id": "island-qi-perfection",

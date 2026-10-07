@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { withGame } from './driver.mjs';
-import { snapshot, hold, clickControl, waitForAsync } from './game-controls.mjs';
+import { snapshot, hold, clickControl, pointAtWorld, waitForAsync } from './game-controls.mjs';
 
 test('original arcade input, firing and generated kart physics match desktop', { timeout: 240000 }, async () => {
   await withGame(async page => {
@@ -24,8 +24,15 @@ test('original arcade input, firing and generated kart physics match desktop', {
     await page.keyboard.up('ArrowUp');
     await hold(page, 'Escape', 100);
     await page.waitForFunction(() => !portStatus.game.minigame);
+    await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
     for (const [choice, mode] of [['Endless', 2], ['Progress', 3]]) {
-      await page.evaluate(() => portScenarios.run('minigames-kart'));
+      const cabinet = await page.evaluate(() => portScenarios.run('minigames-kart'));
+      assert.equal((await snapshot(page)).location.name, 'Saloon', 'Visit the actual original arcade cabinet');
+      assert.equal((await snapshot(page)).menu.type, null, 'Cabinet setup must leave opening the menu to ordinary world input');
+      await pointAtWorld(page, cabinet.x * 64 + 32, cabinet.y * 64 + 32);
+      await page.mouse.down({ button: 'right' });
+      await page.waitForFunction(() => portStatus.game.menu.type === 'DialogueBox');
+      await page.mouse.up({ button: 'right' });
       await clickControl(page, choice);
       await waitForAsync(page, async () => (await portScenarios.snapshot()).kart?.canStart);
       assert.equal((await kart(page)).mode, mode);
@@ -52,6 +59,7 @@ test('original arcade input, firing and generated kart physics match desktop', {
       await waitForAsync(page, async () => !(await portScenarios.snapshot()).kart.jumpPressed);
       await hold(page, 'Escape', 100);
       await waitForAsync(page, async () => !(await portScenarios.snapshot()).kart);
+      await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
       assert.equal((await snapshot(page)).menu.type, null);
     }
   }, undefined, '/');

@@ -296,7 +296,7 @@ Production excludes all thirteen mutable fixture drivers (fresh audit1/1,2.7s).
 
 ## Original arcade replay
 
-Fresh desktop1/1 (71 seconds) and extended browser1/1 (127 seconds) match controlled keyboard
+Fresh desktop1/1 (71 seconds) and extended browser1/1 (84 seconds) match controlled keyboard
 input and16ms updates interpreted by the original games. Prairie King starts,
 moves192 pixels, fires two bullets and records wave0/lives3 progress. Both
 Junimo Kart modes start, generate36/40 tracks and match player coordinates,
@@ -304,14 +304,19 @@ physics, score110 and three lives. Endless mode deliberately creates no
 checkpoints; progression mode creates one. The replay overrides hardware input
 only during the synchronous test and restores it afterward. A subsequent normal browser check also passes (1/1,68 seconds): the original
 Continue menu resumes progress, DOM D moves, Arrow Up fires, and Escape exits.
-The extended browser run opens the original Kart mode menu and chooses both
+The extended browser run visits the actual Saloon Kart cabinet, opens its
+original menu with ordinary world right-click, and chooses both
 Endless2 and Progress3 through their normal responses. Ordinary Space passes
 title/map/cutscene into Ingame, forward motion follows original physics, P stops
 exact X and resumes, Space produces an upward jump and release clears it, and
-Escape quits both games. Setup opens the original menu only; all game-state and
-physics outcomes come from normal input. Physical cabinet interaction, full arcade
-progression/wins/rewards and post-action persistence remain required. Fresh
-production excludes all18 mutable fixture drivers (1/1,3.7s).
+Escape quits both games. Setup only warps beside the original map cabinet; all
+menu, game-state and physics outcomes come from normal input. Tests await the
+original dialogue/fade transition and world control after quitting. Prairie King
+cabinet input, full arcade progression/wins/rewards and post-action persistence
+remain required. Fresh production excludes all18 mutable fixture drivers
+(1/1,2.7s); Tools17/17, Platform38/38 and Game3/3 also pass. The first cabinet
+run timed out on startup during concurrent builds; the isolated run passed without
+changing its timeout or runtime.
 
 ## Island, Qi and perfection methods
 

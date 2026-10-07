@@ -71,9 +71,16 @@ internal sealed class ScenarioBridge(HttpClient http)
         {
             if (loadedScenario != "original-minigames" || Game1.currentMinigame != null || Game1.activeClickableMenu != null)
                 throw new InvalidOperationException("Load the arcade fixture and finish its active game before opening the kart menu.");
-            Game1.currentLocation.performAction("Arcade_Minecart", Game1.player,
-                new xTile.Dimensions.Location((int)Game1.player.Tile.X, (int)Game1.player.Tile.Y));
-            return "{}";
+            var cabinet = StardewBrowser.Testing.MinigameActions.KartCabinet();
+            Game1.warpFarmer("Saloon", (int)cabinet.Stand.X, (int)cabinet.Stand.Y, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != "Saloon" || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original arcade cabinet warp did not finish.");
+                await Task.Delay(16);
+            }
+            return JsonSerializer.Serialize(new { x = (int)cabinet.Target.X, y = (int)cabinet.Target.Y }, Json);
         }
         if (id is "fishing-cast-shore" or "fishing-cast-home")
         {

@@ -10,6 +10,25 @@ internal static class MinigameActions
 {
     internal static void Prepare() => Game1.player.hasSkullKey = true;
 
+    internal static (Vector2 Stand, Vector2 Target) KartCabinet()
+    {
+        var saloon = Game1.getLocationFromName("Saloon");
+        for (int y = 0; y < saloon.Map.Layers[0].LayerHeight; y++)
+        for (int x = 0; x < saloon.Map.Layers[0].LayerWidth; x++)
+        {
+            if (saloon.doesTileHaveProperty(x, y, "Action", "Buildings") != "Arcade_Minecart") continue;
+            var target = new Vector2(x, y);
+            foreach (var offset in new[] { new Vector2(0, 1), new Vector2(-1, 0), new Vector2(1, 0) })
+            {
+                var stand = target + offset;
+                if (saloon.isTilePassable(stand) && !saloon.objects.ContainsKey(stand)
+                    && saloon.doesTileHaveProperty((int)stand.X, (int)stand.Y, "Action", "Buildings") == null)
+                    return (stand, target);
+            }
+        }
+        throw new InvalidOperationException("The original Saloon needs a reachable Junimo Kart cabinet.");
+    }
+
     internal static object ReadKart(MineCart cart)
     {
         var player = Field<MineCart.MineCartCharacter>(cart, "player");

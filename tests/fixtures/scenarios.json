@@ -603,10 +603,10 @@
         "Desktop both2/3 kart modes start, generate36/40 tracks and advance original physics/score",
         "Browser original replay matches all desktop movement/firing/progress/kart physics/generation/score/lives observations",
         "Normal browser original Continue resumes Prairie King; DOM D moves, Arrow Up fires and Escape exits",
-        "Browser native Endless2/Progress3 menu choices, Space start/move/jump/release, P pause/resume and Escape quit both modes; original comparison/Prairie King remain passing1/1 GREEN126641ms"
+        "Browser actual Saloon Kart cabinet right-click/Endless2/Progress3 choices, Space start/move/jump/release, P pause/resume and Escape quit both modes; original comparison/Prairie King pass1/1 GREEN84221ms"
       ],
       "remaining": [
-        "Physical cabinet world interaction and full arcade progression/wins/rewards/save persistence"
+        "Prairie King cabinet world interaction and full arcade progression/wins/rewards/save persistence"
       ]
     },
     {
