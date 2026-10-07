@@ -18,7 +18,7 @@ prerequisites, not injected successful outcomes.
 | Exploration and combat | unverified | `combat-dungeons` | Maps/warps, generated mines/Skull Cavern/volcano, monsters/weapons/buffs/drops |
 | Characters and family | unverified | `characters-family` | Schedules/dialogue/gifts/friendship/events, marriage and children |
 | Progression | unverified | `skills-mastery-achievements` | Skills/professions/mastery, original local achievements/collections/unlocks |
-| Story and quests | unverified | `community-center`, `joja-orders-museum` | Both routes, bundles/rewards, mail/quests/orders/secrets/museum |
+| Story and quests | unverified | `community-center`, `joja-orders-museum`, `museum-quests` | Both routes, bundles/rewards, mail/quests/orders/secrets/museum |
 | Calendar and events | unverified | `festivals-events-movies` | Festivals/passive festivals/birthdays/random events/cutscenes/movies |
 | Late game and minigames | unverified | `island-qi-perfection`, `original-minigames` | Island/walnuts/Qi/perfection, native Prairie King/Junimo Kart input/progression/rewards |
 | Persistence | unverified | `advanced-desktop-roundtrip` | Advanced desktop import/migration, full day/sleep/reload/export; retain previous bytes on failed write |
@@ -226,6 +226,21 @@ checkbox spends40000 gold and queues vault/Joja mail. No completion state is
 injected. Reward collection, normal world/menu input, full routes, overnight
 project activation, quests/orders/museum/secrets remain required. Production
 excludes all twelve mutable fixture drivers (fresh audit1/1,1.2s).
+
+## Museum donation, quest and persistence
+
+Desktop1/1 (52 seconds) and browser1/1 (174 seconds) pass original museum donation
+and saved quest state. The original save supplies one undonated Earth Crystal and
+active Archaeology quest24; the museum introduction is an already-seen prerequisite.
+Both runtimes warp to the actual LibraryMuseum and open its original donation menu
+through the original mutex/fade flow. Browser clicks the inventory slot and real
+exhibit tile, consumes the crystal and completes the quest. Normal menu close,
+bed question, overnight save and cold original Load retain exhibit86 at26,5 and
+the completed quest with its250 gold reward still unclaimed, matching desktop.
+An initial browser failure was missing nested inventory bounds in the readonly
+control snapshot; exposing the actual original controls corrected the harness.
+Broader museum donations/rewards/rearrangement and journal reward collection
+remain open; the overall story/quest group is still unverified.
 
 ## Festival setup and calendar methods
 

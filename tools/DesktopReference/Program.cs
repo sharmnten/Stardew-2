@@ -110,7 +110,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
 {
     var choices = new Dictionary<string, string> {
         ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
-        ["inventory-economy"] = "Standard", ["tool-upgrades"] = "Standard", ["recipes-machines"] = "Standard",
+        ["inventory-economy"] = "Standard", ["tool-upgrades"] = "Standard", ["recipes-machines"] = "Standard", ["museum-quests"] = "Standard",
         ["island-qi-perfection"] = "Standard", ["original-minigames"] = "Standard", ["festivals-events-movies"] = "Standard", ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
         ["new-game-wilderness"] = "Wilderness", ["new-game-four-corners"] = "Four Corners",
@@ -149,7 +149,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
+    if (id is "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "museum-quests" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
         if (id == "animals-buildings") GoToFarm();
@@ -158,6 +158,7 @@ static object CreateFarm(string id, GameRunner runner, string report)
             case "farming-season": StardewBrowser.Testing.FarmingActions.Prepare(); break;
             case "inventory-economy": StardewBrowser.Testing.EconomyActions.Prepare(); break;
             case "tool-upgrades": StardewBrowser.Testing.ToolUpgradeActions.Prepare(); break;
+            case "museum-quests": StardewBrowser.Testing.MuseumActions.Prepare(); break;
             case "recipes-machines": StardewBrowser.Testing.ProductionActions.Prepare(); break;
             case "tailoring-automation-decoration": StardewBrowser.Testing.DecorationActions.Prepare(); break;
             case "text-sign-clipboard": StardewBrowser.Testing.TextSignActions.Prepare(); break;
@@ -230,6 +231,29 @@ static object CreateFarm(string id, GameRunner runner, string report)
         state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CalendarActions.Run());
     }
     if (id is "community-center" or "joja-orders-museum") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.StoryActions.Run(id));
+    if (id == "museum-quests")
+    {
+        var museum = StardewBrowser.Testing.MuseumActions.Museum;
+        var exit = museum.warps.First(warp => warp.TargetName == "Town");
+        GoToProgressLocation(museum.Name, exit.X, exit.Y - 1);
+        StardewBrowser.Testing.MuseumActions.Open();
+        Until(() => Game1.activeClickableMenu is MuseumMenu { fadeTimer: <= 0 }, "open original museum donation menu");
+        StardewBrowser.Testing.MuseumActions.Donate();
+        state["afterDonation"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MuseumActions.Read());
+        StardewBrowser.Testing.MuseumActions.Close();
+        Until(() => Game1.activeClickableMenu == null && Game1.player.CanMove, "close original museum donation menu");
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 6 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original museum overnight");
+        Reload();
+        state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MuseumActions.Read());
+    }
     if (id == "skills-mastery-achievements") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.Run());
     if (id == "skills-mastery-achievements") state["professionChoices"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProgressionActions.ChooseProfessions());
     if (id == "skills-mastery-achievements")

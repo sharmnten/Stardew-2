@@ -67,6 +67,31 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "museum-visit" or "museum-donate-menu" or "museum-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.MuseumActions.FixtureKey))
+                throw new InvalidOperationException("Load the museum fixture before its UI setup.");
+            var museum = StardewBrowser.Testing.MuseumActions.Museum;
+            if (id == "museum-donate-menu")
+            {
+                if (Game1.currentLocation != museum) throw new InvalidOperationException("Visit the original museum first.");
+                StardewBrowser.Testing.MuseumActions.Open();
+                return "{}";
+            }
+            bool visit = id == "museum-visit";
+            var exit = museum.warps.First(warp => warp.TargetName == "Town");
+            string target = visit ? museum.Name : "FarmHouse";
+            Game1.warpFarmer(target, visit ? exit.X : 7, visit ? exit.Y - 1 : 8, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original museum location warp did not finish.");
+                await Task.Delay(16);
+            }
+            var spot = museum.getFreeDonationSpot();
+            return JsonSerializer.Serialize(new { x = (int)spot.X, y = (int)spot.Y }, Json);
+        }
         if (id is "family-visit-linus" or "family-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey))
@@ -202,6 +227,8 @@ internal sealed class ScenarioBridge(HttpClient http)
                 ? StardewBrowser.Testing.ProgressionActions.Read() : null,
             family = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? StardewBrowser.Testing.FamilyActions.Read() : null,
+            museum = Game1.player.modData.ContainsKey(StardewBrowser.Testing.MuseumActions.FixtureKey)
+                ? StardewBrowser.Testing.MuseumActions.Read() : null,
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,
@@ -216,7 +243,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
+        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "museum-quests", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);

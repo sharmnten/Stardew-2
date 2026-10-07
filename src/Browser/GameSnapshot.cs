@@ -44,6 +44,8 @@ internal static class GameSnapshot
             minigame = Game1.currentMinigame is AbigailGame king ? new {
                 type = nameof(AbigailGame), x = king.playerPosition.X, y = king.playerPosition.Y,
                 lives = king.lives, bullets = king.bullets.Count } : null,
+            museum = menu is MuseumMenu donation ? new {
+                heldItem = donation.heldItem?.QualifiedItemId, fadeTimer = donation.fadeTimer, state = donation.state } : null,
             preferences = Game1.activeClickableMenu is TitleMenu preferencesTitle ? new {
                 startMuted = preferencesTitle.startupPreferences.startMuted,
                 timesPlayed = preferencesTitle.startupPreferences.timesPlayed,
@@ -91,6 +93,7 @@ internal static class GameSnapshot
             && title.viewportDY == 0 && title.pauseBeforeViewportRiseTimer <= 0
             && (bool)typeof(TitleMenu).GetMethod("ShouldAllowInteraction", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(title, null)!,
         LevelUpMenu level => level.CanReceiveInput(),
+        MuseumMenu museum => museum.fadeTimer <= 0,
         DialogueBox dialogue => !dialogue.transitioning && dialogue.safetyTimer <= 0
             && dialogue.characterIndexInDialogue >= dialogue.getCurrentString().Length - 1,
         _ => true
@@ -125,6 +128,14 @@ internal static class GameSnapshot
                     }
                     index++;
                 }
+            }
+        }
+        if (menu is MenuWithInventory inventoryMenu)
+        {
+            for (int index = 0; index < inventoryMenu.inventory.inventory.Count; index++)
+            {
+                var control = inventoryMenu.inventory.inventory[index];
+                Add(string.IsNullOrEmpty(control.name) ? index.ToString() : control.name, control);
             }
         }
         return found.ToArray();
