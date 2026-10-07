@@ -173,3 +173,25 @@ separate random generator; controlling that input in both test drivers resolves
 an initial comparison difference without changing original generation logic.
 Production excludes all nine mutable fixture drivers. Normal dungeon warps,
 traversal, weapon swings, spawned drops and broader variants remain required.
+
+## NPC and family methods
+
+Desktop1/1 (32 seconds) and browser1/1 (54 seconds) match a loved gold-quality
+coconut gift to Linus:100 friendship points, gift counters and original reaction
+dialogue. Original schedule times, destinations, facing and route lengths also
+match. A serialized Abigail marriage, upgraded home and child are explicit
+prerequisites; original child updates reach ages1/2/3 at days13/27/55. Courtship,
+wedding, birth/adoption, normal conversations/heart events and full-day family
+persistence remain required.
+
+## Skill, mastery and local achievement methods
+
+Desktop1/1 (72 seconds, CPU contended) and browser1/1 (71 seconds) match original
+experience gains for all five skills, reaching level10 with50 queued notices.
+Original farming/foraging experience produces10000 mastery experience and one
+mastery level. The original mining reward button consumes that level and unlocks
+Heavy Furnace and Statue Of The Dwarf King recipes. Earning the final gold toward
+15000 lifetime income unlocks local achievement0; a Sunfish catch registers its
+collection entry. Normal profession selection, other mastery rewards/unlocks and
+post-action persistence remain open. Production excludes all eleven mutable
+fixture drivers, scenario module and reference saves (fresh audit1/1,0.9s).

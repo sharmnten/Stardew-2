@@ -87,6 +87,8 @@ internal sealed class ScenarioBridge(HttpClient http)
             "tailoring-automation-decoration" => StardewBrowser.Testing.DecorationActions.Run(),
             "animals-buildings" => StardewBrowser.Testing.AnimalActions.Run(),
             "fishing-gathering" => StardewBrowser.Testing.FishingActions.Run(),
+            "skills-mastery-achievements" => StardewBrowser.Testing.ProgressionActions.Run(),
+            "characters-family" => StardewBrowser.Testing.FamilyActions.Run(),
             "combat-dungeons" => StardewBrowser.Testing.CombatActions.Run(),
             _ => throw new ArgumentException("This scenario has no method comparison: " + id)
         };
@@ -111,7 +113,7 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons"];
+        "farming-season", "inventory-economy", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "combat-dungeons", "characters-family", "skills-mastery-achievements"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);

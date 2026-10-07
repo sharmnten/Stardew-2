@@ -398,30 +398,50 @@
       "id": "characters-family",
       "group": "characters",
       "prerequisites": [
-        "Schedules/friendship prerequisites",
-        "Spouse and child fixture",
-        "Heart event prerequisites"
+        "Original serialized year2 Spring5/calendar and Linus750 friendship",
+        "Existing Abigail marriage, upgraded house and child age0/days12",
+        "Controlled global random input1729"
       ],
       "expected": [
         "Original dialogue, gift friendship and schedules",
         "Heart event/cutscene progression",
         "Family changes persist through sleep/reload"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop original serializer and native reload preserve married household prerequisites",
+        "Desktop original quality2 loved gift adds100 friendship and gift counters",
+        "Desktop original schedule/dialogue and child dayUpdate transitions at13/27/55 pass",
+        "Browser original-method comparison equals all recorded unchanged desktop observations"
+      ],
+      "remaining": [
+        "Normal schedules/path movement, conversations/gifts and heart-event player input",
+        "Courtship, proposal/wedding, birth/adoption and family overnight persistence"
+      ]
     },
     {
       "id": "skills-mastery-achievements",
       "group": "progression",
       "prerequisites": [
-        "Near original XP and mastery thresholds",
-        "Achievement prerequisites"
+        "Original serialized fresh skill XP/levels, empty collections and14999 lifetime earnings",
+        "Original mining mastery menu after earning10000 mastery XP"
       ],
       "expected": [
         "Original level/profession/mastery unlocks",
         "Local achievements/collections serialize",
         "Unlock rewards match desktop"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Desktop original gains all five skills to10 and queues50 level notices",
+        "Desktop original mastery XP10000/level1 and menu claim unlocks mining recipes and spent counter",
+        "Desktop original earned-income achievement and fish collection registration",
+        "Browser original-method comparison equals all recorded unchanged desktop observations"
+      ],
+      "remaining": [
+        "Normal level-up/profession selection UI and rewards",
+        "Other mastery plaques, collections/unlocks and saved persistence"
+      ]
     },
     {
       "id": "community-center",

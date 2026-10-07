@@ -1595,6 +1595,165 @@
       "desktop": "Original supplied desktop1/1 GREEN30460ms",
       "browser": "Original method comparison1/1 GREEN70798ms",
       "scope": "Original Mine5/Skull121/Volcano1 generation, object hashes and monster counts; weapon data, slime damage/death/drop table and buff expiry. Global RNG1729 and mine-local RNG1729+level are controlled inputs. Normal warps, traversal, swings, spawned drops and wider variants remain open."
+    },
+    {
+      "id": "characters-family",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 17622
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3029875
+        }
+      ],
+      "observations": {
+        "gift": {
+          "taste": 0,
+          "pointsGained": 100,
+          "giftsToday": 1,
+          "giftsThisWeek": 1,
+          "statsGiftsGiven": 1
+        },
+        "dialogue": [
+          "This is wonderful! You've really made my day special."
+        ],
+        "schedule": {
+          "loaded": true,
+          "times": [
+            {
+              "time": 630,
+              "location": "Mountain",
+              "x": 25,
+              "y": 5,
+              "facing": 1,
+              "steps": 16
+            },
+            {
+              "time": 700,
+              "location": "Mountain",
+              "x": 28,
+              "y": 9,
+              "facing": 1,
+              "steps": 10
+            },
+            {
+              "time": 930,
+              "location": "Mountain",
+              "x": 45,
+              "y": 19,
+              "facing": 1,
+              "steps": 42
+            },
+            {
+              "time": 1400,
+              "location": "Mountain",
+              "x": 28,
+              "y": 9,
+              "facing": 1,
+              "steps": 42
+            },
+            {
+              "time": 1900,
+              "location": "Tent",
+              "x": 3,
+              "y": 2,
+              "facing": 1,
+              "steps": 10
+            },
+            {
+              "time": 2100,
+              "location": "Tent",
+              "x": 1,
+              "y": 3,
+              "facing": 2,
+              "steps": 4
+            },
+            {
+              "time": 2300,
+              "location": "Tent",
+              "x": 4,
+              "y": 4,
+              "facing": 2,
+              "steps": 5
+            }
+          ]
+        },
+        "family": {
+          "married": true,
+          "spouse": "Abigail",
+          "children": 1
+        },
+        "child": {
+          "stages": [
+            {
+              "days": 13,
+              "age": 1,
+              "speed": 2
+            },
+            {
+              "days": 27,
+              "age": 2,
+              "speed": 1
+            },
+            {
+              "days": 55,
+              "age": 3,
+              "speed": 4
+            }
+          ]
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN31941ms",
+      "browser": "Original method comparison1/1 GREEN54270ms",
+      "scope": "Original quality2 loved gift/counters, dialogue/schedule routes and child dayUpdate stages. Marriage/upgraded house/child are saved prerequisites. Normal conversations, heart events, courtship/wedding/birth and full family persistence remain open."
+    },
+    {
+      "id": "skills-mastery-achievements",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16847
+        },
+        {
+          "name": "Parity_123456789",
+          "bytes": 3064203
+        }
+      ],
+      "observations": {
+        "skills": {
+          "levels": [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "pendingLevels": 50
+        },
+        "mastery": {
+          "experience": 10000,
+          "level": 1,
+          "claimed": 1,
+          "spent": 1,
+          "heavyFurnaceRecipe": true,
+          "dwarfStatueRecipe": true
+        },
+        "achievements": [
+          0
+        ],
+        "collection": {
+          "fishRegistered": true,
+          "fish": [
+            1,
+            20
+          ]
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN72280ms",
+      "browser": "Original method comparison1/1 GREEN70762ms",
+      "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. Normal profession UI, other plaques/unlocks and post-action save persistence remain open."
     }
   ],
   "advancedReference": {
