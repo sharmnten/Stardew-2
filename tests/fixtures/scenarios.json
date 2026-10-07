@@ -373,15 +373,26 @@
       "id": "combat-dungeons",
       "group": "combat",
       "prerequisites": [
-        "Mines/Skull Cavern/volcano access",
-        "Weapon and buff consumables"
+        "Original serialized Spring5/year2/stats117/skull key/island access",
+        "Controlled seed1729 for original dungeon generation and combat methods",
+        "Controlled original global RNG1729 and mine-local RNG1729+level"
       ],
       "expected": [
         "Original generation/warp/collision",
         "Monster damage, drops and buff timing",
         "Floor progression survives normal play"
       ],
-      "status": "unverified"
+      "status": "unverified",
+      "verifiedSubset": [
+        "Original desktop serialized calendar/key/island prerequisites and native reload",
+        "Browser imports original fixture and matches all three generated map dimensions, tile sheets, object hashes and monster distributions",
+        "Original weapon data, slime damage/death/slimesKilled/drop table and buff application/expiry match desktop under controlled RNG inputs"
+      ],
+      "remaining": [
+        "Browser original-method comparison",
+        "Normal generated-map warps/traversal and weapon inputs",
+        "Richer monster/drop and progression comparisons"
+      ]
     },
     {
       "id": "characters-family",

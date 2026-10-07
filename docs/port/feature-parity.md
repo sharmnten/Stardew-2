@@ -162,3 +162,14 @@ expectation omitted that native branch; correcting the expectation needed no
 gameplay change. Production excludes all eight fixture drivers (1/1, 2.3s).
 Normal casting/catching/harvest, gathering and broader fishing workflows remain
 required; the fishing group is not yet verified overall.
+
+## Dungeon generation and combat methods
+
+Desktop1/1 (30 seconds) and browser1/1 (71 seconds) match original Mine5,
+Skull Cavern121 and Volcano1 dimensions, tile sheets, object hashes and monster
+distributions. Rusty Sword damage data, slime damage/death/kill counter/drop
+table, and speed/defense buff application/expiry also match. The mine owns a
+separate random generator; controlling that input in both test drivers resolves
+an initial comparison difference without changing original generation logic.
+Production excludes all nine mutable fixture drivers. Normal dungeon warps,
+traversal, weapon swings, spawned drops and broader variants remain required.

@@ -1490,6 +1490,111 @@
       "desktop": "Original supplied desktop1/1 GREEN50678ms",
       "browser": "Original method comparison1/1 GREEN54452ms",
       "scope": "Bait/tackle attachments, crab-pot bait consumption/catch, pond spawning and32 fixed16ms original BobberBar updates under seed1729. Includes original first-catch difficulty50; casting/catching UI, gathering and full fishing flow remain open."
+    },
+    {
+      "id": "combat-dungeons",
+      "files": [
+        {
+          "name": "SaveGameInfo",
+          "bytes": 16902
+        },
+        {
+          "name": "Parity2_123456789",
+          "bytes": 3025672
+        }
+      ],
+      "observations": {
+        "dungeons": [
+          {
+            "name": "UndergroundMine5",
+            "width": 35,
+            "height": 35,
+            "tileSheets": [
+              "mine"
+            ],
+            "objects": 64,
+            "objectHash": "84FAA12F7B1F7327AA0D27A3B937162C7AA9C41E85E0792E7DFDB71D3E4A5AE6",
+            "monsters": [
+              {
+                "type": "GreenSlime",
+                "count": 2
+              },
+              {
+                "type": "RockCrab",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "name": "UndergroundMine121",
+            "width": 45,
+            "height": 35,
+            "tileSheets": [
+              "mine"
+            ],
+            "objects": 65,
+            "objectHash": "9D186F56BA18E84BFF8102C0F46B89BB4AD0FD06A4D36938A8F4E6B182C39523",
+            "monsters": [
+              {
+                "type": "Bug",
+                "count": 1
+              },
+              {
+                "type": "Serpent",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "name": "VolcanoDungeon1",
+            "width": 64,
+            "height": 64,
+            "tileSheets": [
+              "dungeon"
+            ],
+            "objects": 134,
+            "objectHash": "909BBBD2E5CA0081D6659D8887F8BD43959997C7F58629E668CA059B7252E99E",
+            "monsters": [
+              {
+                "type": "Bat",
+                "count": 3
+              },
+              {
+                "type": "GreenSlime",
+                "count": 6
+              },
+              {
+                "type": "HotHead",
+                "count": 1
+              }
+            ]
+          }
+        ],
+        "weapon": {
+          "id": "(W)0",
+          "minDamage": 2,
+          "maxDamage": 5
+        },
+        "monster": {
+          "damage": 1,
+          "healthLost": 1,
+          "killed": true,
+          "slimesKilled": 1,
+          "dropTable": [
+            "766",
+            "92"
+          ]
+        },
+        "buff": {
+          "applied": true,
+          "speed": 2,
+          "defense": 3,
+          "expired": true
+        }
+      },
+      "desktop": "Original supplied desktop1/1 GREEN30460ms",
+      "browser": "Original method comparison1/1 GREEN70798ms",
+      "scope": "Original Mine5/Skull121/Volcano1 generation, object hashes and monster counts; weapon data, slime damage/death/drop table and buff expiry. Global RNG1729 and mine-local RNG1729+level are controlled inputs. Normal warps, traversal, swings, spawned drops and wider variants remain open."
     }
   ],
   "advancedReference": {
