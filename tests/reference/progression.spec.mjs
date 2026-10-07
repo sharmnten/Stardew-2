@@ -27,5 +27,6 @@ test('original desktop skill gains, mastery reward and local achievement', { tim
   assert.deepEqual(actual.achievements, [0]);
   assert.equal(actual.collection.fishRegistered, true);
   assert.deepEqual(actual.collection.fish, [1, 20]);
-  assert.deepEqual(state.professionChoices, [0, 2], "Original profession input must choose Rancher then Coopmaster");
+  assert.deepEqual(state.professionChoices, [0, 2, 6, 8, 12, 14, 18, 20, 24, 26],
+    "Original level5/10 menus must select the left profession branch for every skill");
 });

@@ -87,7 +87,7 @@ internal static class GameSnapshot
         TitleMenu title => title.logoFadeTimer <= 0 && title.fadeFromWhiteTimer <= 0 && title.logoSwipeTimer <= 0
             && title.viewportDY == 0 && title.pauseBeforeViewportRiseTimer <= 0
             && (bool)typeof(TitleMenu).GetMethod("ShouldAllowInteraction", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(title, null)!,
-        LevelUpMenu level => (int)typeof(LevelUpMenu).GetField("timerBeforeStart", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(level)! <= 0,
+        LevelUpMenu level => level.CanReceiveInput(),
         DialogueBox dialogue => !dialogue.transitioning && dialogue.safetyTimer <= 0
             && dialogue.characterIndexInDialogue >= dialogue.getCurrentString().Length - 1,
         _ => true

@@ -1751,10 +1751,10 @@
           ]
         }
       },
-      "professionChoices": [0, 2],
-      "desktop": "Original supplied desktop1/1 GREEN29081ms",
-      "browser": "Original method comparison and profession DOM clicks1/1 GREEN58071ms",
-      "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. Original farming level5/10 profession menus choose Rancher0/Coopmaster2 using native mouse input and browser DOM clicks. Other skills' profession menus, other plaques/unlocks and post-action save persistence remain open."
+      "professionChoices": [0, 2, 6, 8, 12, 14, 18, 20, 24, 26],
+      "desktop": "Original supplied desktop1/1 GREEN33706ms",
+      "browser": "Original method comparison and all-skills profession DOM clicks1/1 GREEN61705ms",
+      "scope": "Original all-five skill gains/queued notices, earned mastery and mining-menu claim, local income achievement0 and fish collection. All five skills' original level5/10 menus select left profession branches through native mouse input and browser DOM clicks. Other branches, other plaques/unlocks and post-action save persistence remain open."
     },
     {
       "id": "community-center",

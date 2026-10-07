@@ -37,7 +37,7 @@ internal static class ProgressionActions
         return new { skills, mastery, achievements = Game1.player.achievements.Order().ToArray(), collection };
     }
 
-    internal static void ShowProfession(int level) => Game1.activeClickableMenu = new LevelUpMenu(0, level);
+    internal static void ShowProfession(int skill, int level) => Game1.activeClickableMenu = new LevelUpMenu(skill, level);
 
     internal static int[] ChooseProfessions()
     {
@@ -49,17 +49,20 @@ internal static class ProgressionActions
         {
             Game1.input = input;
             Game1.options.gamepadControls = false;
-            foreach (int level in new[] { 5, 10 })
+            for (int skill = 0; skill < 5; skill++)
             {
-                ShowProfession(level);
-                var menu = (LevelUpMenu)Game1.activeClickableMenu;
-                var point = menu.leftProfession.bounds.Center;
-                input.Mouse = Mouse(point, ButtonState.Released);
-                for (int frame = 1; frame <= 32; frame++) menu.update(Time(frame));
-                input.Mouse = Mouse(point, ButtonState.Pressed);
-                menu.update(Time(33));
-                input.Mouse = Mouse(point, ButtonState.Released);
-                menu.update(Time(34));
+                foreach (int level in new[] { 5, 10 })
+                {
+                    ShowProfession(skill, level);
+                    var menu = (LevelUpMenu)Game1.activeClickableMenu;
+                    var point = menu.leftProfession.bounds.Center;
+                    input.Mouse = Mouse(point, ButtonState.Released);
+                    for (int frame = 1; frame <= 32; frame++) menu.update(Time(frame));
+                    input.Mouse = Mouse(point, ButtonState.Pressed);
+                    menu.update(Time(33));
+                    input.Mouse = Mouse(point, ButtonState.Released);
+                    menu.update(Time(34));
+                }
             }
             return Game1.player.professions.Order().ToArray();
         }

@@ -67,10 +67,14 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
-        if (id is "profession-farming-5" or "profession-farming-10")
+        if (id.StartsWith("profession-", StringComparison.Ordinal))
         {
             if (loadedScenario != "skills-mastery-achievements") throw new InvalidOperationException("Load the progression fixture before profession menus.");
-            StardewBrowser.Testing.ProgressionActions.ShowProfession(id == "profession-farming-5" ? 5 : 10);
+            var parts = id.Split('-');
+            if (parts.Length != 3 || !int.TryParse(parts[1], out int skill) || skill is < 0 or > 4
+                || !int.TryParse(parts[2], out int level) || level is not (5 or 10))
+                throw new ArgumentException("Unknown profession menu: " + id);
+            StardewBrowser.Testing.ProgressionActions.ShowProfession(skill, level);
             return "{}";
         }
         if (id is "tool-upgrades-shop" or "tool-upgrades-visit" or "tool-upgrades-home")
