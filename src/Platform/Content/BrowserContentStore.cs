@@ -77,7 +77,7 @@ public sealed class BrowserContentStore
     {
         string path = string.Join('/', entry.Path.Split('/').Select(Uri.EscapeDataString));
         byte[] data;
-        try { data = await http.GetByteArrayAsync(path, cancellationToken); }
+        try { data = await StaticAssetDownload.GetBytesAsync(http, path, cancellationToken); }
         catch (HttpRequestException error) { throw new IOException("Could not download original content: " + entry.Name, error); }
         if (data.LongLength != entry.Size || !Convert.ToHexString(SHA256.HashData(data)).Equals(entry.Sha256, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("Original content checksum mismatch: " + entry.Name);

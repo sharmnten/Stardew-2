@@ -59,9 +59,23 @@ export async function withGame(testBody, setupPage = async () => {}, route = '/?
     }
     const reload = page.reload.bind(page);
     page.reload = async options => { const result = await reload(options); await startIfRequired(); return result; };
-    const exceptions = [];
+    const exceptions = [], resourceErrors = [], resources = new Map();
+    page.on('request', request => resources.set(request.url(), { request, status: 0, finished: false }));
+    page.on('response', response => {
+      const resource = resources.get(response.url());
+      if (resource?.request === response.request()) resource.status = response.status();
+    });
+    page.on('requestfinished', request => {
+      const resource = resources.get(request.url());
+      if (resource?.request === request) resource.finished = true;
+    });
     page.on('pageerror', error => exceptions.push(error.message));
-    page.on('console', message => { if (message.type() === 'error') exceptions.push(message.text()); });
+    page.on('console', message => {
+      if (message.type() !== 'error') return;
+      const url = message.location().url;
+      if (url && message.text().startsWith('Failed to load resource:')) resourceErrors.push({ url, text: message.text() });
+      else exceptions.push(message.text());
+    });
     await setupPage(page);
     // Project sites mount below /repository/. Keep every runtime/content URL
     // under that base when checking the actual published release.
@@ -69,8 +83,7 @@ export async function withGame(testBody, setupPage = async () => {}, route = '/?
       ? new URL(route.replace(/^\//, ''), process.env.PORT_GAME_URL).href
       : `http://127.0.0.1:${server.address().port}${route}`;
     await page.goto(gameUrl, { waitUntil: 'load' });
-    await startIfRequired();
-    try { await testBody(page); }
+    try { await startIfRequired(); await testBody(page); }
     catch (error) {
       const output = resolve('.port-cache/browser-failures');
       await mkdir(output, { recursive: true });
@@ -85,7 +98,12 @@ export async function withGame(testBody, setupPage = async () => {}, route = '/?
       await page.screenshot({ path: resolve(output, `${mode}.png`) });
       throw error;
     }
-    assert.deepEqual(exceptions, [], 'Browser raised an exception or logged an error');
+    for (const error of resourceErrors) {
+      const resource = resources.get(error.url);
+      if (!resource?.finished || resource.status < 200 || resource.status >= 400)
+        exceptions.push(`${error.text} (${error.url})`);
+    }
+    assert.deepEqual(exceptions, [], 'Browser raised an exception, logged an error, or left an asset download unrecovered');
   } finally {
     await browser?.close();
     await new Promise(resolve => server.close(resolve));

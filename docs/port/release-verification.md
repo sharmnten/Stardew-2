@@ -12,19 +12,21 @@ found no critical issue and three important release issues. Their fixes remove
 shipping save-failure instrumentation, add a player Start button with verified
 content download progress, and expose actionable audio-asset errors while
 retaining save/export access. All fixes have observed RED→GREEN evidence and
-the complete final browser corpus passes after the fixes.
+the complete 66-check browser corpus passed after those review fixes. The
+subsequent Pages transport fix is verified separately below; original gameplay
+and asset identities are unchanged.
 
 ## Completed final checks
 
 | Check | Result |
 | --- | --- |
 | Python recovery/content/audio tooling | 17/17 passed |
-| .NET platform adapters | 39/39 passed |
+| .NET platform adapters, including transient-host retry boundaries | 47/47 passed |
 | .NET game adapters/logger | 4/4 passed |
 | Supplied desktop reference and release-host checks | 33/33 passed |
 | Original desktop reload of current browser-exported advanced save | 1/1 passed |
 | Fresh production hook/dependency audit | 1/1 passed |
-| Production Start/download progress and ordinary creation/night/export/cold Load | 2/2 passed |
+| Production Start/progress, injected HTTP 503 recovery, creation/night/export/cold Load | 3/3 passed |
 | Complete final browser gameplay suite |66/66 passed (30/30 +36/36; all 33 specs) |
 
 The production runtime checks use `dist/` and have no scenario mutation API or
@@ -75,7 +77,7 @@ been replaced as part of release presentation; the ready status now describes br
 
 ## Package and hosting size check
 
-The fresh production package contains **4,279 files / 991,794,654 bytes**.
+The fresh production package contains **4,279 files / 991,796,702 bytes**.
 Its largest file is `Audio/0/091.flac`, **24,267,519 bytes**. These are below
 GitHub Pages' documented 1 GB published-site limit. The workflow uses
 `actions/upload-pages-artifact` and `actions/deploy-pages`, preserving directories
@@ -83,7 +85,23 @@ such as `_framework` and `_content` without Jekyll processing. Relative URLs and
 `<base href="./">` retain the `/Stardew-2/` project-site prefix. See
 [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
 and [Pages artifact requirements](https://github.com/actions/upload-pages-artifact#artifact-validation).
-Archive upload, deployment and live browser acceptance remain pending.
+The first Pages workflow (run `37796122728`) successfully published the original
+archive. Separate live checks exposed intermittent Fastly/Varnish HTTP 503
+responses for valid content paths. Shared static content/audio/JSON downloads now
+retry 408/429/502/503/504 at most four times with cancellation-aware 250/500/1000 ms
+backoff. Permanent failures and checksum mismatches still fail visibly. The native
+regressions failed before this fix; the complete platform suite now passes 47/47.
+
+The rebuilt package passed all three production checks beneath `/Stardew-2/`
+(232,185 ms): startup/progress, one injected 503 followed by verified original
+bytes, and actual farm creation/night/save/export/cold Load. Browser assertions
+accept a resource warning only when the same URL's latest request finishes
+successfully; game logger/page exceptions and unresolved resources remain fatal.
+
+The replacement release `browser-1.6.15-2026-10-08.1` is a 954,674,534-byte gzip
+archive; its uncompressed tar is 995,112,960 bytes. SHA-256:
+`4a9f92d9d483e7709e88125e5dd32e4cceb7a95ddea294a4910fe69a5e9de182`.
+Replacement upload, deployment and live browser acceptance remain pending.
 
 ## Final corpus execution
 

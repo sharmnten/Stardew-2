@@ -55,7 +55,7 @@ Implementation decisions and deferred review observations are recorded in
 [acceptance decisions](docs/port/acceptance-decisions.md).
 
 The Pages workflow deploys the checksum-verified production archive attached to
-release `browser-1.6.15-2026-10-08`. It uses GitHub Actions; generated game assets
+release `browser-1.6.15-2026-10-08.1`. It uses GitHub Actions; generated game assets
 remain outside the source branch. To check the published origin with the same
 production flows:
 

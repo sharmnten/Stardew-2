@@ -103,3 +103,28 @@ original startup/production save assertions run unchanged against the Pages
 origin. No shipped runtime or original gameplay implementation changes — if
 wrong, local acceptance could be mistaken for live-origin acceptance; record
 the latter only after its separate run passes.
+
+Ruling: Retry temporary static-host failures without changing original asset
+identity or gameplay — live Pages traces returned Fastly/Varnish HTTP 503 for
+valid content files, while direct requests returned the original bytes. Shared
+content/audio/JSON downloads make at most four attempts with 250/500/1000 ms
+cancellation-aware backoff for 408/429/502/503/504. Permanent errors and checksum
+failures remain actionable — if wrong, backoff could delay loading or mask a
+real missing asset; native cancellation/permanent-error/checksum checks and
+production browser checks cover those boundaries.
+
+Ruling: Accept a browser resource warning only after the same URL's latest
+request finishes successfully — Chromium logs the first handled 503 even when
+the game retries and verifies the original bytes. Keep all page exceptions,
+game logger errors and unresolved resource failures fatal — if wrong, a runtime
+failure could be mistaken for recovered transport; the regression requires an
+actual ready game and exactly two requests after one injected 503.
+
+Ruling: Scope new verification to the changed static transport and published
+origin — the full 66-check gameplay corpus and 33 desktop/reference comparisons
+precede this transport fix; original gameplay implementations, content identity
+and save serialization do not change. Run all 47 platform checks, production
+startup/503 recovery/overnight save/export/cold Load, and the separate live-origin
+flows — if wrong, a transport-only change could affect an unexercised game path;
+the original adapters and checksum contracts remain covered by the complete
+platform suite and production journey.

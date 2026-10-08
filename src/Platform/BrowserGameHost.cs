@@ -8,7 +8,6 @@ using xTile.Display;
 using xTile.Tiles;
 using StardewBrowser.Platform.Compatibility;
 using StardewBrowser.Platform.Content;
-using System.Net.Http.Json;
 using StardewBrowser.Platform.Audio;
 using StardewValley;
 using StardewBrowser.Framework.Graphics;
@@ -42,7 +41,7 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
             OfflinePlatformServices.Configure(js);
             await OfflinePlatformServices.InitializeAsync();
             StardewBrowser.Framework.Graphics.OriginalContentReaders.Register();
-            var manifest = await http.GetFromJsonAsync<StardewBrowser.Platform.Content.ContentManifest>("Content/manifest.json", cancellationToken)
+            var manifest = await StaticAssetDownload.GetJsonAsync<StardewBrowser.Platform.Content.ContentManifest>(http, "Content/manifest.json", cancellationToken)
                 ?? throw new InvalidDataException("The original content manifest is empty.");
             content = new BrowserContentStore(http, manifest);
             audio = new BrowserAudioAdapter(js, http);

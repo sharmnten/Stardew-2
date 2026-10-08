@@ -28,8 +28,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          gh release download browser-1.6.15-2026-10-08 --pattern stardew-browser-1.6.15.tar.gz
-          echo '65e59d8c27b4dcf7cabfb99ff581391204a96212cf6700a8f079be9103a10b01  stardew-browser-1.6.15.tar.gz' | sha256sum --check --strict
+          gh release download browser-1.6.15-2026-10-08.1 --pattern stardew-browser-1.6.15.tar.gz
+          echo '4a9f92d9d483e7709e88125e5dd32e4cceb7a95ddea294a4910fe69a5e9de182  stardew-browser-1.6.15.tar.gz' | sha256sum --check --strict
           mkdir dist
           tar --extract --gzip --file stardew-browser-1.6.15.tar.gz --directory dist --no-same-owner --no-same-permissions
       - name: Verify static package boundaries
@@ -40,12 +40,12 @@ jobs:
           assert all(not p.is_symlink() for p in root.rglob('*'))
           files = [p for p in root.rglob('*') if p.is_file()]
           assert len(files) == 4279
-          assert sum(p.stat().st_size for p in files) == 991794654
+          assert sum(p.stat().st_size for p in files) == 991796702
           assert (root / 'index.html').is_file()
           assert (root / '_framework/blazor.webassembly.js').is_file()
           assert not (root / 'platform/scenarios.js').exists()
           assert 'testing.failNextCommit' not in (root / 'platform/storage.js').read_text()
-          print('Verified audited production package: 4279 files, 991794654 bytes')
+          print('Verified audited production package: 4279 files, 991796702 bytes')
           PY
       - name: Configure Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5

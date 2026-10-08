@@ -123,4 +123,78 @@ public class ContentTests
             return new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(Original) };
         }
     }
+
+    [Theory]
+    [InlineData(HttpStatusCode.ServiceUnavailable)]
+    [InlineData(HttpStatusCode.BadGateway)]
+    [InlineData(HttpStatusCode.GatewayTimeout)]
+    [InlineData(HttpStatusCode.RequestTimeout)]
+    [InlineData(HttpStatusCode.TooManyRequests)]
+    public async Task TemporaryHostingFailuresRetryAndStillVerifyOriginalBytes(HttpStatusCode status)
+    {
+        var files = new TemporaryFiles(status, 2);
+        var entry = new ContentEntry("Maps/Farm", "Content/Maps/Farm.xnb",
+            Convert.ToHexString(SHA256.HashData(Original)), Original.Length, "content");
+        var store = new BrowserContentStore(new HttpClient(files) { BaseAddress = new Uri("https://static.invalid/") },
+            new ContentManifest(1, "1.6.15.24356", "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11", [entry]));
+        await store.PreloadAsync(["Maps/Farm"], CancellationToken.None);
+        Assert.Equal(3, files.Requests);
+        using var content = store.Open("Maps/Farm");
+        using var bytes = new MemoryStream();
+        content.CopyTo(bytes);
+        Assert.Equal(Original, bytes.ToArray());
+    }
+
+    [Fact]
+    public async Task PersistentHostingFailuresStopAfterFourAttemptsWithoutPublishingContent()
+    {
+        var files = new TemporaryFiles(HttpStatusCode.ServiceUnavailable, int.MaxValue);
+        var entry = new ContentEntry("Maps/Farm", "Content/Maps/Farm.xnb",
+            Convert.ToHexString(SHA256.HashData(Original)), Original.Length, "content");
+        var store = new BrowserContentStore(new HttpClient(files) { BaseAddress = new Uri("https://static.invalid/") },
+            new ContentManifest(1, "1.6.15.24356", "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11", [entry]));
+        await Assert.ThrowsAsync<IOException>(() => store.PreloadAsync(["Maps/Farm"], CancellationToken.None));
+        Assert.Equal(4, files.Requests);
+        Assert.Equal(0, store.ResidentBytes);
+        Assert.Throws<InvalidOperationException>(() => store.Open("Maps/Farm"));
+    }
+
+    [Fact]
+    public async Task MissingHostedContentDoesNotRetry()
+    {
+        var files = new TemporaryFiles(HttpStatusCode.NotFound, int.MaxValue);
+        var entry = new ContentEntry("Maps/Farm", "Content/Maps/Farm.xnb",
+            Convert.ToHexString(SHA256.HashData(Original)), Original.Length, "content");
+        var store = new BrowserContentStore(new HttpClient(files) { BaseAddress = new Uri("https://static.invalid/") },
+            new ContentManifest(1, "1.6.15.24356", "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11", [entry]));
+        await Assert.ThrowsAsync<IOException>(() => store.PreloadAsync(["Maps/Farm"], CancellationToken.None));
+        Assert.Equal(1, files.Requests);
+    }
+
+    [Fact]
+    public async Task CancellingDuringHostingBackoffStopsWithoutAnotherRequest()
+    {
+        var files = new TemporaryFiles(HttpStatusCode.ServiceUnavailable, int.MaxValue);
+        using var cancelled = new CancellationTokenSource();
+        files.AfterResponse = () => cancelled.CancelAfter(20);
+        var entry = new ContentEntry("Maps/Farm", "Content/Maps/Farm.xnb",
+            Convert.ToHexString(SHA256.HashData(Original)), Original.Length, "content");
+        var store = new BrowserContentStore(new HttpClient(files) { BaseAddress = new Uri("https://static.invalid/") },
+            new ContentManifest(1, "1.6.15.24356", "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11", [entry]));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => store.PreloadAsync(["Maps/Farm"], cancelled.Token));
+        Assert.Equal(1, files.Requests);
+    }
+
+    private sealed class TemporaryFiles(HttpStatusCode status, int failures) : HttpMessageHandler
+    {
+        public int Requests { get; private set; }
+        public Action? AfterResponse { get; set; }
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Requests++;
+            AfterResponse?.Invoke();
+            return Task.FromResult(new HttpResponseMessage(Requests <= failures ? status : HttpStatusCode.OK)
+                { Content = new ByteArrayContent(Original) });
+        }
+    }
 }

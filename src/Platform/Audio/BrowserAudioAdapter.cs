@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -36,7 +35,7 @@ public sealed class BrowserAudioAdapter(IJSRuntime js, HttpClient http) : IAsync
 
     public async Task InitializeAsync(CancellationToken cancellationToken)
     {
-        manifest = await http.GetFromJsonAsync<AudioManifest>("Audio/manifest.json", cancellationToken)
+        manifest = await StaticAssetDownload.GetJsonAsync<AudioManifest>(http, "Audio/manifest.json", cancellationToken)
             ?? throw new InvalidDataException("The original audio manifest is empty.");
         if (manifest.Schema != 1 || manifest.GameVersion != "1.6.15.24356" ||
             manifest.ArchiveSha256 != "fb0155d3efb94fdcda1f26ee1b048898fd568257732b4e47ee15e03f266cca11" ||
@@ -50,7 +49,7 @@ public sealed class BrowserAudioAdapter(IJSRuntime js, HttpClient http) : IAsync
                 (long)wave.Original.Start + wave.Original.Length > wave.Samples || !waves.TryAdd((wave.Bank, wave.Track), wave))
                 throw new InvalidDataException("Invalid original wave descriptor: " + wave.Path);
         }
-        byte[] metadata = await http.GetByteArrayAsync(manifest.MetadataPath, cancellationToken);
+        byte[] metadata = await StaticAssetDownload.GetBytesAsync(http, manifest.MetadataPath, cancellationToken);
         Verify(metadata, manifest.MetadataSha256, "cue metadata");
         cues = JsonDocument.Parse(metadata);
         if (cues.RootElement.GetProperty("cueCount").GetInt32() != manifest.CueCount)
@@ -97,7 +96,7 @@ public sealed class BrowserAudioAdapter(IJSRuntime js, HttpClient http) : IAsync
         {
             string key = $"{wave.Bank}/{wave.Track}";
             if (await js.InvokeAsync<bool>("portAudio.hasWave", cancellationToken, key)) return;
-            byte[] data = wave.EncodedData ?? await http.GetByteArrayAsync(wave.Path, cancellationToken);
+            byte[] data = wave.EncodedData ?? await StaticAssetDownload.GetBytesAsync(http, wave.Path, cancellationToken);
             if (data.Length != wave.Size) throw new InvalidDataException("Original audio checksum mismatch: " + key);
             Verify(data, wave.Sha256, key);
             await js.InvokeVoidAsync("portAudio.decode", cancellationToken, key, data, wave);
