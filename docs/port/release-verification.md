@@ -7,7 +7,9 @@ serves assets; it does not run game simulation.
 Local gameplay and production acceptance are **verified** on 2026-10-08.
 The requested deployment target is GitHub Pages at
 `https://sharmnten.github.io/Stardew-2/`. Hosting and deployed-origin runtime
-acceptance are recorded separately from these local checks; publication is pending. The independent source review
+acceptance are recorded separately from these local checks. GitHub Pages
+deployment and the live production journey are **verified** on 2026-10-08.
+The independent source review
 found no critical issue and three important release issues. Their fixes remove
 shipping save-failure instrumentation, add a player Start button with verified
 content download progress, and expose actionable audio-asset errors while
@@ -28,6 +30,7 @@ and asset identities are unchanged.
 | Fresh production hook/dependency audit | 1/1 passed |
 | Production Start/progress, injected HTTP 503 recovery, creation/night/export/cold Load | 3/3 passed |
 | Complete final browser gameplay suite |66/66 passed (30/30 +36/36; all 33 specs) |
+| Actual HTTPS Pages startup and creation/night/export/cold Load | 2/2 passed |
 
 The production runtime checks use `dist/` and have no scenario mutation API or
 storage failure-injection API. The reference comparisons and full browser suite
@@ -63,8 +66,8 @@ and injected atomic transaction rollback have separate scoped evidence.
 
 No FPS, memory ceiling or startup-time guarantee is implied. The content/audio
 inventory records original asset identities; startup downloads are checksum
-verified and audio is loaded lazily. Deployed-origin runtime and performance
-are not included in the local browser evidence.
+verified and audio is loaded lazily. Deployed-origin runtime has separate
+evidence below; performance limits remain unmeasured.
 
 ## Deferred review observations
 
@@ -101,7 +104,27 @@ successfully; game logger/page exceptions and unresolved resources remain fatal.
 The replacement release `browser-1.6.15-2026-10-08.1` is a 954,674,534-byte gzip
 archive; its uncompressed tar is 995,112,960 bytes. SHA-256:
 `4a9f92d9d483e7709e88125e5dd32e4cceb7a95ddea294a4910fe69a5e9de182`.
-Replacement upload, deployment and live browser acceptance remain pending.
+Replacement upload and deployment **succeeded**. The repository uses GitHub
+Actions as its Pages source. The [successful deployment run](https://github.com/sharmnten/Stardew-2/actions/runs/37799815615)
+published source commit `09219f9dc129b36d9d5c9a70c9534f399ec8ca63` from
+[release browser-1.6.15-2026-10-08.1](https://github.com/sharmnten/Stardew-2/releases/tag/browser-1.6.15-2026-10-08.1)
+to [the live game](https://sharmnten.github.io/Stardew-2/). The live index,
+`blazor.webassembly.js` and fingerprinted Platform WebAssembly bytes match `dist/`.
+
+The actual HTTPS origin passed **2/2** production checks with no failures, skips
+or cancellations (363,847 ms total). Startup/verified progress passed in
+163,731 ms; original farm creation, overnight IndexedDB save, ZIP export and
+full reload/cold Load passed in 199,034 ms. These tests used the published
+production game, with no scenario mutation API or shipping storage injector.
+
+The CDN download exceeded the local two-minute readiness guard while still
+verifying content at 57.6/60.9 MB and 59.7/60.9 MB. HTTPS checks therefore allow
+five minutes for readiness; local deadlines are unchanged. Assertions for
+actual readiness, original content, durable saves, export and cold Load are
+unchanged. The observed first start took about 2 minutes 44 seconds in headless
+Chromium with software graphics; this is an observation, not a startup-time
+or device-performance guarantee. Earlier failed/timing-limited attempts are
+retained separately and are not counted as passing acceptance.
 
 ## Final corpus execution
 

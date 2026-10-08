@@ -3,9 +3,12 @@ import assert from 'node:assert/strict';
 import { withGame } from '../browser/driver.mjs';
 import { snapshot, clickControl, hold, walkToBed, waitForAsync } from '../browser/game-controls.mjs';
 
-test('production creates an original farm, saves overnight, exports and cold-loads without test drivers', { timeout: 360000 }, async () => {
+const deployed = process.env.PORT_GAME_URL?.startsWith('https:');
+const readyTimeout = deployed ? 300000 : 120000;
+
+test('production creates an original farm, saves overnight, exports and cold-loads without test drivers', { timeout: deployed ? 900000 : 360000 }, async () => {
   await withGame(async page => {
-    await page.waitForFunction(() => ['ready', 'failed'].includes(portStatus.phase), null, { timeout: 120000 });
+    await page.waitForFunction(() => ['ready', 'failed'].includes(portStatus.phase), null, { timeout: readyTimeout });
     assert.equal(await page.evaluate(() => portStatus.phase), 'ready');
     assert.equal(await page.evaluate(() => typeof window.portScenarios), 'undefined');
     assert.equal(await page.evaluate(() => typeof portStorage.testing), 'undefined');
@@ -34,7 +37,7 @@ test('production creates an original farm, saves overnight, exports and cold-loa
       return xml.querySelector('SaveGame > dayOfMonth')?.textContent === '2';
     });
     await page.reload();
-    await page.waitForFunction(() => portStatus.phase === 'ready', null, { timeout: 120000 });
+    await page.waitForFunction(() => portStatus.phase === 'ready', null, { timeout: readyTimeout });
     await page.locator('#saveTools').click();
     await page.waitForFunction(() => document.querySelector('#saveSlot')?.options.length === 1);
     const download = page.waitForEvent('download');

@@ -55,7 +55,7 @@ export async function withGame(testBody, setupPage = async () => {}, route = '/?
     });
     async function startIfRequired() {
       if (autoStart && !route.includes('diagnostic=1'))
-        await page.locator('#startGame').click({ timeout: 30000 });
+        await page.locator('#startGame').click({ timeout: process.env.PORT_GAME_URL?.startsWith('https:') ? 120000 : 30000 });
     }
     const reload = page.reload.bind(page);
     page.reload = async options => { const result = await reload(options); await startIfRequired(); return result; };

@@ -128,3 +128,11 @@ startup/503 recovery/overnight save/export/cold Load, and the separate live-orig
 flows — if wrong, a transport-only change could affect an unexercised game path;
 the original adapters and checksum contracts remain covered by the complete
 platform suite and production journey.
+
+Ruling: Use a five-minute readiness budget for the actual HTTPS deployment while
+retaining local deadlines — the live game was still correctly verifying content
+at the local two-minute limit (57.6/60.9 MB and 59.7/60.9 MB in separate runs),
+with no failed game state. Allow CDN latency in live QA without weakening ready,
+checksum, save, export or reload outcomes — if wrong, a longer test could delay
+identifying a genuine loading stall; permanent transport failures remain visible
+and the live checks still have finite deadlines.

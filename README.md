@@ -5,7 +5,7 @@ original C# game runs in WebAssembly with browser graphics, audio and local
 IndexedDB saves. A static file host serves the files; gameplay needs no game
 server.
 
-GitHub Pages: [https://sharmnten.github.io/Stardew-2/](https://sharmnten.github.io/Stardew-2/). Deployment status is recorded in [release verification](docs/port/release-verification.md).
+GitHub Pages: [https://sharmnten.github.io/Stardew-2/](https://sharmnten.github.io/Stardew-2/). Deployment and the live Chromium save journey are verified; see [release verification](docs/port/release-verification.md).
 
 Development is on `browser-port`, in `.worktrees/browser-port`. All fourteen single-player groups passed the approved representative
 acceptance checks on 2026-10-08. See the [parity ledger](docs/port/feature-parity.md) for the fourteen
@@ -25,7 +25,8 @@ python3 -m http.server 8080 --directory dist
 
 Open `http://localhost:8080` in Chromium with WebGL2 and click **Start game**.
 The first start downloads and verifies about 64 MB of game content; audio loads
-as needed. Use the original title screen to create or load a farm. Default
+as needed. The verified first Pages start took about 2 minutes 44 seconds in
+headless Chromium; actual loading time depends on the connection and device. Use the original title screen to create or load a farm. Default
 controls include WASD to move, C/left click to use tools, X/right click to
 interact, and Escape for menus. The original Options menu changes bindings.
 
