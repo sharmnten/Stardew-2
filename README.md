@@ -5,6 +5,8 @@ original C# game runs in WebAssembly with browser graphics, audio and local
 IndexedDB saves. A static file host serves the files; gameplay needs no game
 server.
 
+GitHub Pages: [https://sharmnten.github.io/Stardew-2/](https://sharmnten.github.io/Stardew-2/). Deployment status is recorded in [release verification](docs/port/release-verification.md).
+
 Development is on `browser-port`, in `.worktrees/browser-port`. All fourteen single-player groups passed the approved representative
 acceptance checks on 2026-10-08. See the [parity ledger](docs/port/feature-parity.md) for the fourteen
 single-player groups and [release verification](docs/port/release-verification.md)
@@ -51,3 +53,12 @@ PORT_STATIC_ROOT="$PWD/dist" node --test --test-concurrency=1 tests/browser/star
 
 Implementation decisions and deferred review observations are recorded in
 [acceptance decisions](docs/port/acceptance-decisions.md).
+
+The Pages workflow deploys the checksum-verified production archive attached to
+release `browser-1.6.15-2026-10-08`. It uses GitHub Actions; generated game assets
+remain outside the source branch. To check the published origin with the same
+production flows:
+
+```sh
+PORT_STATIC_ROOT="$PWD/dist" PORT_GAME_URL="https://sharmnten.github.io/Stardew-2/" node --test --test-concurrency=1 tests/browser/startup.spec.mjs tests/release/single-player.spec.mjs
+```

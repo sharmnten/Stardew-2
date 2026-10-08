@@ -2,8 +2,8 @@
 
 The original single-player implementations and all fourteen representative
 acceptance groups are verified on 2026-10-08. This record preserves every
-implementation ruling, its reason and stated cost if wrong. Private hosting is
-the remaining release step. The historical label observation was addressed by
+implementation ruling, its reason and stated cost if wrong. GitHub Pages deployment and live-origin acceptance are recorded separately
+in the release verification report. The historical label observation was addressed by
 planned release presentation; the other two minor observations remain deferred.
 
 ## Rulings
@@ -89,3 +89,17 @@ planned release presentation; the other two minor observations remain deferred.
 The third historical observation is addressed by planned release presentation.
 The fingerprinted-wrapper audit and snapshot performance observations remain
 deferred.
+
+Ruling: Replace the planned private Sites deployment with this repository's
+GitHub Pages deployment — the user explicitly requested GitHub Pages after
+local acceptance. Publish the exact audited production output as a release
+archive, verify its SHA-256 in Actions, and deploy through the supported Pages
+artifact workflow; preserve the original game/runtime bytes — if wrong, an
+incorrect archive or project-site path could prevent the game from starting.
+
+Ruling: Preserve the original final browser evidence while adding deployed-origin
+routing to the test harness — only the initial navigation URL changes, and the
+original startup/production save assertions run unchanged against the Pages
+origin. No shipped runtime or original gameplay implementation changes — if
+wrong, local acceptance could be mistaken for live-origin acceptance; record
+the latter only after its separate run passes.

@@ -63,7 +63,12 @@ export async function withGame(testBody, setupPage = async () => {}, route = '/?
     page.on('pageerror', error => exceptions.push(error.message));
     page.on('console', message => { if (message.type() === 'error') exceptions.push(message.text()); });
     await setupPage(page);
-    await page.goto(`http://127.0.0.1:${server.address().port}${route}`, { waitUntil: 'load' });
+    // Project sites mount below /repository/. Keep every runtime/content URL
+    // under that base when checking the actual published release.
+    const gameUrl = process.env.PORT_GAME_URL
+      ? new URL(route.replace(/^\//, ''), process.env.PORT_GAME_URL).href
+      : `http://127.0.0.1:${server.address().port}${route}`;
+    await page.goto(gameUrl, { waitUntil: 'load' });
     await startIfRequired();
     try { await testBody(page); }
     catch (error) {

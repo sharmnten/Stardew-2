@@ -5,7 +5,9 @@ locally in WebAssembly/WebGL with Web Audio and IndexedDB. Static hosting
 serves assets; it does not run game simulation.
 
 Local gameplay and production acceptance are **verified** on 2026-10-08.
-Private hosting is the remaining release step. The independent source review
+The requested deployment target is GitHub Pages at
+`https://sharmnten.github.io/Stardew-2/`. Hosting and deployed-origin runtime
+acceptance are recorded separately from these local checks; publication is pending. The independent source review
 found no critical issue and three important release issues. Their fixes remove
 shipping save-failure instrumentation, add a player Start button with verified
 content download progress, and expose actionable audio-asset errors while
@@ -59,8 +61,8 @@ and injected atomic transaction rollback have separate scoped evidence.
 
 No FPS, memory ceiling or startup-time guarantee is implied. The content/audio
 inventory records original asset identities; startup downloads are checksum
-verified and audio is loaded lazily. Private hosting, upload limits and
-terminal deployment status remain pending.
+verified and audio is loaded lazily. Deployed-origin runtime and performance
+are not included in the local browser evidence.
 
 ## Deferred review observations
 
@@ -75,11 +77,13 @@ been replaced as part of release presentation; the ready status now describes br
 
 The fresh production package contains **4,279 files / 991,794,654 bytes**.
 Its largest file is `Audio/0/091.flac`, **24,267,519 bytes**. These are below
-Cloudflare Workers' documented minimum-tier count of 20,000 static files and
-25 MiB per file; deterministic asset segmentation is not required for those
-limits. See the [Workers limits](https://developers.cloudflare.com/workers/platform/limits/).
-The Sites archive ingestion/upload limit is a separate boundary and remains
-unverified until its native save/deployment operation succeeds.
+GitHub Pages' documented 1 GB published-site limit. The workflow uses
+`actions/upload-pages-artifact` and `actions/deploy-pages`, preserving directories
+such as `_framework` and `_content` without Jekyll processing. Relative URLs and
+`<base href="./">` retain the `/Stardew-2/` project-site prefix. See
+[GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+and [Pages artifact requirements](https://github.com/actions/upload-pages-artifact#artifact-validation).
+Archive upload, deployment and live browser acceptance remain pending.
 
 ## Final corpus execution
 

@@ -129,14 +129,14 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 ### Task 8: Build, review, and publish the verified static game
 
-**Files:** `tools/package-browser.sh`, `.openai/hosting.json`, `README.md`, `docs/port/release-verification.md`.
+**Files:** `tools/package-browser.sh`, `.github/workflows/deploy-pages.yml`, `README.md`, `docs/port/release-verification.md`.
 
-**Interfaces:** `tools/package-browser.sh` builds verified output into `dist/`; the static host serves this directory without game APIs. Site identity is persisted through the Sites helper.
+**Interfaces:** `tools/package-browser.sh` builds verified output into `dist/`; the static host serves this directory without game APIs. The user superseded private Sites hosting with GitHub Pages on 2026-10-08. Actions downloads and verifies the audited release archive, then publishes a Pages artifact.
 
 - [x] Run appropriate source/tooling checks, `dotnet publish src/Browser/Browser.csproj -c Release`, and the complete browser suite against the release output. Inspect for native Windows dependencies and production test hooks.
 - [x] Perform an independent final code review using the selected execution workflow; resolve material findings and rerun affected verification.
-- [ ] Check Sites upload/per-file limits against the actual release. Segment large audio/content files deterministically when necessary and verify the resulting loading paths before publication.
-- [ ] Create a private Site, persist its identity, package through the Sites source helper, and deploy through its native tools. Follow the existing deployment to a terminal result.
+- [x] Check GitHub Pages package/artifact limits against the actual release: 991,794,654 bytes; preserve original file identities and project-site relative loading paths.
+- [ ] Upload the checksum-verified production release, publish through GitHub Actions to this repository’s Pages site, follow deployment to a terminal result, and verify the actual origin in Chromium.
 - [ ] Update README with reproducible commands, controls, save import/export, supported browsers, and the literal deployed URL. Report any verification or deployment limitation; never label an incomplete port complete.
 
 ## Execution choice
