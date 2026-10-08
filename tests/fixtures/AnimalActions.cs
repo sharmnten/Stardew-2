@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
@@ -8,10 +9,12 @@ namespace StardewBrowser.Testing;
 
 internal static class AnimalActions
 {
+    internal const string FixtureKey = "StardewBrowser.AnimalFixture";
     private static readonly Vector2 CoopTile = new(20, 20), BarnTile = new(35, 20), StableTile = new(40, 30);
 
     internal static void Prepare()
     {
+        Game1.player.modData[FixtureKey] = "1";
         var farm = Game1.getFarm();
         foreach (var tile in new[] { CoopTile, BarnTile, StableTile })
         {
@@ -84,6 +87,92 @@ internal static class AnimalActions
         return new { construction, upgrade, chicken = chickenResult, cow = cowResult, pet = petResult,
             stable = new { built = stableBuilt, days = stable.daysOfConstructionLeft.Value,
                 horseOwned = horse != null && horse.ownerId.Value == Game1.player.UniqueMultiplayerID } };
+    }
+
+    internal static Stable Stable => Game1.getFarm().buildings.OfType<Stable>().Single();
+    internal static Horse Horse => Game1.player.mount ?? Stable.getStableHorse()
+        ?? throw new InvalidOperationException("The original stable has no horse.");
+
+    internal static Point HorseStand() => new(Stable.tileX.Value + 1, Stable.tileY.Value + 2);
+    internal static object HorseInteraction()
+    {
+        var box = Horse.GetBoundingBox();
+        return new { x = box.Center.X, y = box.Center.Y };
+    }
+
+    // Persisted values only: wandering positions and live mount animation are separate.
+    internal static object Read() => new {
+        day = Game1.dayOfMonth, money = Game1.player.Money,
+        buildings = Game1.getFarm().buildings.Where(b => b is Stable || b.GetIndoors() is AnimalHouse)
+            .OrderBy(b => b.buildingType.Value).Select(b => new {
+                type = b.buildingType.Value, x = b.tileX.Value, y = b.tileY.Value,
+                construction = b.daysOfConstructionLeft.Value, upgrade = b.daysUntilUpgrade.Value,
+                capacity = b.GetIndoors() is AnimalHouse house ? house.animalLimit.Value : 0 }).ToArray(),
+        animals = Game1.getFarm().getAllFarmAnimals().OrderBy(a => a.myID.Value).Select(a => new {
+            id = a.myID.Value, type = a.type.Value, age = a.age.Value,
+            friendship = a.friendshipTowardFarmer.Value, home = a.home.buildingType.Value }).ToArray(),
+        horse = new { name = Horse.Name, farmerName = Game1.player.horseName.Value,
+            ownerMatches = Horse.ownerId.Value == Game1.player.UniqueMultiplayerID,
+            stableMatches = Horse.HorseId == Stable.HorseId,
+            mounted = Game1.player.mount == Horse, mounting = Horse.mounting.Value, dismounting = Horse.dismounting.Value }
+    };
+
+    // Native reference replay only. The browser uses DOM input and the original NamingMenu.
+    internal static object Ride(Action frame)
+    {
+        var savedInput = Game1.input;
+        bool savedGamepad = Game1.options.gamepadControls;
+        var input = new RideInput();
+        void Until(Func<bool> done, string stage)
+        {
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            while (!done())
+            {
+                if (timer.Elapsed > TimeSpan.FromSeconds(20))
+                    throw new TimeoutException("Original horse stalled at " + stage
+                        + $"; mounted={Game1.player.mount != null}, mounting={Horse.mounting.Value}, rider={Horse.rider != null}, lock={Horse.mutex.IsLockHeld()}, canMove={Game1.player.CanMove}");
+                frame();
+            }
+        }
+        try
+        {
+            Game1.input = input;
+            Game1.options.gamepadControls = false;
+            if (!Horse.checkAction(Game1.player, Game1.currentLocation))
+                throw new InvalidOperationException("Original horse did not accept naming interaction.");
+            Until(() => Game1.activeClickableMenu is NamingMenu, "naming prompt");
+            var menu = (NamingMenu)Game1.activeClickableMenu;
+            while (menu.textBox.Text.Length > 0) menu.textBox.RecieveCommandInput('\b');
+            menu.textBox.RecieveTextInput("PortHorse");
+            menu.receiveLeftClick(menu.doneNamingButton.bounds.Center.X, menu.doneNamingButton.bounds.Center.Y);
+            Until(() => Game1.activeClickableMenu == null && Game1.player.CanMove, "finish naming");
+            // Let the original mutex observe the naming lock release before a new request.
+            frame();
+            Horse.checkAction(Game1.player, Game1.currentLocation);
+            Until(() => Game1.player.mount != null && !Horse.mounting.Value && Game1.player.CanMove, "mounting");
+            float y = Game1.player.Position.Y;
+            input.Keys = [Keys.S];
+            Until(() => Game1.player.Position.Y > y + 64, "riding movement");
+            input.Keys = [];
+            Until(() => !Game1.oldKBState.IsKeyDown(Keys.S), "release movement");
+            bool moved = Game1.player.Position.Y > y;
+            bool mounted = Game1.player.mount != null;
+            input.Keys = [Keys.X];
+            Until(() => Game1.player.mount == null && !Horse.dismounting.Value && Game1.player.CanMove, "dismounting");
+            input.Keys = [];
+            Until(() => !Game1.oldKBState.IsKeyDown(Keys.X), "release action");
+            return new { moved, mounted };
+        }
+        finally { Game1.input = savedInput; Game1.options.gamepadControls = savedGamepad; }
+    }
+
+    private sealed class RideInput : InputState
+    {
+        internal Keys[] Keys = [];
+        public override KeyboardState GetKeyboardState() => new(Keys);
+        public override MouseState GetMouseState() => new(0, 0, 0,
+            ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released);
+        public override GamePadState GetGamePadState() => default;
     }
 
     private static FarmAnimal AddAnimal(string type, long id, Building building)

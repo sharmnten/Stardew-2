@@ -1386,11 +1386,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 14628
+          "bytes": 14747
         },
         {
-          "name": "Parity6_123456789",
-          "bytes": 2965154
+          "name": "Parity9_123456789",
+          "bytes": 3009251
         }
       ],
       "observations": {
@@ -1435,9 +1435,178 @@
           "horseOwned": true
         }
       },
-      "desktop": "Original supplied desktop1/1 GREEN25178ms",
-      "browser": "Included in affected6/6 GREEN227516ms; animals56175ms",
-      "scope": "Original farm warp, safe barn placement/carpenter consumption/construction/upgrade, chicken and cow petting/production, dog mutex friendship and stable horse creation. Normal building UI/renovations/mounting/other livestock and full-day persistence remain open."
+      "desktop": "Expanded original naming/riding/night/normal Load1/1 GREEN34714ms",
+      "browser": "Expanded original NamingMenu/Done, actual riding/dismount, full night/durable save/cold normal Load/remount1/1 GREEN156491ms",
+      "scope": "Original farm warp, carpenter resource/construction/upgrade methods, chicken/cow production and pet/stable methods; added actual original NamingMenu/Done, mounted movement and action input, full overnight/durable IndexedDB and cold normal Load match native state and retain named horse and livestock/building associations. Cold-loaded horse remounts without a new naming prompt. Normal carpenter UI/renovations, other livestock, equipment/feeding and broader care remain open.",
+      "riding": {
+        "moved": true,
+        "mounted": true
+      },
+      "afterRiding": {
+        "day": 1,
+        "money": 22000,
+        "buildings": [
+          {
+            "type": "Big Barn",
+            "x": 35,
+            "y": 20,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 8
+          },
+          {
+            "type": "Coop",
+            "x": 20,
+            "y": 20,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 4
+          },
+          {
+            "type": "Stable",
+            "x": 40,
+            "y": 30,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 0
+          }
+        ],
+        "animals": [
+          {
+            "id": 12345,
+            "type": "White Chicken",
+            "age": 4,
+            "friendship": 15,
+            "home": "Coop"
+          },
+          {
+            "id": 12346,
+            "type": "White Cow",
+            "age": 6,
+            "friendship": 15,
+            "home": "Big Barn"
+          }
+        ],
+        "horse": {
+          "name": "PortHorse",
+          "farmerName": "PortHorse",
+          "ownerMatches": true,
+          "stableMatches": true,
+          "mounted": false,
+          "mounting": false,
+          "dismounting": false
+        }
+      },
+      "afterNight": {
+        "day": 2,
+        "money": 22000,
+        "buildings": [
+          {
+            "type": "Big Barn",
+            "x": 35,
+            "y": 20,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 8
+          },
+          {
+            "type": "Coop",
+            "x": 20,
+            "y": 20,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 4
+          },
+          {
+            "type": "Stable",
+            "x": 40,
+            "y": 30,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 0
+          }
+        ],
+        "animals": [
+          {
+            "id": 12345,
+            "type": "White Chicken",
+            "age": 4,
+            "friendship": 0,
+            "home": "Coop"
+          },
+          {
+            "id": 12346,
+            "type": "White Cow",
+            "age": 6,
+            "friendship": 0,
+            "home": "Big Barn"
+          }
+        ],
+        "horse": {
+          "name": "PortHorse",
+          "farmerName": "PortHorse",
+          "ownerMatches": true,
+          "stableMatches": true,
+          "mounted": false,
+          "mounting": false,
+          "dismounting": false
+        }
+      },
+      "afterReload": {
+        "day": 2,
+        "money": 22000,
+        "buildings": [
+          {
+            "type": "Big Barn",
+            "x": 35,
+            "y": 20,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 8
+          },
+          {
+            "type": "Coop",
+            "x": 20,
+            "y": 20,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 4
+          },
+          {
+            "type": "Stable",
+            "x": 40,
+            "y": 30,
+            "construction": 0,
+            "upgrade": 0,
+            "capacity": 0
+          }
+        ],
+        "animals": [
+          {
+            "id": 12345,
+            "type": "White Chicken",
+            "age": 4,
+            "friendship": 0,
+            "home": "Coop"
+          },
+          {
+            "id": 12346,
+            "type": "White Cow",
+            "age": 6,
+            "friendship": 0,
+            "home": "Big Barn"
+          }
+        ],
+        "horse": {
+          "name": "PortHorse",
+          "farmerName": "PortHorse",
+          "ownerMatches": true,
+          "stableMatches": true,
+          "mounted": false,
+          "mounting": false,
+          "dismounting": false
+        }
+      }
     },
     {
       "id": "fishing-gathering",

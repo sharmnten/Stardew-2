@@ -333,17 +333,22 @@
       "expected": [
         "Original carpenter resource consumption, safe barn placement and construction timers",
         "Original Big Barn upgrade and capacity",
-        "Original chicken/cow production, pet friendship and stable horse ownership"
+        "Original chicken/cow production, pet friendship and stable horse ownership",
+        "Original horse NamingMenu/Done, mounting, movement and dismount through normal browser controls",
+        "Actual bed/night save, durable IndexedDB day2 and cold normal Load retain horse owner/stable and livestock/building associations",
+        "Cold-loaded named horse mounts without another naming prompt"
       ],
       "status": "unverified",
       "remaining": [
         "Normal construction/upgrade UI workflows and house renovations",
-        "Other livestock/production types and actual mounting",
-        "Full-day building/animal state persistence"
+        "Other livestock/production types, horse equipment/feeding and broader animal care",
+        "Broader full-day animal/building workflow persistence"
       ],
       "verifiedSubset": [
         "Unchanged native construction/resource/upgrade/production/pet/stable1/1 GREEN25178ms",
-        "Browser full original-method observations match desktop1/1 GREEN56175ms"
+        "Browser full original-method observations match desktop1/1 GREEN56175ms",
+        "Expanded unchanged native naming/riding/night/normal Load1/1 GREEN34714ms",
+        "Browser actual horse naming/movement/dismount, full night/cold Load/exact native state and remount1/1 GREEN156491ms"
       ]
     },
     {

@@ -67,6 +67,24 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "animals-horse" or "animals-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
+                || Game1.activeClickableMenu != null || Game1.player.mount != null)
+                throw new InvalidOperationException("Load the livestock fixture and dismount before location setup.");
+            bool visit = id == "animals-horse";
+            var stand = visit ? StardewBrowser.Testing.AnimalActions.HorseStand() : new Microsoft.Xna.Framework.Point(7, 8);
+            string target = visit ? "Farm" : "FarmHouse";
+            Game1.warpFarmer(target, stand.X, stand.Y, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original livestock location warp did not finish.");
+                await Task.Delay(16);
+            }
+            return "{}";
+        }
         if (id is "minigames-kart" or "minigames-king" or "minigames-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.MinigameActions.FixtureKey)
@@ -292,6 +310,12 @@ internal sealed class ScenarioBridge(HttpClient http)
                 ? StardewBrowser.Testing.FishingCastActions.Read() : null,
             kart = Game1.currentMinigame is StardewValley.Minigames.MineCart cart
                 ? StardewBrowser.Testing.MinigameActions.ReadKart(cart) : null,
+            livestock = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
+                && farm.buildings.OfType<StardewValley.Buildings.Stable>().Any()
+                ? StardewBrowser.Testing.AnimalActions.Read() : null,
+            horseInteraction = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
+                && farm.buildings.OfType<StardewValley.Buildings.Stable>().Any()
+                ? StardewBrowser.Testing.AnimalActions.HorseInteraction() : null,
             savedKing = Game1.player.modData.ContainsKey(StardewBrowser.Testing.MinigameActions.FixtureKey)
                 ? StardewBrowser.Testing.MinigameActions.ReadSavedKing() : null,
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)

@@ -143,7 +143,26 @@ creation (1/1, 24 seconds). The browser matches every observed field (1/1, 56 se
 The fixture grants starting capital without changing lifetime earnings, avoiding
 an unrelated earned-income event. Both runtimes use the original farm warp and
 construction safety checks. Construction/renovation UI, other livestock, actual
-mounting and full-day animal/building persistence remain open.
+mounting and full-day animal/building persistence were open at this earlier gate;
+the added check below covers a named horse and this fixture’s persisted livestock/buildings.
+
+The expanded original desktop reference now names the stable horse through the
+original NamingMenu, mounts it, moves the rider through original keyboard input,
+and dismounts (1/1, 34.7 seconds). It then completes the actual overnight/save and
+normal Load. Day2 retains PortHorse, its owner/stable association, the completed
+Coop/Big Barn/Stable positions and capacities, and chicken/cow home associations.
+Animal age/friendship values match the original post-night state; this fixture's
+animals are unfed at bedtime, so friendship is0 after the night. The initial
+serialized fixture remains a prerequisite save, copied before these actions.
+The browser passes the expanded check (1/1, 156.5 seconds): normal world right
+click opens NamingMenu; real keyboard text and Done name PortHorse; ordinary
+world interaction mounts it, movement keys move the mounted farmer, and X
+dismounts it. Normal bed sleep reaches SaveGameMenu and durable IndexedDB day2.
+A fresh page uses the original Load menu and exactly matches the native post-night
+observations. It can then mount the saved horse without another naming prompt.
+Setup only uses original location warps; no naming/mount/movement/save outcome
+is injected. Normal carpenter UI, renovations, other livestock/production types,
+mount equipment/feeding and broader animal care remain open.
 
 The affected browser method gate passes6/6 in228 seconds after the asynchronous
 original farm-warp dispatch: animals56s, decoration52s, farming53s and inventory/

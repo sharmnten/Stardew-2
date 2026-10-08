@@ -385,6 +385,24 @@ static object CreateFarm(string id, GameRunner runner, string report)
     {
         GoToFarm();
         state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AnimalActions.Run());
+        var stand = StardewBrowser.Testing.AnimalActions.HorseStand();
+        GoToProgressLocation("Farm", stand.X, stand.Y);
+        state["riding"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AnimalActions.Ride(() => {
+            NativeWindow.Frame(runner); Thread.Sleep(1);
+        }));
+        state["afterRiding"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AnimalActions.Read());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 2 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original livestock/buildings overnight");
+        state["afterNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AnimalActions.Read());
+        Reload();
+        state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.AnimalActions.Read());
     }
     if (id == "tailoring-automation-decoration") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.DecorationActions.Run());
     if (id == "advanced-desktop-roundtrip")
