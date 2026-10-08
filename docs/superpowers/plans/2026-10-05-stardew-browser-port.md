@@ -135,7 +135,7 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 - [x] Run appropriate source/tooling checks, `dotnet publish src/Browser/Browser.csproj -c Release`, and the complete browser suite against the release output. Inspect for native Windows dependencies and production test hooks.
 - [x] Perform an independent final code review using the selected execution workflow; resolve material findings and rerun affected verification.
-- [x] Check GitHub Pages package/artifact limits against the actual release: 991,794,654 bytes; preserve original file identities and project-site relative loading paths.
+- [x] Check GitHub Pages package/artifact limits against the actual release: 991,796,702 bytes; preserve original file identities and project-site relative loading paths.
 - [x] Upload the checksum-verified production release, publish through GitHub Actions to this repository’s Pages site, follow deployment to a terminal result, and verify the actual origin in Chromium.
 - [x] Update README with reproducible commands, controls, save import/export, supported browsers, and the literal deployed URL. Report any verification or deployment limitation; never label an incomplete port complete.
 
