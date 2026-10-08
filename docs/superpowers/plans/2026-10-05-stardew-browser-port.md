@@ -121,11 +121,11 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 **Interfaces:** `ScenarioBridge.LoadScenarioAsync(string scenarioId) -> Task` loads a reproducibly constructed original save; `Snapshot() -> string` exposes serialized original state to tests. Production builds exclude the bridge. Fixtures record game version and scenario prerequisites.
 
 - [x] Create a parity ledger with every group from the approved spec and status `unverified`; associate each with a concrete new-game or advanced-save scenario and expected outcomes.
-- [ ] Write scenarios for all original farm layouts; crops/season rollover; inventory/economy; recipes/machines; animals/buildings; fishing; combat/dungeons; NPC/family events; skill/mastery unlocks; both story routes; festivals; island/Qi/perfection; and original minigames.
-- [ ] Add desktop-save import, migration, full-day/sleep, reload, and export assertions. Use generated fixtures with original serializers or available reference saves; never mark unavailable fixtures verified.
-- [ ] Run `node --test tests/browser/parity.spec.mjs`, record failures, and fix each adapter or recovery defect without replacing original gameplay logic. Track each targeted fix and rerun its affected checks.
-- [ ] Verify presentation/audio/localization and compare available reference desktop scenarios. Record unavailable comparisons and browser/performance limits explicitly.
-- [ ] Run `python3 -m unittest discover -s tests/tools -v`, `dotnet test tests/Platform.Tests`, and `node --test tests/browser/*.spec.mjs` once after the final changes; require all tests and all feature groups to pass. Commit the parity evidence and final fixes.
+- [x] Write scenarios for all original farm layouts; crops/season rollover; inventory/economy; recipes/machines; animals/buildings; fishing; combat/dungeons; NPC/family events; skill/mastery unlocks; both story routes; festivals; island/Qi/perfection; and original minigames.
+- [x] Add desktop-save import, migration, full-day/sleep, reload, and export assertions. Use generated fixtures with original serializers or available reference saves; never mark unavailable fixtures verified.
+- [x] Run `node --test tests/browser/parity.spec.mjs`, record failures, and fix each adapter or recovery defect without replacing original gameplay logic. Track each targeted fix and rerun its affected checks.
+- [x] Verify presentation/audio/localization and compare available reference desktop scenarios. Record unavailable comparisons and browser/performance limits explicitly.
+- [x] Run `python3 -m unittest discover -s tests/tools -v`, `dotnet test tests/Platform.Tests`, and `node --test tests/browser/*.spec.mjs` once after the final changes; require all tests and all feature groups to pass. Commit the parity evidence and final fixes.
 
 ### Task 8: Build, review, and publish the verified static game
 
@@ -133,8 +133,8 @@ adapters and public contracts. `tests/` owns tooling, adapter, and browser check
 
 **Interfaces:** `tools/package-browser.sh` builds verified output into `dist/`; the static host serves this directory without game APIs. Site identity is persisted through the Sites helper.
 
-- [ ] Run appropriate source/tooling checks, `dotnet publish src/Browser/Browser.csproj -c Release`, and the complete browser suite against the release output. Inspect for native Windows dependencies and production test hooks.
-- [ ] Perform an independent final code review using the selected execution workflow; resolve material findings and rerun affected verification.
+- [x] Run appropriate source/tooling checks, `dotnet publish src/Browser/Browser.csproj -c Release`, and the complete browser suite against the release output. Inspect for native Windows dependencies and production test hooks.
+- [x] Perform an independent final code review using the selected execution workflow; resolve material findings and rerun affected verification.
 - [ ] Check Sites upload/per-file limits against the actual release. Segment large audio/content files deterministically when necessary and verify the resulting loading paths before publication.
 - [ ] Create a private Site, persist its identity, package through the Sites source helper, and deploy through its native tools. Follow the existing deployment to a terminal result.
 - [ ] Update README with reproducible commands, controls, save import/export, supported browsers, and the literal deployed URL. Report any verification or deployment limitation; never label an incomplete port complete.

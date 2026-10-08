@@ -76,6 +76,61 @@ internal static class FishingActions
     }
 
     internal static CrabPot Pot => Game1.getLocationFromName("Beach").objects.Values.OfType<CrabPot>().Single();
+    internal static object GatherAndRegenerate()
+    {
+        var beach = Game1.currentLocation;
+        if (beach.Name != "Beach") throw new InvalidOperationException("Visit the original beach before gathering.");
+        Random savedRandom = Game1.random;
+        try
+        {
+            // Beach.DayUpdate also uses the live random stream, unlike the
+            // save-seeded base forage pass. Control that input for both hosts.
+            Game1.random = new Random(1729);
+            // Exercise two weekly resource boundaries, after the persisted trap/
+            // pond checks. The original DayUpdate removes old forage and respawns it.
+            Game1.dayOfMonth = 7; Game1.stats.DaysPlayed = 7;
+            Game1.netWorldState.Value.UpdateFromGame1();
+            int firstSeed = SpawnWeek(7);
+            var spawned = Forage();
+            var target = beach.objects.Pairs.Where(pair => pair.Value.IsSpawnedObject && pair.Value.isForage())
+                .OrderBy(pair => pair.Key.X).ThenBy(pair => pair.Key.Y).First();
+            string id = target.Value.QualifiedItemId;
+            Game1.player.Position = new Vector2(target.Key.X * 64 - 64, target.Key.Y * 64);
+            uint before = Game1.stats.ItemsForaged;
+            int owned = Count();
+            bool harvested = beach.checkAction(new xTile.Dimensions.Location((int)target.Key.X, (int)target.Key.Y),
+                Game1.viewport, Game1.player);
+            bool removed = !beach.objects.ContainsKey(target.Key);
+            int added = Count() - owned;
+            uint foraged = Game1.stats.ItemsForaged - before;
+            Game1.dayOfMonth = 14; Game1.stats.DaysPlayed = 14;
+            Game1.netWorldState.Value.UpdateFromGame1();
+            int secondSeed = SpawnWeek(14);
+            var regenerated = Forage();
+            return new { spawned = spawned.Length, harvested, removed, id, inventoryAdded = added,
+                itemsForaged = foraged, regenerated = regenerated.Length, first = spawned, second = regenerated, firstSeed, secondSeed };
+
+            int SpawnWeek(int day)
+            {
+                // Original weekly spawning can legitimately yield no accessible
+                // forage. Select a reproducible input, never inject a drop.
+                for (int seed = 1729; seed < 1793; seed++)
+                {
+                    Game1.random = new Random(seed);
+                    beach.DayUpdate(day);
+                    if (Forage().Length > 0) return seed;
+                }
+                throw new InvalidOperationException("No original beach forage spawned across 64 deterministic inputs.");
+            }
+
+            int Count() => Game1.player.Items.Where(item => item?.QualifiedItemId == id).Sum(item => item.Stack);
+            object[] Forage() => beach.objects.Pairs.Where(pair => pair.Value.IsSpawnedObject && pair.Value.isForage())
+                .OrderBy(pair => pair.Key.X).ThenBy(pair => pair.Key.Y)
+                .Select(pair => (object)new { x = pair.Key.X, y = pair.Key.Y, id = pair.Value.QualifiedItemId }).ToArray();
+        }
+        finally { Game1.random = savedRandom; }
+    }
+
     internal static FishPond Pond => Game1.getFarm().buildings.OfType<FishPond>().Single();
 
     internal static (Vector2 Shore, Vector2 Target) PondSpot()

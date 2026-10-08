@@ -67,6 +67,132 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
+        if (id is "combat-enter" or "combat-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.CombatActions.FixtureKey)
+                || Game1.eventUp || Game1.activeClickableMenu != null)
+                throw new InvalidOperationException("Load the combat fixture before entering its encounter.");
+            bool enter = id == "combat-enter";
+            if (enter) Game1.enterMine(5);
+            else Game1.warpFarmer("FarmHouse", 7, 8, false);
+            string target = enter ? "UndergroundMine5" : "FarmHouse";
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original combat location warp did not finish.");
+                await Task.Delay(16);
+            }
+            return enter ? JsonSerializer.Serialize(StardewBrowser.Testing.CombatActions.StartLiveEncounter(), Json) : "{}";
+        }
+        if (id == "fishing-regeneration")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FishingActions.FixtureKey))
+                throw new InvalidOperationException("Load the fishing fixture before gathering.");
+            Game1.warpFarmer("Beach", 28, 13, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != "Beach" || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original gathering warp did not finish.");
+                await Task.Delay(16);
+            }
+            return JsonSerializer.Serialize(StardewBrowser.Testing.FishingActions.GatherAndRegenerate(), Json);
+        }
+        if (id is "movie-linus" or "movie-entrance" or "movie-doors" or "movie-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.MovieActions.FixtureKey)
+                || Game1.activeClickableMenu != null || Game1.eventUp)
+                throw new InvalidOperationException("Load the movie fixture and finish its active interaction first.");
+            if (id == "movie-doors")
+            {
+                var theater = StardewBrowser.Testing.MovieActions.Theater;
+                if (Game1.currentLocation != theater) throw new InvalidOperationException("Enter the theater first.");
+                var tile = StardewBrowser.Testing.MovieActions.ActionTile(theater, "Theater_Doors");
+                var end = new Microsoft.Xna.Framework.Point(tile.X, tile.Y + 1);
+                var route = StardewValley.Pathfinding.PathFindController.findPath(Game1.player.TilePoint, end,
+                    StardewValley.Pathfinding.PathFindController.isAtEndPoint, theater, Game1.player, 10000)
+                    ?? throw new InvalidOperationException("Original pathfinder found no route to the theater doors.");
+                return JsonSerializer.Serialize(new { x = tile.X * 64 + 32, y = tile.Y * 64 + 32,
+                    route = route.Select(WalkingPoint).ToArray() }, Json);
+            }
+            if (id == "movie-linus") Game1.timeOfDay = 900;
+            var linus = Game1.getCharacterFromName("Linus");
+            var offset = StardewValley.Locations.Town.GetTheaterTileOffset();
+            string target = id == "movie-linus" ? linus.currentLocation.NameOrUniqueName
+                : id == "movie-entrance" ? "Town" : "FarmHouse";
+            int x = id == "movie-linus" ? linus.TilePoint.X : id == "movie-entrance" ? 95 + offset.X : 7;
+            int y = id == "movie-linus" ? linus.TilePoint.Y + 1 : id == "movie-entrance" ? 55 + offset.Y : 8;
+            await Warp(x, y);
+            if (id == "movie-entrance")
+            {
+                var tile = StardewBrowser.Testing.MovieActions.ActionTile(Game1.currentLocation, "Theater_Entrance");
+                await Warp(tile.X, tile.Y + 1);
+                return JsonSerializer.Serialize(new { x = tile.X * 64 + 32, y = tile.Y * 64 + 32 }, Json);
+            }
+            return id == "movie-linus" ? JsonSerializer.Serialize(new { x = linus.GetBoundingBox().Center.X,
+                y = linus.GetBoundingBox().Center.Y }, Json) : "{}";
+
+            async Task Warp(int tileX, int tileY)
+            {
+                Game1.warpFarmer(target, tileX, tileY, false);
+                var timeout = System.Diagnostics.Stopwatch.StartNew();
+                while (Game1.currentLocation.NameOrUniqueName != target || Game1.isWarping || !Game1.player.CanMove
+                    || Game1.activeClickableMenu != null)
+                {
+                    if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original movie location warp did not finish.");
+                    await Task.Delay(16);
+                }
+            }
+        }
+        if (id == "completion-summit")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.CompletionActions.FixtureKey)
+                || !Game1.player.team.farmPerfect.Value || Game1.eventUp || Game1.activeClickableMenu != null)
+                throw new InvalidOperationException("Earn perfection before entering its original ending.");
+            Game1.warpFarmer("Summit", 9, 23, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != "Summit" || Game1.CurrentEvent == null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original summit event did not start.");
+                await Task.Delay(16);
+            }
+            return "{}";
+        }
+        if (id is "completion-renovation" or "completion-fizz" or "completion-home")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.CompletionActions.FixtureKey)
+                || Game1.activeClickableMenu != null || Game1.eventUp)
+                throw new InvalidOperationException("Load the completion fixture and finish its active interaction first.");
+            if (id == "completion-renovation")
+            {
+                var placement = StardewBrowser.Testing.CompletionActions.OpenRenovation();
+                var fadeTimeout = System.Diagnostics.Stopwatch.StartNew();
+                while (Game1.globalFade)
+                {
+                    if (fadeTimeout.Elapsed > TimeSpan.FromSeconds(30)) throw new TimeoutException("Original renovation fade did not finish.");
+                    await Task.Delay(16);
+                }
+                return JsonSerializer.Serialize(placement, Json);
+            }
+            bool visit = id == "completion-fizz";
+            string target = visit ? "IslandNorthCave1" : "FarmHouse";
+            if (!visit && Game1.currentLocation.Name == target)
+                return JsonSerializer.Serialize(StardewBrowser.Testing.FamilyActions.BedRoute()
+                    .Select(WalkingPoint).ToArray(), Json);
+            var entry = Utility.getHomeOfFarmer(Game1.player).getEntryLocation();
+            Game1.warpFarmer(target, visit ? 6 : entry.X, visit ? 4 : entry.Y, false);
+            var timeout = System.Diagnostics.Stopwatch.StartNew();
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
+                || Game1.activeClickableMenu != null)
+            {
+                if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original completion warp did not finish.");
+                await Task.Delay(16);
+            }
+            return visit ? JsonSerializer.Serialize(StardewBrowser.Testing.CompletionActions.FizzPosition(), Json)
+                : JsonSerializer.Serialize(StardewBrowser.Testing.FamilyActions.BedRoute()
+                    .Select(WalkingPoint).ToArray(), Json);
+        }
         if (id is "animals-horse" or "animals-home")
         {
             if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
@@ -166,6 +292,13 @@ internal sealed class ScenarioBridge(HttpClient http)
             }
             var spot = museum.getFreeDonationSpot();
             return JsonSerializer.Serialize(new { x = (int)spot.X, y = (int)spot.Y }, Json);
+        }
+        if (id == "family-bed-route")
+        {
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey))
+                throw new InvalidOperationException("Load the family fixture before reading its home route.");
+            return JsonSerializer.Serialize(StardewBrowser.Testing.FamilyActions.BedRoute()
+                .Select(point => new { x = point.X, y = point.Y }).ToArray(), Json);
         }
         if (id is "family-visit-linus" or "family-home")
         {
@@ -295,6 +428,16 @@ internal sealed class ScenarioBridge(HttpClient http)
             buildings = farm.buildings.Select(building => new { type = building.buildingType.Value,
                 x = building.tileX.Value, y = building.tileY.Value }).OrderBy(building => building.type).ToArray(),
             animals = farm.getAllFarmAnimals().Select(animal => new { type = animal.type.Value, name = animal.Name }).OrderBy(animal => animal.type).ToArray(),
+            completion = Game1.player.modData.ContainsKey(StardewBrowser.Testing.CompletionActions.FixtureKey)
+                ? StardewBrowser.Testing.CompletionActions.Read() : null,
+            ending = new { slideshow = (Game1.currentLocation as StardewValley.Locations.Summit)?.isShowingEndSlideshow == true,
+                sprites = Game1.currentLocation.temporarySprites.Count },
+            movie = Game1.player.modData.ContainsKey(StardewBrowser.Testing.MovieActions.FixtureKey)
+                ? StardewBrowser.Testing.MovieActions.Read() : null,
+            combat = Game1.player.modData.ContainsKey(StardewBrowser.Testing.CombatActions.FixtureKey)
+                ? StardewBrowser.Testing.CombatActions.ReadLive() : null,
+            savedCombat = Game1.player.modData.ContainsKey(StardewBrowser.Testing.CombatActions.FixtureKey)
+                ? StardewBrowser.Testing.CombatActions.ReadSaved() : null,
             advanced = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AdvancedActions.FixtureKey)
                 ? StardewBrowser.Testing.AdvancedActions.Read() : null,
             professions = Game1.player.professions.Order().ToArray(),
@@ -328,6 +471,7 @@ internal sealed class ScenarioBridge(HttpClient http)
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,
+            farmEvent = Game1.farmEvent?.GetType().Name,
             toolDiagnostics = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
                 ? StardewBrowser.Testing.ToolUpgradeActions.Diagnostics() : null,
             toolUpgrade = Game1.player.modData.ContainsKey(StardewBrowser.Testing.ToolUpgradeActions.FixtureKey)
@@ -339,8 +483,19 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     private static readonly HashSet<string> Allowed = ["new-game-standard", "new-game-riverland", "new-game-forest",
         "new-game-hilltop", "new-game-wilderness", "new-game-four-corners", "new-game-beach", "new-game-meadowlands",
-        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "fishing-cast", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "museum-quests", "festivals-events-movies", "original-minigames", "island-qi-perfection"];
+        "farming-season", "inventory-economy", "tool-upgrades", "tool-upgrades-ready", "recipes-machines", "advanced-desktop-roundtrip", "tailoring-automation-decoration", "text-sign-clipboard", "animals-buildings", "fishing-gathering", "fishing-cast", "combat-dungeons", "characters-family", "skills-mastery-achievements", "community-center", "joja-orders-museum", "museum-quests", "festivals-events-movies", "original-minigames", "island-qi-perfection", "late-game-completion", "characters-family-birth", "movie-screening"];
     private sealed record ReferenceReport(string GameVersion, ReferenceScenario Scenario);
     private sealed record ReferenceScenario(string Id, ReferenceFile[] SaveFiles);
     private sealed record ReferenceFile(string Name, long Bytes);
+
+    private static object WalkingPoint(Microsoft.Xna.Framework.Point point)
+    {
+        // PathFindController tiles describe the standing bounding-box
+        // center, not the sprite position. Walking to tile*64 can step
+        // into an exit warp, especially at the upgraded home's door.
+        var offset = Utility.PointToVector2(Game1.player.StandingPixel) - Game1.player.Position;
+        return new { x = point.X, y = point.Y,
+            pixelX = point.X * 64 + 32 - offset.X,
+            pixelY = point.Y * 64 + 32 - offset.Y };
+    }
 }

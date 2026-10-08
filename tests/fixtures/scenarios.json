@@ -367,7 +367,8 @@
       "expected": [
         "Original fishing minigame catches a fish",
         "Bait/tackle consumption and crab pot harvest",
-        "Pond and resource regeneration match desktop"
+        "Pond and resource regeneration match desktop",
+        "Original weekly map updates spawn forage; original harvesting removes it and awards item/stat; later weekly update regenerates resources"
       ],
       "status": "unverified",
       "verifiedSubset": [
@@ -413,7 +414,8 @@
       "expected": [
         "Original generation/warp/collision",
         "Monster damage, drops and buff timing",
-        "Floor progression survives normal play"
+        "Floor progression survives normal play",
+        "Original mine entry and live sword swing kill injured slime, awarding XP and loot; real sleep/cold Load retain kill and deepest-floor fields"
       ],
       "status": "unverified",
       "verifiedSubset": [
@@ -703,6 +705,49 @@
         "Browser counter/animation/popup/Leave/home/bed1/1 GREEN63201ms"
       ],
       "remaining": []
+    },
+    {
+      "id": "characters-family-birth",
+      "group": "characters",
+      "prerequisites": [
+        "Original year2 Spring5 Abigail marriage, upgraded home, next birth due Spring6, no children",
+        "Earlier global Qi plane event already witnessed"
+      ],
+      "expected": [
+        "Original BirthingEvent and NamingMenu create PortBaby",
+        "Actual bed input, overnight save and cold Load retain child and family fields"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "movie-screening",
+      "group": "calendar",
+      "prerequisites": [
+        "Original year2 Spring5 theater unlocked and opening tour already seen",
+        "Two movie tickets and Linus friendship750"
+      ],
+      "expected": [
+        "Original invitation consumes one ticket; original theater entry consumes another",
+        "Every original screening scene and guest reaction finish, returning to lobby",
+        "Actual night and cold Load retain both viewing-week fields and correct friendship"
+      ],
+      "status": "unverified"
+    },
+    {
+      "id": "late-game-completion",
+      "group": "late-game",
+      "prerequisites": [
+        "Original year3 Spring1 house2, starting capital600000, seen Grandpa evaluations, completed Community Center rooms and island boat unlock",
+        "Original99-waiver farm with active Qi crop order, uncredited500 Qi Fruit shipment"
+      ],
+      "expected": [
+        "Original renovation placement opens bedroom and final Fizz purchase spends500000 gold",
+        "Actual shipment/night completes QiChallenge2 and awards100 Qi Gems",
+        "Original overnight calculation earns perfection and next save persists Farm_Eternal",
+        "Original summit ending renders373 slideshow sprites and runs all credits",
+        "Final real night/cold Load retain summit flags, achievement44 and ending music"
+      ],
+      "status": "unverified"
     }
   ]
 }

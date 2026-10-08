@@ -31,6 +31,12 @@ test('original desktop bait, tackle, crab pot, fish pond and fishing physics', {
   assert.equal(actual.bar.after.scale, 1);
   assert.equal(Number.isFinite(actual.bar.after.position), true);
   assert.equal(Number.isFinite(actual.bar.after.distance), true);
+  assert.ok(scenario.gathering.spawned > 0, 'Original daily spawning must create forage');
+  assert.equal(scenario.gathering.harvested, true);
+  assert.equal(scenario.gathering.removed, true);
+  assert.equal(scenario.gathering.itemsForaged, 1);
+  assert.equal(scenario.gathering.inventoryAdded, 1);
+  assert.ok(scenario.gathering.regenerated > 0, 'A subsequent original spawn must replenish gathered resources');
   assert.ok(scenario.afterHarvest, 'Record original shore harvesting');
   assert.equal(scenario.afterHarvest.experience, 2155);
   assert.deepEqual(scenario.afterHarvest.professions, [6]);

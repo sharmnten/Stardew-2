@@ -20,7 +20,8 @@ test('original rod casts, hooks and catches a tutorial fish through hardware inp
   assert.equal(state.afterCast.stamina, 262.5);
   assert.equal(state.afterCatch.bait, 1);
   assert.equal(state.afterCatch.inventory.length, 1);
-  assert.equal(state.afterCatch.inventory[0].id, '(O)145');
+  assert.ok(['(O)137', '(O)145'].includes(state.afterCatch.inventory[0].id), 'Morning Spring Town tutorial catch is Smallmouth Bass or Sunfish');
+  assert.equal(state.afterCatch.collection[0].id, state.afterCatch.inventory[0].id);
   assert.equal(state.afterCatch.inventory[0].stack, 1);
   assert.equal(state.afterCatch.collection[0].count, 1);
   assert.ok(state.afterCatch.collection[0].size > 0);

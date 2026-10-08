@@ -12,14 +12,54 @@ namespace StardewBrowser.Testing;
 
 internal static class CombatActions
 {
+    internal const string FixtureKey = "StardewBrowser.CombatFixture";
+    private static GreenSlime? target;
+    private static uint startingKills;
+    private static int startingExperience;
     internal static void Prepare()
     {
+        Game1.player.modData[FixtureKey] = "1";
         Game1.year = 2; Game1.season = Season.Spring; Game1.dayOfMonth = 5;
         Game1.stats.DaysPlayed = 117;
         Game1.player.hasSkullKey = true;
         Game1.player.mailReceived.Add("Island_Turtle");
+        Game1.player.mailReceived.Add("sawQiPlane");
+        Game1.player.Items[0] = new MeleeWeapon("0");
         Game1.netWorldState.Value.UpdateFromGame1();
     }
+
+    internal static object StartLiveEncounter()
+    {
+        if (Game1.currentLocation is not MineShaft mine || mine.mineLevel != 5)
+            throw new InvalidOperationException("Enter original mine floor 5 first.");
+        startingKills = Game1.stats.SlimesKilled;
+        startingExperience = Game1.player.experiencePoints[4];
+        Game1.player.CurrentToolIndex = 0;
+        Game1.player.faceDirection(1);
+        // An injured, stationary monster is an encounter prerequisite. Damage,
+        // removal, XP, kill counters and loot must come from the original swing.
+        target = new GreenSlime(Game1.player.Position + new Vector2(64, 0), 5) {
+            currentLocation = mine, Health = 1, speed = 0, timeBeforeAIMovementAgain = 60000
+        };
+        target.resilience.Value = 0;
+        target.objectsToDrop.Add("766");
+        mine.characters.Add(target);
+        return new { x = target.GetBoundingBox().Center.X, y = target.GetBoundingBox().Center.Y };
+    }
+
+    internal static object ReadLive() => new {
+        location = Game1.currentLocation.Name, deepest = Game1.player.deepestMineLevel,
+        slimesKilled = Game1.stats.SlimesKilled - startingKills,
+        experience = Game1.player.experiencePoints[4] - startingExperience,
+        killed = target?.Health <= 0,
+        loot = Game1.currentLocation.debris.Any(debris => debris.itemId.Value is "766" or "(O)766"
+            || debris.item?.QualifiedItemId == "(O)766")
+            || Game1.player.Items.Any(item => item?.QualifiedItemId == "(O)766")
+    };
+
+    internal static object ReadSaved() => new { day = Game1.dayOfMonth,
+        deepest = Game1.player.deepestMineLevel, slimesKilled = Game1.stats.SlimesKilled,
+        experience = Game1.player.experiencePoints[4], weapon = Game1.player.Items[0]?.QualifiedItemId };
 
     internal static object Run()
     {

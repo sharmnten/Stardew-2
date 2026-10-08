@@ -1,30 +1,44 @@
 # Single-player parity ledger
 
-Reference: supplied Stardew Valley **1.6.15.24356**. All fourteen groups start
-**unverified**. Earlier passing browser milestones provide evidence for specific
-contracts, not an assertion that an entire gameplay group works. Release requires
-all groups below to pass. Fixtures/scenarios are defined in
-[scenarios.json](../../tests/fixtures/scenarios.json); their states are planned
-prerequisites, not injected successful outcomes.
+Reference: supplied Stardew Valley **1.6.15.24356**. All fourteen groups are
+**verified within the approved representative acceptance scope** on 2026-10-08.
+The recovered original gameplay implementations are retained; these checks do
+not enumerate every content permutation. Fixtures/scenarios are defined in
+[scenarios.json](../../tests/fixtures/scenarios.json); their states are explicit
+prerequisites, not injected successful outcomes. See
+[release verification](release-verification.md) for commands, results and limits.
 
 | Group | Status | Concrete scenarios | Required observations |
 | --- | --- | --- | --- |
-| Start and configuration | unverified | `new-game-*` for all eight layouts | Native configuration/creation, original starting map/buildings/items/animals, save/load and movement; compare desktop |
-| Farming | unverified | `farming-season` | Native tools, soil/watering, crop growth/season survival, weather, trees and greenhouse |
-| Economy and inventory | unverified | `inventory-economy`, `tool-upgrades` | Quality/stacking/chests, shop prices, shipping settlement, currencies and tool upgrades |
-| Crafting and production | unverified | `recipes-machines`, `tailoring-automation-decoration`, `text-sign-clipboard` | Recipe consumption/output, cooking, machine timers, automation, tailoring, decorations and persisted sign text |
-| Animals and buildings | unverified | `animals-buildings` | Construction/upgrades/renovations, livestock/pets/mounts, production and friendship |
-| Fishing and gathering | unverified | `fishing-gathering`, `fishing-cast` | Native fishing minigame, bait/tackle, pots/ponds, forage and resource regeneration |
-| Exploration and combat | unverified | `combat-dungeons` | Maps/warps, generated mines/Skull Cavern/volcano, monsters/weapons/buffs/drops |
-| Characters and family | unverified | `characters-family` | Schedules/dialogue/gifts/friendship/events, marriage and children |
-| Progression | unverified | `skills-mastery-achievements` | Skills/professions/mastery, original local achievements/collections/unlocks |
-| Story and quests | unverified | `community-center`, `joja-orders-museum`, `museum-quests` | Both routes, bundles/rewards, mail/quests/orders/secrets/museum |
-| Calendar and events | unverified | `festivals-events-movies` | Festivals/passive festivals/birthdays/random events/cutscenes/movies |
-| Late game and minigames | unverified | `island-qi-perfection`, `original-minigames` | Island/walnuts/Qi/perfection, native Prairie King/Junimo Kart input/progression/rewards |
-| Persistence | unverified | `advanced-desktop-roundtrip` | Advanced desktop import/migration, full day/sleep/reload/export; retain previous bytes on failed write |
-| Presentation | unverified | `presentation-desktop` | Original UI/fonts/effects/audio/localization; input/fullscreen; desktop comparison and timings |
+| Start and configuration | verified (representative) | `new-game-*` for all eight layouts | Native configuration/creation, original starting map/buildings/items/animals, save/load and movement; compare desktop |
+| Farming | verified (representative) | `farming-season` | Native tools, soil/watering, crop growth/season survival, weather, trees and greenhouse |
+| Economy and inventory | verified (representative) | `inventory-economy`, `tool-upgrades` | Quality/stacking/chests, shop prices, shipping settlement, currencies and tool upgrades |
+| Crafting and production | verified (representative) | `recipes-machines`, `tailoring-automation-decoration`, `text-sign-clipboard` | Recipe consumption/output, cooking, machine timers, automation, tailoring, decorations and persisted sign text |
+| Animals and buildings | verified (representative) | `animals-buildings`, `late-game-completion` | Construction/upgrades/renovations, livestock/pets/mounts, production and friendship |
+| Fishing and gathering | verified (representative) | `fishing-gathering`, `fishing-cast` | Native fishing minigame, bait/tackle, pots/ponds, forage and resource regeneration |
+| Exploration and combat | verified (representative) | `combat-dungeons` | Maps/warps, generated mines/Skull Cavern/volcano, monsters/weapons/buffs/drops |
+| Characters and family | verified (representative) | `characters-family`, `characters-family-birth` | Schedules/dialogue/gifts/friendship/events, marriage and children |
+| Progression | verified (representative) | `skills-mastery-achievements` | Skills/professions/mastery, original local achievements/collections/unlocks |
+| Story and quests | verified (representative) | `community-center`, `joja-orders-museum`, `museum-quests` | Both routes, bundles/rewards, mail/quests/orders/secrets/museum |
+| Calendar and events | verified (representative) | `festivals-events-movies`, `movie-screening`, `characters-family-birth` | Festivals/passive festivals/birthdays/random events/cutscenes/movies |
+| Late game and minigames | verified (representative) | `island-qi-perfection`, `late-game-completion`, `original-minigames` | Island/walnuts/Qi/perfection, native Prairie King/Junimo Kart input/progression/rewards |
+| Persistence | verified (representative) | `advanced-desktop-roundtrip` | Advanced desktop import/migration, full day/sleep/reload/export; retain previous bytes on failed write |
+| Presentation | verified (representative) | `presentation-desktop` | Original UI/fonts/effects/audio/localization; input/fullscreen; desktop comparison and timings |
 
-## Current evidence and remaining comparisons
+## Evidence scope and historical milestones
+
+The final gate passed 66/66 browser checks across all 33 spec files,33/33
+original desktop/reference-host checks, and a fresh 1/1 original desktop reload
+of the current browser-exported advanced save. Tooling 17/17, platform 39/39,
+game adapters 4/4, production exclusion 1/1 and ordinary production journeys 2/2
+also pass. The complete browser corpus ran in two disjoint batches (30/30 and
+36/36) against one immutable development build; all runtime/source inputs and
+both exit summaries were verified. Production excludes all 20 mutation drivers.
+
+The historical milestones below distinguish direct original method comparisons
+from normal browser input. Their remaining/open remarks describe coverage at
+those milestones, not missing implementations. Untested individual permutations
+remain comparison limits under the approved representative scope.
 
 Tasks 1–6 have verified deterministic source/content recovery, original browser
 startup/creation/day rollover, lossless wave decoding, atomic save persistence,
@@ -397,3 +411,67 @@ implementation treats returned Promises as immediately truthy. These checks
 preserve original gameplay and collision behavior. Production excludes all sixteen
 mutable fixture drivers (fresh audit1/1,1.4s). Fresh tooling17/17, platform38/38
 and game3/3 checks pass.
+
+## Final acceptance expansion
+
+The approved design retains every original single-player implementation and
+requires representative behavior across all fourteen groups. The final acceptance
+checks are those in `tools/check-browser.sh`, including every browser spec and
+unchanged desktop reference. All checks passed. The long browser tool command
+was terminated before its final result, so its complete corpus was rerun in two
+bounded batches. Two premature harness assertions were corrected: waiting for
+the original bed-question controls to appear, and waiting for the museum OK
+button to finish its original slide after donation. Both failures were observed
+before their scoped and full-batch green verification; gameplay is unchanged. The
+historical checks above distinguish method comparisons from normal browser input;
+they do not claim every content permutation, hardware device or browser engine
+has been exercised.
+
+The birth fixture starts with an Abigail marriage, upgraded house, no child and
+a birth due the next day. The original earlier Qi plane event is already seen,
+since its global priority otherwise postpones the personal event. Desktop and
+browser pass the original BirthingEvent, NamingMenu input for PortBaby, real
+sleep/save, and normal cold Load. No child, name or saved result is injected.
+
+The late-game fixture supplies house2, year3 prerequisites, capital600000,
+99 waivers and an active Qi crop shipment order with500 uncredited Qi Fruit in
+the shipping bin. Original renovation placement opens the bedroom; original
+Fizz purchase spends500000 gold. Actual shipping completes QiChallenge2 and
+awards100 Qi Gems; the original overnight calculation earns perfection. A second
+real night persists Farm_Eternal, which the original adds as morning fluff after
+the first save. The unchanged desktop then enters the earned Summit event,
+creates all 373 slideshow sprites, runs the final credits text, returns to play,
+and saves/reloads the original summit mail, achievement44 and heard ending music.
+The full browser ending check passes in662 seconds: all 373 slideshow sprites,
+credits and ending rewards match, followed by a third actual night and day4
+cold Load. Its walking helper skips an already-satisfied pathfinder start tile,
+matching the original controller; recentering that entry tile had stepped through
+the farmhouse exit. Original movement and collision remain unchanged.
+
+A caught original desktop event error initially aborted the slideshow. Exposing
+its original logger identified `Tilesheets\\critters` versus the archive directory
+`TileSheets`; the Linux-only desktop verifier now supplies that observed Windows
+case alias. Original game code and content bytes are unchanged. Browser caught
+errors now reach console.error with their exception, so aborting an event cannot
+silently satisfy the browser error gate.
+
+The movie fixture supplies two tickets, Linus friendship750 and an already-open
+movie theater. Original invitation and entry consume one ticket each. The full
+screening returns to the lobby, records farmer/guest viewed week16 and survives
+sleep/reload. Linus dislikes this film; the original reaction awards0 friendship,
+and the next day's ordinary decay gives748. The first test wrongly expected a
+positive reward; the corrected expectation follows the supplied original reaction
+command. The full browser check passes in228 seconds with normal invitation,
+entry, scene/dialogue input, lobby return and saved viewing comparison.
+
+The fishing fixture's added gathering comparison runs original weekly Beach
+updates, original forage harvesting and the next weekly regeneration. The desktop
+spawns two items, harvests shell393 (one inventory item and one ItemsForaged),
+then regenerates one item. The browser matches positions and IDs. The fixture
+records deterministic input seeds1730 and1729; it selects a nonempty original
+weekly spawn without injecting forage objects or harvest outcomes. The live
+combat extension enters original mine floor5 and attacks an injured stationary
+slime encounter prerequisite. The original sword animation awards three combat
+XP, one kill and loot; actual sleep/reload retains XP, kill count and deepest floor.
+Browser input produces those same results and passes in160 seconds. Fixture drivers remain excluded
+from production builds.

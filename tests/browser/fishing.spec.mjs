@@ -82,6 +82,7 @@ test('original trap and pond harvests survive overnight saves and cold loads', {
       && portStatus.game.day === 3 && portStatus.game.player.canMove && !portStatus.game.menu.type
       && !portStatus.game.warping, null, { timeout: 90000 });
     assert.deepEqual(await fishing(page), expected.afterPondReload);
+    assert.deepEqual(await page.evaluate(() => portScenarios.run('fishing-regeneration')), expected.gathering);
   }, undefined, '/');
 });
 

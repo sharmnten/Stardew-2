@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  let connection, injectedFailure;
+  let connection;
   function open() {
     if (!connection) connection = new Promise((resolve, reject) => {
       const request = indexedDB.open('stardew-browser-saves', 1);
@@ -55,17 +55,12 @@
       const transaction = db.transaction(['current', 'previous'], 'readwrite', { durability: 'strict' });
       const current = transaction.objectStore('current');
       const previous = transaction.objectStore('previous');
-      const failure = injectedFailure;
-      injectedFailure = null;
       transaction.oncomplete = () => resolve();
-      transaction.onabort = () => reject(failure ? new DOMException('Injected save transaction failure.', failure)
-        : transaction.error ?? new DOMException('The save transaction was interrupted.', 'AbortError'));
+      transaction.onabort = () => reject(transaction.error ?? new DOMException('The save transaction was interrupted.', 'AbortError'));
       const request = current.get(snapshot.slot);
       request.onsuccess = () => {
         if (request.result) previous.put(request.result);
-        const write = current.put(snapshot);
-        // Abort after writes have executed; prove rollback of BOTH object stores.
-        if (failure) write.onsuccess = () => transaction.abort();
+        current.put(snapshot);
       };
     });
   }
@@ -101,7 +96,6 @@
       panel.hidden = status?.phase !== 'failed';
       document.getElementById('saveError').textContent = status?.error ?? '';
     },
-    readForDotNet: async slot => forDotNet(await read(slot)), readAllForDotNet: async () => (await readAll()).map(forDotNet),
-    testing: { failNextCommit: name => { if (!['AbortError', 'QuotaExceededError'].includes(name)) throw new Error('Unknown failure'); injectedFailure = name; } }
+    readForDotNet: async slot => forDotNet(await read(slot)), readAllForDotNet: async () => (await readAll()).map(forDotNet)
   };
 })();

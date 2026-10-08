@@ -7,8 +7,10 @@ adapters with zero errors. The original title screen creates a farmer and loads
 the farmhouse; WASD movement reaches the farm and tool use consumes original
 stamina. Inventory opens, the original bed prompt accepts sleep, and the game
 returns control on day 2 after writing the original farm and SaveGameInfo files.
-These files are currently in the browser runtime's temporary filesystem;
-reload persistence and single-player feature parity remain unverified.
+At this initial graphics milestone, the files were only in the browser runtime's
+temporary filesystem. The later persistence adapter commits them to IndexedDB;
+see the [current parity ledger](feature-parity.md) for cold-load and gameplay
+acceptance evidence.
 
 Pinned environment:
 

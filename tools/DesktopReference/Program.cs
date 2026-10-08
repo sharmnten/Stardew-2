@@ -23,7 +23,11 @@ Directory.CreateDirectory(contentRoot);
 foreach (string file in Directory.EnumerateFiles(Path.Combine(root, "Content"), "*", SearchOption.AllDirectories))
 {
     string relative = Path.GetRelativePath(Path.Combine(root, "Content"), file);
-    string[] parts = relative.Split(Path.DirectorySeparatorChar);
+    // Original Summit credits request Tilesheets, while the archive uses
+    // TileSheets. Reproduce that observed Windows path alias on Linux.
+    foreach (string spelling in new[] { relative, relative.Replace("TileSheets/", "Tilesheets/", StringComparison.Ordinal) }.Distinct())
+    {
+    string[] parts = spelling.Split(Path.DirectorySeparatorChar);
     for (int split = 0; split < parts.Length; split++)
     {
         string prefix = split == 0 ? "" : Path.Combine(parts[..split]);
@@ -31,6 +35,7 @@ foreach (string file in Directory.EnumerateFiles(Path.Combine(root, "Content"), 
         string alias = Path.Combine(contentRoot, prefix, suffix);
         Directory.CreateDirectory(Path.GetDirectoryName(alias)!);
         if (!File.Exists(alias)) File.CreateSymbolicLink(alias, file);
+    }
     }
 }
 Directory.SetCurrentDirectory(Path.GetDirectoryName(report)!);
@@ -41,6 +46,10 @@ runner.Content.RootDirectory = contentRoot;
 Console.WriteLine("Initialize original desktop frame");
 NativeWindow.Frame(runner);
 Console.WriteLine("Original desktop title initialized");
+// The supplied release build disables its logger by default. Preserve its
+// original logger implementation while exposing caught event/content errors.
+typeof(Game1).GetField("log", BindingFlags.Static | BindingFlags.NonPublic)!.SetValue(null,
+    Activator.CreateInstance(typeof(Game1).Assembly.GetType("StardewValley.Logging.DefaultLogger")!, true, false));
 NativeWindow.Show(runner.Window.Handle);
 var farmLayouts = Enumerable.Range(0, 7)
     .Select(index => new { id = index.ToString(), map = Farm.getMapNameFromTypeInt(index) }).ToList();
@@ -109,7 +118,7 @@ static object LoadBrowserExport(GameRunner runner, string report)
 static object CreateFarm(string id, GameRunner runner, string report)
 {
     var choices = new Dictionary<string, string> {
-        ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
+        ["movie-screening"] = "Standard", ["characters-family-birth"] = "Standard", ["late-game-completion"] = "Standard", ["new-game-standard"] = "Standard", ["farming-season"] = "Standard",
         ["inventory-economy"] = "Standard", ["tool-upgrades"] = "Standard", ["recipes-machines"] = "Standard", ["museum-quests"] = "Standard",
         ["island-qi-perfection"] = "Standard", ["original-minigames"] = "Standard", ["festivals-events-movies"] = "Standard", ["community-center"] = "Standard", ["joja-orders-museum"] = "Standard", ["skills-mastery-achievements"] = "Standard", ["characters-family"] = "Standard", ["combat-dungeons"] = "Standard", ["fishing-gathering"] = "Standard", ["fishing-cast"] = "Standard", ["animals-buildings"] = "Standard", ["text-sign-clipboard"] = "Standard", ["tailoring-automation-decoration"] = "Standard", ["advanced-desktop-roundtrip"] = "Standard", ["new-game-riverland"] = "Riverland",
         ["new-game-forest"] = "Forest", ["new-game-hilltop"] = "Hills",
@@ -149,12 +158,15 @@ static object CreateFarm(string id, GameRunner runner, string report)
         NativeWindow.Frame(runner);
         Thread.Sleep(1);
     }
-    if (id is "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "fishing-cast" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "museum-quests" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
+    if (id is "movie-screening" or "characters-family-birth" or "late-game-completion" or "farming-season" or "inventory-economy" or "tool-upgrades" or "recipes-machines" or "advanced-desktop-roundtrip" or "tailoring-automation-decoration" or "text-sign-clipboard" or "animals-buildings" or "fishing-gathering" or "fishing-cast" or "combat-dungeons" or "characters-family" or "skills-mastery-achievements" or "community-center" or "joja-orders-museum" or "museum-quests" or "festivals-events-movies" or "original-minigames" or "island-qi-perfection")
     {
         Until(() => Game1.activeClickableMenu == null, "finish initial save menu");
         if (id == "animals-buildings") GoToFarm();
         switch (id)
         {
+            case "movie-screening": StardewBrowser.Testing.MovieActions.Prepare(); break;
+            case "characters-family-birth": StardewBrowser.Testing.FamilyActions.PrepareBirth(); break;
+            case "late-game-completion": StardewBrowser.Testing.CompletionActions.Prepare(); break;
             case "farming-season": StardewBrowser.Testing.FarmingActions.Prepare(); break;
             case "inventory-economy": StardewBrowser.Testing.EconomyActions.Prepare(); break;
             case "tool-upgrades": StardewBrowser.Testing.ToolUpgradeActions.Prepare(); break;
@@ -323,7 +335,22 @@ static object CreateFarm(string id, GameRunner runner, string report)
         Reload();
         state["afterFamilyReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Read());
     }
-    if (id == "combat-dungeons") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.Run());
+    if (id == "combat-dungeons")
+    {
+        state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.Run());
+        Game1.enterMine(5);
+        Until(() => Game1.currentLocation.Name == "UndergroundMine5" && !Game1.isWarping
+            && Game1.player.CanMove && Game1.activeClickableMenu == null, "enter original generated mine");
+        StardewBrowser.Testing.CombatActions.StartLiveEncounter();
+        Game1.player.BeginUsingTool();
+        Until(() => Game1.stats.SlimesKilled > 1 && Game1.player.CanMove && !Game1.player.UsingTool,
+            "finish original weapon swing and live monster kill");
+        state["liveCombat"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.ReadLive());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        ToolNight(6);
+        Reload();
+        state["afterCombatReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CombatActions.ReadSaved());
+    }
     if (id == "fishing-gathering") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Run());
     if (id == "fishing-gathering")
     {
@@ -360,6 +387,8 @@ static object CreateFarm(string id, GameRunner runner, string report)
         }, "complete original pond harvest overnight");
         Reload();
         state["afterPondReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.Read());
+        GoToProgressLocation("Beach", 28, 13);
+        state["gathering"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FishingActions.GatherAndRegenerate());
     }
     if (id == "fishing-cast")
     {
@@ -427,6 +456,130 @@ static object CreateFarm(string id, GameRunner runner, string report)
         Reload();
         state["afterActionReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.TextSignActions.Read());
     }
+    if (id == "movie-screening")
+    {
+        Game1.timeOfDay = 900;
+        state["beforeMovie"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MovieActions.Read());
+        var linus = Game1.getCharacterFromName("Linus");
+        GoToProgressLocation(linus.currentLocation.NameOrUniqueName, linus.TilePoint.X, linus.TilePoint.Y + 1);
+        StardewBrowser.Testing.MovieActions.Invite();
+        DismissToolDialogue();
+        state["afterInvitation"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MovieActions.Read());
+        var town = Game1.RequireLocation("Town");
+        var offset = StardewValley.Locations.Town.GetTheaterTileOffset();
+        GoToProgressLocation("Town", 95 + offset.X, 55 + offset.Y);
+        var entrance = StardewBrowser.Testing.MovieActions.ActionTile(town, "Theater_Entrance");
+        GoToProgressLocation("Town", entrance.X, entrance.Y + 1);
+        if (!town.answerDialogueAction("EnterTheaterSpendTicket_Yes", null))
+            throw new InvalidOperationException("Original movie ticket entry handler is missing.");
+        Until(() => Game1.currentLocation.Name == "MovieTheater" && !Game1.isWarping && Game1.player.CanMove,
+            "enter original theater using a ticket");
+        var theater = StardewBrowser.Testing.MovieActions.Theater;
+        var doors = StardewBrowser.Testing.MovieActions.ActionTile(theater, "Theater_Doors");
+        if (!theater.performAction("Theater_Doors", Game1.player, new xTile.Dimensions.Location(doors.X, doors.Y)))
+            throw new InvalidOperationException("Original movie doors did not start viewing.");
+        Until(() => Game1.CurrentEvent?.id == "MovieTheaterScreening", "start original movie event");
+        state["screeningEvent"] = JsonSerializer.SerializeToElement(Game1.CurrentEvent.id);
+        Until(() => {
+            if (Game1.activeClickableMenu is DialogueBox dialogue && !dialogue.transitioning
+                && dialogue.safetyTimer <= 0 && dialogue.characterIndexInDialogue >= dialogue.getCurrentString().Length - 1)
+                dialogue.receiveLeftClick(0, 0);
+            return !Game1.eventUp && !Game1.isWarping && Game1.currentLocation.Name == "MovieTheater"
+                && StardewBrowser.Testing.MovieActions.State == 2 && Game1.player.CanMove && Game1.activeClickableMenu == null;
+        }, "finish every original movie scene and return to the lobby", timeoutSeconds: 240);
+        state["afterMovie"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MovieActions.Read());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        ToolNight(6);
+        Reload();
+        state["afterMovieReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MovieActions.Read());
+    }
+    if (id == "characters-family-birth")
+    {
+        state["beforeBirth"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Read());
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        string? birthEvent = null;
+        bool nightMenuSeen = false;
+        Until(() => {
+            if (Game1.farmEvent != null) birthEvent = Game1.farmEvent.GetType().Name;
+            if (Game1.farmEvent is StardewValley.Events.BirthingEvent)
+            {
+                if (Game1.activeClickableMenu is DialogueBox dialogue && !dialogue.transitioning
+                    && dialogue.safetyTimer <= 0 && dialogue.characterIndexInDialogue >= dialogue.getCurrentString().Length - 1)
+                    dialogue.receiveLeftClick(0, 0);
+                if (Game1.activeClickableMenu is NamingMenu naming)
+                {
+                    naming.textBox.RecieveTextInput("PortBaby");
+                    naming.receiveLeftClick(naming.doneNamingButton.bounds.Center.X, naming.doneNamingButton.bounds.Center.Y);
+                }
+            }
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 6 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.morningQueue.Count == 0
+                && Game1.player.CanMove && Game1.activeClickableMenu == null;
+        }, "complete original birth, naming and overnight save");
+        state["birthEvent"] = JsonSerializer.SerializeToElement(birthEvent);
+        state["afterBirth"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Read());
+        Reload();
+        state["afterBirthReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.FamilyActions.Read());
+    }
+    if (id == "late-game-completion")
+    {
+        state["before"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+        StardewBrowser.Testing.CompletionActions.Renovate();
+        Until(() => Game1.activeClickableMenu == null && !Game1.isWarping && Game1.player.CanMove,
+            "finish original renovation animation and return warp");
+        GoToProgressLocation("IslandNorthCave1", 6, 4);
+        if (!Game1.currentLocation.answerDialogueAction("Fizz_Yes", null))
+            throw new InvalidOperationException("Original waiver purchase handler unavailable.");
+        state["afterActions"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is ShippingMenu or SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 2 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.morningQueue.Count == 0
+                && Game1.player.CanMove && Game1.activeClickableMenu == null;
+        }, "complete original Qi shipment and perfection overnight");
+        state["afterFirstNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+        // Farm_Eternal is original morning fluff, added after the first save.
+        // A second real overnight persists that morning's result.
+        ToolNight(3);
+        state["afterNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+        Reload();
+        state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+        Game1.warpFarmer("Summit", 9, 23, false);
+        Until(() => Game1.currentLocation.Name == "Summit" && Game1.CurrentEvent != null,
+            "enter original earned-perfection ending");
+        state["endingStarted"] = JsonSerializer.SerializeToElement(true);
+        int slideshowSprites = 0;
+        var endingTrace = new List<object>();
+        string? lastCommand = null;
+        Until(() => {
+            var scene = Game1.CurrentEvent;
+            string? command = scene?.GetCurrentCommand();
+            if (command != lastCommand)
+            {
+                endingTrace.Add(new { location = Game1.currentLocation.Name, command,
+                    slideshow = (Game1.currentLocation as StardewValley.Locations.Summit)?.isShowingEndSlideshow,
+                    sprites = Game1.currentLocation.temporarySprites.Count });
+                lastCommand = command;
+            }
+            if (Game1.currentLocation is StardewValley.Locations.Summit summit && summit.isShowingEndSlideshow)
+                slideshowSprites = Math.Max(slideshowSprites, summit.temporarySprites.Count);
+            if (Game1.activeClickableMenu is DialogueBox dialogue && !dialogue.transitioning
+                && dialogue.safetyTimer <= 0 && dialogue.characterIndexInDialogue >= dialogue.getCurrentString().Length - 1)
+                dialogue.receiveLeftClick(0, 0);
+            return !Game1.eventUp && !Game1.isWarping && Game1.player.CanMove && Game1.activeClickableMenu == null;
+        }, "finish original ending dialogue and full slideshow", timeoutSeconds: 540);
+        state["endingTrace"] = JsonSerializer.SerializeToElement(endingTrace);
+        state["endingSlideshowSprites"] = JsonSerializer.SerializeToElement(slideshowSprites);
+        state["afterEnding"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        ToolNight(4);
+        Reload();
+        state["afterEndingReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.CompletionActions.Read());
+    }
     return state;
 
 
@@ -490,8 +643,12 @@ static object CreateFarm(string id, GameRunner runner, string report)
         Until(() => (selected = loading.MenuSlots.OfType<LoadGameMenu.SaveFileSlot>()
             .FirstOrDefault(candidate => candidate.Farmer.slotName == slot)) != null, "list original save");
         selected!.Activate();
-        Until(() => Game1.gameMode == 3 && !SaveGame.IsProcessing && Game1.player.CanMove
-            && !Game1.isWarping && Game1.activeClickableMenu == null, "reload original save");
+        Until(() => {
+            if (id == "late-game-completion" && Game1.eventUp && Game1.currentLocation?.currentEvent is { } ev)
+                throw new InvalidOperationException("Completion prerequisite triggered original event " + ev.id);
+            return Game1.gameMode == 3 && !SaveGame.IsProcessing && Game1.player.CanMove
+            && !Game1.isWarping && Game1.activeClickableMenu == null;
+        }, "reload original save");
     }
 
     void GoToProgressLocation(string location, int x, int y)
@@ -501,15 +658,15 @@ static object CreateFarm(string id, GameRunner runner, string report)
             && Game1.player.CanMove && Game1.activeClickableMenu == null, "warp to original " + location);
     }
 
-    void Until(Func<bool> done, string action, bool acknowledgeLevelNotices = false)
+    void Until(Func<bool> done, string action, bool acknowledgeLevelNotices = false, int timeoutSeconds = 60)
     {
         var timeout = System.Diagnostics.Stopwatch.StartNew();
         while (!done())
         {
-            if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Reference could not " + action
+            if (timeout.Elapsed > TimeSpan.FromSeconds(timeoutSeconds)) throw new TimeoutException("Reference could not " + action
                 + $"; location={Game1.currentLocation?.Name}, mode={Game1.gameMode}, loading={SaveGame.IsProcessing},"
                 + $" warp={Game1.isWarping}, canMove={Game1.player.CanMove}, active={runner.IsActive},"
-                + $" event={Game1.eventUp}, menu={Game1.activeClickableMenu?.GetType().Name}");
+                + $" event={Game1.eventUp}, eventId={Game1.currentLocation?.currentEvent?.id}, menu={Game1.activeClickableMenu?.GetType().Name}");
             NativeWindow.Frame(runner);
             if (Game1.activeClickableMenu is ShippingMenu shipping && shipping.CanReceiveInput())
                 shipping.receiveLeftClick(shipping.okButton.bounds.Center.X, shipping.okButton.bounds.Center.Y);

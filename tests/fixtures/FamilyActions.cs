@@ -30,6 +30,17 @@ internal static class FamilyActions
         Game1.netWorldState.Value.UpdateFromGame1();
     }
 
+    internal static void PrepareBirth()
+    {
+        Prepare();
+        // The original global plane event takes priority over personal birth.
+        // This advanced family has already witnessed that earlier unlock.
+        Game1.player.mailReceived.Add("sawQiPlane");
+        var home = Utility.getHomeOfFarmer(Game1.player);
+        home.characters.RemoveWhere(character => character is Child);
+        Game1.player.GetSpouseFriendship().NextBirthingDate = new WorldDate(2, Season.Spring, 6);
+    }
+
     internal static void GiveHeldGift()
     {
         Game1.player.CurrentToolIndex = 0;

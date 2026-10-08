@@ -15,6 +15,7 @@ test('original museum donation input, quest and saved display match desktop', { 
     }, id);
     const spot = await page.evaluate(() => portScenarios.run('museum-visit'));
     await page.evaluate(() => portScenarios.run('museum-donate-menu'));
+    const closeY = await page.evaluate(() => portStatus.game.menu.controls.find(control => control.name === 'okButton').y);
     await clickControl(page, '0');
     await page.waitForFunction(() => portStatus.game.museum?.heldItem === '(O)86');
     await pointAtWorld(page, spot.x * 64 + 32, spot.y * 64 + 32);
@@ -22,6 +23,10 @@ test('original museum donation input, quest and saved display match desktop', { 
     await waitForAsync(page, async () => (await portScenarios.snapshot()).museum.pieces.length === 1);
     await page.mouse.up();
     assert.deepEqual(await museum(page), expected.afterDonation);
+    // The original menu slides its inventory down while placing an artifact,
+    // then back up after donation. Click OK after it reaches its original row.
+    await page.waitForFunction(y => !portStatus.game.input.leftPressed
+      && portStatus.game.menu.controls.some(control => control.name === 'okButton' && control.y === y), closeY);
     await clickControl(page, 'okButton');
     await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
     await hold(page, 'f', 0);

@@ -65,7 +65,10 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
                 await saves.HydrateAsync();
                 BrowserPersistence.Configure(saves);
                 await js.InvokeVoidAsync("portHost.status", new { phase = "loading", message = "Verifying original game content…" });
-                await content.PreloadAsync(manifest.Assets.Where(entry => entry.Group != "audio-bank").Select(entry => entry.Name), cancellationToken);
+                await content.PreloadAsync(manifest.Assets.Where(entry => entry.Group != "audio-bank").Select(entry => entry.Name), cancellationToken,
+                    (completed, total) => ((IJSInProcessRuntime)js).InvokeVoid("portHost.status", new {
+                        phase = "loading", message = $"Downloading original content: {completed / 1048576.0:F1} / {total / 1048576.0:F1} MB",
+                        download = new { completed, total } }));
                 OriginalContent.Configure(content);
                 Directory.CreateDirectory(OriginalContent.Root + "/Content");
                 Directory.SetCurrentDirectory(OriginalContent.Root);
@@ -89,6 +92,10 @@ public sealed class BrowserGameHost(IJSRuntime js, HttpClient http, bool diagnos
                 Game1.graphics.PreferredBackBufferHeight = size.Height;
                 game = runner;
                 game.Run();
+                typeof(Game1).GetField("log", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!
+                    .SetValue(null, new StardewBrowser.Browser.OriginalGameLogger(
+                        message => ((IJSInProcessRuntime)js).InvokeVoid("console.error", message),
+                        message => ((IJSInProcessRuntime)js).InvokeVoid("console.warn", message)));
             }
             reference = DotNetObjectReference.Create(this);
 #if BROWSER_PORT_TESTING

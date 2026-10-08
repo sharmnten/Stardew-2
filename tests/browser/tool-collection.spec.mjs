@@ -26,6 +26,11 @@ test('original desktop ready upgrade is collected through the browser counter', 
     await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
     await page.evaluate(() => portScenarios.run('tool-upgrades-home'));
     await walkToBed(page);
+    // Original DialogueBox builds response controls only after its opening
+    // transition and question text finish. Reaching the bed precedes that.
+    await page.waitForFunction(() => portStatus.game.menu.type === 'DialogueBox'
+      && portStatus.game.menu.allowsInteraction
+      && portStatus.game.menu.controls.some(control => control.name === 'Yes'));
     assert.ok((await snapshot(page)).menu.controls.some(control => control.name === 'Yes'), 'Returned player must reach the original bed sleep prompt');
   }, undefined, '/');
 });

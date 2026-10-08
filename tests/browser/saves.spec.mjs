@@ -46,7 +46,7 @@ for (const failure of ['AbortError', 'QuotaExceededError']) {
         const files = value => ({ Farm_123: new Uint8Array([60, value, 62]), SaveGameInfo: new Uint8Array([60, 70, value, 62]) });
         await portStorage.commit({ slot: 'Farm_123', files: files(1) });
         await portStorage.commit({ slot: 'Farm_123', files: files(2) });
-        portStorage.testing.failNextCommit(failure);
+        window.testSaveFailure(failure);
         let error;
         try { await portStorage.commit({ slot: 'Farm_123', files: files(9) }); } catch (e) { error = e.name; }
         return { error, current: Array.from((await portStorage.read('Farm_123')).files.Farm_123),

@@ -39,14 +39,14 @@ public sealed class BrowserContentStore
         }
     }
 
-    public async Task PreloadAsync(IEnumerable<string> names, CancellationToken cancellationToken)
+    public async Task PreloadAsync(IEnumerable<string> names, CancellationToken cancellationToken, Action<long, long>? progress = null)
     {
         await preloadLock.WaitAsync(cancellationToken);
-        try { await PreloadCoreAsync(names, cancellationToken); }
+        try { await PreloadCoreAsync(names, cancellationToken, progress); }
         finally { preloadLock.Release(); }
     }
 
-    private async Task PreloadCoreAsync(IEnumerable<string> names, CancellationToken cancellationToken)
+    private async Task PreloadCoreAsync(IEnumerable<string> names, CancellationToken cancellationToken, Action<long, long>? progress)
     {
         var pending = new List<(string Key, ContentEntry Entry)>();
         var requestedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -58,6 +58,8 @@ public sealed class BrowserContentStore
             if (resident.ContainsKey(key)) continue;
             if (requestedKeys.Add(key)) pending.Add((key, entry));
         }
+        long completed = 0, total = pending.Sum(item => item.Entry.Size);
+        progress?.Invoke(completed, total);
         foreach (var batch in pending.Chunk(8))
         {
             var downloads = await Task.WhenAll(batch.Select(async item => (item.Key, Data: await DownloadAsync(item.Entry, cancellationToken))));
@@ -65,7 +67,9 @@ public sealed class BrowserContentStore
             {
                 resident.Add(key, data);
                 ResidentBytes += data.Length;
+                completed += data.Length;
             }
+            progress?.Invoke(completed, total);
         }
     }
 

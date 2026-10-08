@@ -10,7 +10,11 @@
 @inject NavigationManager Navigation
 @implements IAsyncDisposable
 
-<div id="canvasHolder"><canvas id="theCanvas" tabindex="0" aria-label="Stardew Valley browser graphics verification"></canvas></div>
+@if (!started && !diagnostic)
+{
+    <div id="startPanel"><p>Play Stardew Valley in your browser.</p><button id="startGame" @onclick="StartGame">Start game</button></div>
+}
+<div id="canvasHolder"><canvas id="theCanvas" tabindex="0" aria-label="Stardew Valley game"></canvas></div>
 @if (diagnostic)
 {
     <button id="audioProbe" @onclick="PlayAudioProbe">Test original audio</button>
@@ -44,6 +48,7 @@ else
 @code {
     private BrowserGameHost? host;
     private bool diagnostic;
+    private bool started;
     private bool showSaves;
     private string[] slots = [];
     private string? selectedSlot;
@@ -98,6 +103,12 @@ else
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
+        if (diagnostic) await StartGame();
+    }
+    private async Task StartGame()
+    {
+        if (started) return;
+        started = true;
         host = new BrowserGameHost(Js, Http, diagnostic);
         await host.StartAsync(CancellationToken.None);
     }

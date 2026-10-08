@@ -100,6 +100,16 @@ public class ContentTests
         }
     }
 
+    [Fact]
+    public async Task ReportsVerifiedDownloadProgressIncludingTotalBeforeRequestsFinish()
+    {
+        var store = Store(Original);
+        var progress = new List<(long Completed, long Total)>();
+        await store.PreloadAsync(["Maps/Farm"], CancellationToken.None,
+            (completed, total) => progress.Add((completed, total)));
+        Assert.Equal([(0L, (long)Original.Length), ((long)Original.Length, (long)Original.Length)], progress);
+    }
+
     private sealed class ManyFiles : HttpMessageHandler
     {
         private int active;

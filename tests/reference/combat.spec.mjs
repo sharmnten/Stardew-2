@@ -14,7 +14,8 @@ test('original desktop generates dungeons and applies combat damage and buffs', 
     env: { ...process.env, ALSOFT_DRIVERS: 'null', LIBGL_ALWAYS_SOFTWARE: '1', XDG_DATA_HOME: `${root}/data`, XDG_CONFIG_HOME: `${root}/config` }
   });
   assert.equal(result.status, 0, result.stdout + result.stderr);
-  const actual = JSON.parse(readFileSync(report)).scenario.observations;
+  const scenario = JSON.parse(readFileSync(report)).scenario;
+  const actual = scenario.observations;
   assert.deepEqual(actual.dungeons.map(dungeon => dungeon.name), ['UndergroundMine5', 'UndergroundMine121', 'VolcanoDungeon1']);
   for (const dungeon of actual.dungeons) {
     assert.ok(dungeon.width > 0 && dungeon.height > 0);
@@ -29,4 +30,14 @@ test('original desktop generates dungeons and applies combat damage and buffs', 
   assert.equal(actual.buff.speed, 2);
   assert.equal(actual.buff.defense, 3);
   assert.equal(actual.buff.expired, true);
+  assert.equal(scenario.liveCombat.location, 'UndergroundMine5');
+  assert.equal(scenario.liveCombat.slimesKilled, 1);
+  assert.equal(scenario.liveCombat.killed, true);
+  assert.ok(scenario.liveCombat.experience > 0);
+  assert.equal(scenario.liveCombat.loot, true);
+  assert.equal(scenario.afterCombatReload.day, 6);
+  assert.equal(scenario.afterCombatReload.deepest, 5);
+  assert.equal(scenario.afterCombatReload.slimesKilled, 2);
+  assert.equal(scenario.afterCombatReload.experience, scenario.liveCombat.experience);
+  assert.equal(scenario.afterCombatReload.weapon, '(W)0');
 });

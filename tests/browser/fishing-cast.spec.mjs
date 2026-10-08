@@ -67,7 +67,8 @@ test('normal rod cast, hook, fishing minigame and saved catch work in browser', 
     await page.waitForFunction(() => portStatus.game.player.canMove && !portStatus.game.player.usingTool);
     const caught = (await fishing(page)).state;
     assert.equal(caught.bait, 1);
-    assert.equal(caught.inventory[0].id, '(O)145');
+    assert.ok(['(O)137', '(O)145'].includes(caught.inventory[0].id), 'Morning Spring Town tutorial catch is Smallmouth Bass or Sunfish');
+    assert.equal(caught.collection[0].id, caught.inventory[0].id);
     assert.equal(caught.inventory[0].stack, 1);
     assert.equal(caught.collection[0].count, 1);
     assert.ok(caught.collection[0].size > 0);

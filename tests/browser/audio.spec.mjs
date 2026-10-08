@@ -35,6 +35,9 @@ test('corrupted original audio is rejected before decoding', { timeout: 120000 }
     await page.waitForFunction(() => window.portStatus.audioError, null, { timeout: 30000 });
     const status = await page.evaluate(() => window.portStatus);
     assert.match(status.audioError, /checksum mismatch.*0\/3/i);
+    assert.equal(await page.locator('#audioFailure').isVisible(), true);
+    assert.match(await page.locator('#audioError').textContent(), /checksum mismatch.*0\/3/i);
+    assert.equal(await page.locator('#retryAudio').isVisible(), true);
     assert.equal(status.audioDecodedBytes, 0);
     assert.equal(status.audioPeak, 0);
   }, async page => {

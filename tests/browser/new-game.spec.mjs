@@ -85,7 +85,7 @@ test('the original new-game journey persists, recovers a failed save, reloads an
       return records[0];
     });
     assert.ok(previousSave, 'Original new-game setup saves the initial day before the first sleep');
-    await page.evaluate(() => portStorage.testing.failNextCommit('QuotaExceededError'));
+    await page.evaluate(() => window.testSaveFailure('QuotaExceededError'));
     await clickControl(page, 'Yes');
     await page.waitForFunction(() => window.portStatus.game.day === 2, null, { timeout: 60000 });
     await page.waitForFunction(() => window.portStatus.storage.phase === 'failed', null, { timeout: 60000 });

@@ -41,6 +41,10 @@ internal static class GameSnapshot
             viewport = new { x = Game1.viewport.X, y = Game1.viewport.Y, zoom = Game1.options.zoomLevel },
             language = LocalizedContentManager.CurrentLanguageCode.ToString(),
             warping = Game1.isWarping,
+            activeEvent = location?.currentEvent is { } scene ? new {
+                id = scene.id, command = scene.CurrentCommand, skippable = scene.skippable,
+                actors = scene.actors.Select(actor => actor.Name).Order().ToArray()
+            } : null,
             minigame = Game1.currentMinigame is AbigailGame king ? new {
                 type = nameof(AbigailGame), x = king.playerPosition.X, y = king.playerPosition.Y,
                 lives = king.lives, bullets = king.bullets.Count } : null,
