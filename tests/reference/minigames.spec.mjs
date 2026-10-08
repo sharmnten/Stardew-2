@@ -29,7 +29,10 @@ test('original desktop arcade input, firing and generated kart physics', { timeo
   assert.ok(scenario.beforeNight, 'Record original Prairie King saved progress before sleeping');
   assert.equal(scenario.beforeNight.day, 1);
   assert.equal(scenario.beforeNight.progress.wave, 0);
-  assert.equal(scenario.beforeNight.progress.lives, 3);
+  assert.equal(scenario.beforeNight.progress.lives, 2, 'Original live monster collision must earn an automatic saved checkpoint');
+  assert.equal(scenario.beforeNight.progress.died, true);
+  assert.equal(scenario.baselineCheckpoint.progress.lives, 3);
+  assert.equal(scenario.baselineCheckpoint.progress.died, false);
   assert.equal(scenario.beforeNight.progress.bulletDamage, 1);
   assert.equal(scenario.beforeNight.progress.heldItem, -100);
   assert.equal(scenario.afterReload.day, 2);

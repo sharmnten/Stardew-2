@@ -605,10 +605,11 @@
         "Browser original replay matches all desktop movement/firing/progress/kart physics/generation/score/lives observations",
         "Normal browser original Continue resumes Prairie King; DOM D moves, Arrow Up fires and Escape exits",
         "Browser actual Saloon Kart cabinet right-click/Endless2/Progress3 choices, Space start/move/jump/release, P pause/resume and Escape quit both modes; original comparison/Prairie King pass1/1 GREEN84221ms",
-        "Both actual Saloon cabinets, normal bed/full-night/durable day2/cold Load retain every original JOTPKProgress field/list; cabinet Continue resumes playable lives3 progress1/1 GREEN182524ms, desktop37188ms"
+        "Both actual Saloon cabinets, normal bed/full-night/durable day2/cold Load retain every original JOTPKProgress field/list; cabinet Continue resumes playable lives3 progress1/1 GREEN182524ms, desktop37188ms",
+        "Live original enemy collision auto-saves lives2/died=true; actual night/cold reload and cabinet Continue preserve earned checkpoint, browser1/1 GREEN232330ms/native1/1 GREEN50756ms"
       ],
       "remaining": [
-        "Live earned checkpoints, later arcade waves/wins/rewards and advanced upgraded progress"
+        "Later arcade waves/wins/rewards and advanced upgraded progress"
       ]
     },
     {

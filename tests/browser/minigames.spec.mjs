@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { withGame } from './driver.mjs';
 import { snapshot, hold, clickControl, pointAtWorld, walkToBed, waitForAsync } from './game-controls.mjs';
 
@@ -25,6 +27,15 @@ test('original arcade cabinets, both Kart modes and saved Prairie King progress 
     await page.keyboard.down('ArrowUp');
     await page.waitForFunction(() => portStatus.game.minigame.bullets > 0);
     await page.keyboard.up('ArrowUp');
+    await waitForAsync(page, async () => {
+      const saved = (await portScenarios.snapshot()).savedKing.progress;
+      return saved.lives === 2 && saved.died;
+    }, undefined, 90000);
+    const earned = await savedKing(page);
+    assert.equal(earned.progress.wave, 0);
+    assert.equal(earned.progress.lives, 2);
+    assert.equal(earned.progress.died, true);
+    assert.ok(earned.progress.waveTimer > 0 && earned.progress.waveTimer <= 80000);
     await hold(page, 'Escape', 100);
     await page.waitForFunction(() => !portStatus.game.minigame);
     await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
@@ -60,7 +71,7 @@ test('original arcade cabinets, both Kart modes and saved Prairie King progress 
       assert.equal((await snapshot(page)).menu.type, null);
     }
     const saved = await savedKing(page);
-    assert.deepEqual(saved, expected.beforeNight);
+    assert.deepEqual(saved, earned);
     await page.evaluate(() => portScenarios.run('minigames-home'));
     await walkToBed(page);
     await clickControl(page, 'Yes');
@@ -83,16 +94,20 @@ test('original arcade cabinets, both Kart modes and saved Prairie King progress 
     await page.waitForFunction(() => portStatus.game.mode === 3 && !portStatus.game.loading
       && portStatus.game.day === 2 && portStatus.game.player.canMove && !portStatus.game.menu.type
       && !portStatus.game.warping, null, { timeout: 90000 });
-    assert.deepEqual(await savedKing(page), expected.afterReload);
+    const reloaded = await savedKing(page);
+    assert.deepEqual(reloaded.progress, earned.progress);
+    assert.equal(reloaded.day, 2);
     await openCabinet(page, 'minigames-king');
     await clickControl(page, 'Continue');
     await page.waitForFunction(() => portStatus.game.minigame?.type === 'AbigailGame');
-    assert.equal((await snapshot(page)).minigame.lives, 3);
+    assert.equal((await snapshot(page)).minigame.lives, 2);
     const resumed = (await snapshot(page)).minigame;
     await hold(page, 'd', 100);
     assert.ok((await snapshot(page)).minigame.x > resumed.x, 'The cold-loaded original progress must resume a playable arcade game');
     await hold(page, 'Escape', 100);
     await page.waitForFunction(() => !portStatus.game.minigame && !portStatus.game.menu.type && portStatus.game.player.canMove);
+    await writeFile(resolve('.port-cache/task-7-arcade-earned-browser-observations.json'),
+      JSON.stringify({ earnedCheckpoint: earned, beforeNight: saved, afterReload: reloaded }, null, 2) + '\n');
   }, undefined, '/');
 });
 

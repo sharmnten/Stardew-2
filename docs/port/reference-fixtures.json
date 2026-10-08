@@ -2425,11 +2425,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 16988
+          "bytes": 16992
         },
         {
-          "name": "Parity4_123456789",
-          "bytes": 3053373
+          "name": "Parity6_123456789",
+          "bytes": 3017222
         }
       ],
       "observations": {
@@ -2476,12 +2476,110 @@
           }
         ]
       },
-      "desktop": "Original arcade replay/full-night checkpoint reload1/1 GREEN37188ms",
-      "browser": "Original comparison/both Saloon cabinet DOM/both Kart modes/full-night checkpoint save/cold Load/Prairie King Continue1/1 GREEN182524ms",
-      "scope": "Controlled original hardware replay compares Prairie King movement/firing/saved wave/lives and both kart modes generation/physics/score/lives with unchanged desktop; input/random are restored afterward. Original Saloon/home warps only position the farmer beside actual Buildings Action Arcade_Prairie/Arcade_Minecart tiles or the farmhouse entrance. Ordinary world right-click opens both menus; DOM Continue/D movement/ArrowUp firing/Escape quit and both Endless2/Progress3 start/movement/jump/release/pause/resume/quit work. Tests await original quit/dialogue/fade/world control. Original replay SaveGame creates wave0/lives3/bulletDamage1/waveTimer80000/seven-entry monster-chance checkpoint, not a DOM-cleared wave. Actual bed/night/durable day2/cold original Load preserve every saved field/list, including coins/score/upgrades/held item/flags/round/world, and actual Prairie King cabinet Continue resumes a movable lives3 game. Serialized fixture marker persists so location setup works after cold Load. No successful game/input/save outcome injected; no original simulation/runtime/input/serializer changes. Live earned checkpoints, later waves/wins/rewards and advanced upgraded progress remain open.",
-      "production": "Fresh18-driver exclusion1/1 GREEN2504ms",
+      "desktop": "Original replay/live enemy collision auto-save/full night/reload1/1 GREEN50756ms",
+      "browser": "Actual both cabinets/normal Prairie King enemy collision auto-save/both Kart modes/earned checkpoint night/cold Load/Continue1/1 GREEN232330ms",
+      "scope": "Controlled original replay compares movement/firing/saved baseline and both Kart generation/physics; input/random restored. Baseline checkpoint comes from replay SaveGame. Native reference additionally uses stationary original AbigailGame/seeded RNG/16ms ticks until real enemy collision automatically saves lives2/died=true; helper never calls playerDie/SaveGame or assigns successful state. Browser opens actual Saloon Prairie King cabinet using right-click/Continue, moves/fires, then natural original enemies/collision earn the same automatic two-life checkpoint without any checkpoint/death/save API. Both actual Kart modes still pass normal controls. Original home warp only positions at entrance; actual bed/night/durable day2/cold Load retain each runtime's entire earned checkpoint (flags/upgrades/coins/score/held item/round/world/wave/timer/seven monster chances). Browser artifact confirms earned/beforeNight/afterReload values exactly; actual Prairie King cabinet Continue resumes movable lives2 progress. Live RNG/timers are contract-compared and exact within-runtime persistence, not forced to identical trajectories. Serialized marker persists. No original gameplay/runtime/input/save changes. Later waves/wins/rewards and advanced upgraded progress remain open.",
+      "production": "Fresh18-driver exclusion1/1 GREEN860ms",
       "supportTests": "Fresh Tools17/17, Platform38/38, Game3/3 GREEN",
       "beforeNight": {
+        "day": 1,
+        "progress": {
+          "bulletDamage": 1,
+          "fireSpeed": 0,
+          "ammo": 0,
+          "spreadPistol": false,
+          "runSpeed": 0,
+          "lives": 2,
+          "coins": 0,
+          "score": 0,
+          "died": true,
+          "round": 0,
+          "wave": 0,
+          "heldItem": -100,
+          "world": 0,
+          "waveTimer": 80000,
+          "monsterChances": [
+            {
+              "x": 0.014,
+              "y": 0.4
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ]
+        }
+      },
+      "afterReload": {
+        "day": 2,
+        "progress": {
+          "bulletDamage": 1,
+          "fireSpeed": 0,
+          "ammo": 0,
+          "spreadPistol": false,
+          "runSpeed": 0,
+          "lives": 2,
+          "coins": 0,
+          "score": 0,
+          "died": true,
+          "round": 0,
+          "wave": 0,
+          "heldItem": -100,
+          "world": 0,
+          "waveTimer": 80000,
+          "monsterChances": [
+            {
+              "x": 0.014,
+              "y": 0.4
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ]
+        }
+      },
+      "baselineCheckpoint": {
         "day": 1,
         "progress": {
           "bulletDamage": 1,
@@ -2530,53 +2628,153 @@
           ]
         }
       },
-      "afterReload": {
-        "day": 2,
-        "progress": {
-          "bulletDamage": 1,
-          "fireSpeed": 0,
-          "ammo": 0,
-          "spreadPistol": false,
-          "runSpeed": 0,
-          "lives": 3,
-          "coins": 0,
-          "score": 0,
-          "died": false,
-          "round": 0,
-          "wave": 0,
-          "heldItem": -100,
-          "world": 0,
-          "waveTimer": 80000,
-          "monsterChances": [
-            {
-              "x": 0.014,
-              "y": 0.4
-            },
-            {
-              "x": 0,
-              "y": 0
-            },
-            {
-              "x": 0,
-              "y": 0
-            },
-            {
-              "x": 0,
-              "y": 0
-            },
-            {
-              "x": 0,
-              "y": 0
-            },
-            {
-              "x": 0,
-              "y": 0
-            },
-            {
-              "x": 0,
-              "y": 0
-            }
-          ]
+      "browserObservations": {
+        "earnedCheckpoint": {
+          "day": 1,
+          "progress": {
+            "bulletDamage": 1,
+            "fireSpeed": 0,
+            "ammo": 0,
+            "spreadPistol": false,
+            "runSpeed": 0,
+            "lives": 2,
+            "coins": 0,
+            "score": 0,
+            "died": true,
+            "round": 0,
+            "wave": 0,
+            "heldItem": -100,
+            "world": 0,
+            "waveTimer": 80000,
+            "monsterChances": [
+              {
+                "x": 0.014,
+                "y": 0.4
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              }
+            ]
+          }
+        },
+        "beforeNight": {
+          "day": 1,
+          "progress": {
+            "bulletDamage": 1,
+            "fireSpeed": 0,
+            "ammo": 0,
+            "spreadPistol": false,
+            "runSpeed": 0,
+            "lives": 2,
+            "coins": 0,
+            "score": 0,
+            "died": true,
+            "round": 0,
+            "wave": 0,
+            "heldItem": -100,
+            "world": 0,
+            "waveTimer": 80000,
+            "monsterChances": [
+              {
+                "x": 0.014,
+                "y": 0.4
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              }
+            ]
+          }
+        },
+        "afterReload": {
+          "day": 2,
+          "progress": {
+            "bulletDamage": 1,
+            "fireSpeed": 0,
+            "ammo": 0,
+            "spreadPistol": false,
+            "runSpeed": 0,
+            "lives": 2,
+            "coins": 0,
+            "score": 0,
+            "died": true,
+            "round": 0,
+            "wave": 0,
+            "heldItem": -100,
+            "world": 0,
+            "waveTimer": 80000,
+            "monsterChances": [
+              {
+                "x": 0.014,
+                "y": 0.4
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 0
+              }
+            ]
+          }
         }
       }
     },

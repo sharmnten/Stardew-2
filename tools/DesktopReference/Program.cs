@@ -227,6 +227,8 @@ static object CreateFarm(string id, GameRunner runner, string report)
     if (id == "original-minigames")
     {
         state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.Run());
+        state["baselineCheckpoint"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.ReadSavedKing());
+        StardewBrowser.Testing.MinigameActions.EarnCheckpoint();
         state["beforeNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.ReadSavedKing());
         GoToProgressLocation("FarmHouse", 7, 8);
         StardewBrowser.Testing.AdvancedActions.BeginSleep();

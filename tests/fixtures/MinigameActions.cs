@@ -122,6 +122,35 @@ internal static class MinigameActions
         }
     }
 
+    // Native reference only: original enemies and collision code must trigger SaveGame.
+    internal static void EarnCheckpoint()
+    {
+        var savedRandom = Game1.random;
+        var savedInput = Game1.input;
+        bool savedGamepad = Game1.options.gamepadControls;
+        AbigailGame? king = null;
+        try
+        {
+            Game1.random = new Random(1729);
+            Game1.input = new ReplayInput();
+            Game1.options.gamepadControls = false;
+            king = new AbigailGame();
+            king.receiveKeyPress(Keys.Space);
+            for (int step = 1; step <= 6000 && Game1.player.jotpkProgress.Value.lives.Value == 3; step++)
+                king.tick(Time(step));
+            var saved = Game1.player.jotpkProgress.Value;
+            if (saved.lives.Value != 2 || !saved.died.Value)
+                throw new InvalidOperationException("Original Prairie King enemies did not earn an automatic death checkpoint.");
+        }
+        finally
+        {
+            king?.unload();
+            Game1.input = savedInput;
+            Game1.random = savedRandom;
+            Game1.options.gamepadControls = savedGamepad;
+        }
+    }
+
     private static GameTime Time(int step) => new(TimeSpan.FromMilliseconds(step * 16), TimeSpan.FromMilliseconds(16));
     private static T Field<T>(MineCart cart, string name) =>
         (T)typeof(MineCart).GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(cart)!;
