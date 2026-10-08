@@ -35,6 +35,12 @@ test('original desktop construction, livestock production, petting and stable ow
   assert.equal(actual.stable.built, true);
   assert.equal(actual.stable.days, 0);
   assert.equal(actual.stable.horseOwned, true);
+  assert.equal(scenario.afterRiding.horse.hat, '(H)0');
+  assert.equal(scenario.afterRiding.horse.ateCarrotToday, true);
+  assert.equal(scenario.afterRiding.carrots, 1);
+  assert.equal(scenario.afterNight.horse.hat, '(H)0');
+  assert.equal(scenario.afterNight.horse.ateCarrotToday, false);
+  assert.equal(scenario.afterNight.carrots, 1);
   assert.equal(scenario.afterRiding.horse.name, 'PortHorse');
   assert.equal(scenario.afterRiding.horse.farmerName, 'PortHorse');
   assert.equal(scenario.afterRiding.horse.ownerMatches, true);

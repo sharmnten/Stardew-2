@@ -73,6 +73,7 @@ internal static class GameSnapshot
                 signs = location.objects.Pairs.Where(pair => pair.Value.IsTextSign())
                     .Select(pair => new { x = (int)pair.Key.X, y = (int)pair.Key.Y, text = pair.Value.signText.Value }).ToArray() },
             input = new { leftPressed = Game1.oldMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,
+                rightPressed = Game1.oldMouseState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed,
                 mouseX = Game1.oldMouseState.X, mouseY = Game1.oldMouseState.Y,
                 keys = Game1.oldKBState.GetPressedKeys().Select(key => key.ToString().ToLowerInvariant()).ToArray() },
             audioEngine = Game1.audioEngine?.GetType().Name

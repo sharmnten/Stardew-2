@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
@@ -10,6 +11,8 @@ namespace StardewBrowser.Testing;
 internal static class AnimalActions
 {
     internal const string FixtureKey = "StardewBrowser.AnimalFixture";
+    private static readonly FieldInfo MunchingTimer = typeof(Horse).GetField("munchingCarrotTimer", BindingFlags.Instance | BindingFlags.NonPublic)!;
+    internal static bool Munching => (int)MunchingTimer.GetValue(Horse)! > 0;
     private static readonly Vector2 CoopTile = new(20, 20), BarnTile = new(35, 20), StableTile = new(40, 30);
 
     internal static void Prepare()
@@ -41,6 +44,8 @@ internal static class AnimalActions
         for (int i = 0; i < Game1.player.Items.Count; i++) Game1.player.Items[i] = null;
         Game1.player.Items[0] = ItemRegistry.Create("(O)388", 999);
         Game1.player.Items[1] = ItemRegistry.Create("(O)390", 999);
+        Game1.player.Items[2] = ItemRegistry.Create("(H)0");
+        Game1.player.Items[3] = ItemRegistry.Create("(O)Carrot", 2);
     }
 
     internal static object Run()
@@ -100,9 +105,10 @@ internal static class AnimalActions
         return new { x = box.Center.X, y = box.Center.Y };
     }
 
-    // Persisted values only: wandering positions and live mount animation are separate.
+    // Observe animal identities, care and mount state without including wandering positions.
     internal static object Read() => new {
         day = Game1.dayOfMonth, money = Game1.player.Money,
+        carrots = Game1.player.Items.Where(item => item?.QualifiedItemId == "(O)Carrot").Sum(item => item.Stack),
         buildings = Game1.getFarm().buildings.Where(b => b is Stable || b.GetIndoors() is AnimalHouse)
             .OrderBy(b => b.buildingType.Value).Select(b => new {
                 type = b.buildingType.Value, x = b.tileX.Value, y = b.tileY.Value,
@@ -112,6 +118,7 @@ internal static class AnimalActions
             id = a.myID.Value, type = a.type.Value, age = a.age.Value,
             friendship = a.friendshipTowardFarmer.Value, home = a.home.buildingType.Value }).ToArray(),
         horse = new { name = Horse.Name, farmerName = Game1.player.horseName.Value,
+            hat = Horse.hat.Value?.QualifiedItemId, ateCarrotToday = Horse.ateCarrotToday,
             ownerMatches = Horse.ownerId.Value == Game1.player.UniqueMultiplayerID,
             stableMatches = Horse.HorseId == Stable.HorseId,
             mounted = Game1.player.mount == Horse, mounting = Horse.mounting.Value, dismounting = Horse.dismounting.Value }
@@ -147,6 +154,14 @@ internal static class AnimalActions
             menu.receiveLeftClick(menu.doneNamingButton.bounds.Center.X, menu.doneNamingButton.bounds.Center.Y);
             Until(() => Game1.activeClickableMenu == null && Game1.player.CanMove, "finish naming");
             // Let the original mutex observe the naming lock release before a new request.
+            frame();
+            Game1.player.CurrentToolIndex = 2;
+            Horse.checkAction(Game1.player, Game1.currentLocation);
+            Until(() => Horse.hat.Value != null, "equipping the hat");
+            frame();
+            Game1.player.CurrentToolIndex = 3;
+            Horse.checkAction(Game1.player, Game1.currentLocation);
+            Until(() => Horse.ateCarrotToday && !Munching, "feeding the carrot");
             frame();
             Horse.checkAction(Game1.player, Game1.currentLocation);
             Until(() => Game1.player.mount != null && !Horse.mounting.Value && Game1.player.CanMove, "mounting");

@@ -313,6 +313,13 @@ internal sealed class ScenarioBridge(HttpClient http)
             livestock = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
                 && farm.buildings.OfType<StardewValley.Buildings.Stable>().Any()
                 ? StardewBrowser.Testing.AnimalActions.Read() : null,
+            horseInput = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
+                ? new { slot = Game1.player.CurrentToolIndex,
+                    item = Game1.player.Items[Game1.player.CurrentToolIndex]?.QualifiedItemId,
+                    rightDown = Game1.oldMouseState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed } : null,
+            horseMunching = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
+                && farm.buildings.OfType<StardewValley.Buildings.Stable>().Any()
+                && StardewBrowser.Testing.AnimalActions.Munching,
             horseInteraction = Game1.player.modData.ContainsKey(StardewBrowser.Testing.AnimalActions.FixtureKey)
                 && farm.buildings.OfType<StardewValley.Buildings.Stable>().Any()
                 ? StardewBrowser.Testing.AnimalActions.HorseInteraction() : null,

@@ -328,7 +328,8 @@
       "prerequisites": [
         "Original serialized built coop with adult fed White Chicken and adopted dog",
         "40000 starting gold,999 wood and999 stone; grant does not count as lifetime earnings",
-        "Cleared valid farm sites; original warp to Farm before native placement"
+        "Cleared valid farm sites; original warp to Farm before native placement",
+        "Cowboy Hat (H)0 and two carrots in original serialized inventory"
       ],
       "expected": [
         "Original carpenter resource consumption, safe barn placement and construction timers",
@@ -336,19 +337,23 @@
         "Original chicken/cow production, pet friendship and stable horse ownership",
         "Original horse NamingMenu/Done, mounting, movement and dismount through normal browser controls",
         "Actual bed/night save, durable IndexedDB day2 and cold normal Load retain horse owner/stable and livestock/building associations",
-        "Cold-loaded named horse mounts without another naming prompt"
+        "Cold-loaded named horse mounts without another naming prompt",
+        "Actual inventory selection/world click equips horse hat and feeds one carrot; subsequent same-day mounting consumes no extra carrot",
+        "Horse hat and remaining carrot survive overnight/cold Load; daily feeding flag resets on day2"
       ],
       "status": "unverified",
       "remaining": [
         "Normal construction/upgrade UI workflows and house renovations",
-        "Other livestock/production types, horse equipment/feeding and broader animal care",
+        "Other livestock/production types, horse flute/hat removal and broader animal care",
         "Broader full-day animal/building workflow persistence"
       ],
       "verifiedSubset": [
         "Unchanged native construction/resource/upgrade/production/pet/stable1/1 GREEN25178ms",
         "Browser full original-method observations match desktop1/1 GREEN56175ms",
         "Expanded unchanged native naming/riding/night/normal Load1/1 GREEN34714ms",
-        "Browser actual horse naming/movement/dismount, full night/cold Load/exact native state and remount1/1 GREEN156491ms"
+        "Browser actual horse naming/movement/dismount, full night/cold Load/exact native state and remount1/1 GREEN156491ms",
+        "Expanded original native hat/carrot/naming/riding/night/normal Load1/1 GREEN63213ms",
+        "Discrete processed-click browser hat/carrot/full-night/cold-load gate1/1 GREEN166152ms and isolated repeat1/1 GREEN170109ms"
       ]
     },
     {

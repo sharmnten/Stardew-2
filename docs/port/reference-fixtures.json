@@ -1386,11 +1386,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 14747
+          "bytes": 16298
         },
         {
-          "name": "Parity9_123456789",
-          "bytes": 3009251
+          "name": "Parity11_123456789",
+          "bytes": 2962135
         }
       ],
       "observations": {
@@ -1435,9 +1435,9 @@
           "horseOwned": true
         }
       },
-      "desktop": "Expanded original naming/riding/night/normal Load1/1 GREEN34714ms",
-      "browser": "Expanded original NamingMenu/Done, actual riding/dismount, full night/durable save/cold normal Load/remount1/1 GREEN156491ms",
-      "scope": "Original farm warp, carpenter resource/construction/upgrade methods, chicken/cow production and pet/stable methods; added actual original NamingMenu/Done, mounted movement and action input, full overnight/durable IndexedDB and cold normal Load match native state and retain named horse and livestock/building associations. Cold-loaded horse remounts without a new naming prompt. Normal carpenter UI/renovations, other livestock, equipment/feeding and broader care remain open.",
+      "desktop": "Expanded original naming/hat/carrot/riding/night/normal Load1/1 GREEN63213ms",
+      "browser": "Original horse NamingMenu/hat/carrot/riding/dismount/full-night/durable-save/cold-normal-Load/remount1/1 GREEN166152ms; isolated repeat1/1 GREEN170109ms",
+      "scope": "Original farm warp, carpenter resource/construction/upgrade methods, chicken/cow production and pet/stable methods. Actual browser original NamingMenu/Done, inventory hat/carrot selection, world equip/feed/mount, mounted movement and dismount; full-night save/durable IndexedDB/cold normal Load retain hat, horse owner/stable and livestock/building associations. One carrot consumed; same-day mounting consumes no extra carrot; daily feeding flag resets on day2. Cold-loaded horse remounts without naming. Discrete processed native right-down/up driver verified twice; original gameplay unchanged. Normal carpenter UI/renovations, other livestock, horse flute/hat removal and broader care remain open.",
       "riding": {
         "moved": true,
         "mounted": true
@@ -1445,6 +1445,7 @@
       "afterRiding": {
         "day": 1,
         "money": 22000,
+        "carrots": 1,
         "buildings": [
           {
             "type": "Big Barn",
@@ -1490,6 +1491,8 @@
         "horse": {
           "name": "PortHorse",
           "farmerName": "PortHorse",
+          "hat": "(H)0",
+          "ateCarrotToday": true,
           "ownerMatches": true,
           "stableMatches": true,
           "mounted": false,
@@ -1500,6 +1503,7 @@
       "afterNight": {
         "day": 2,
         "money": 22000,
+        "carrots": 1,
         "buildings": [
           {
             "type": "Big Barn",
@@ -1545,6 +1549,8 @@
         "horse": {
           "name": "PortHorse",
           "farmerName": "PortHorse",
+          "hat": "(H)0",
+          "ateCarrotToday": false,
           "ownerMatches": true,
           "stableMatches": true,
           "mounted": false,
@@ -1555,6 +1561,7 @@
       "afterReload": {
         "day": 2,
         "money": 22000,
+        "carrots": 1,
         "buildings": [
           {
             "type": "Big Barn",
@@ -1600,6 +1607,8 @@
         "horse": {
           "name": "PortHorse",
           "farmerName": "PortHorse",
+          "hat": "(H)0",
+          "ateCarrotToday": false,
           "ownerMatches": true,
           "stableMatches": true,
           "mounted": false,

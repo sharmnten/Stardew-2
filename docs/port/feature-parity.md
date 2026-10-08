@@ -162,7 +162,22 @@ A fresh page uses the original Load menu and exactly matches the native post-nig
 observations. It can then mount the saved horse without another naming prompt.
 Setup only uses original location warps; no naming/mount/movement/save outcome
 is injected. Normal carpenter UI, renovations, other livestock/production types,
-mount equipment/feeding and broader animal care remain open.
+horse flute/hat removal and broader animal care remain open.
+
+The horse fixture also supplies a Cowboy Hat and two carrots. The expanded
+unchanged desktop replay equips the hat and feeds exactly one carrot using
+original horse actions before riding (1/1, 63.2 seconds). Real overnight/save and
+normal Load retain the hat and remaining carrot, while the original daily feeding
+flag resets on day2. Both isolated browser runs with discrete processed clicks pass (1/1 each,
+166.2 and170.1 seconds). Normal inventory keys and world right clicks equip the
+hat/feed the carrot; mounting with the remaining carrot selected consumes no
+second carrot that day. The resulting day2/cold-load observations match native.
+An initial browser test failed during feeding after unexpected mounting; a trace
+run passed and showed native right-down still true immediately after DOM release.
+The original game repeats held actions after250ms, then every100ms. The test now
+acknowledges native right-down and release before polling each outcome, and checks
+the actual selected slot/item. The exact prior failing gesture timing was not
+captured; its cause is an inference. Original gameplay/input logic is unchanged.
 
 The affected browser method gate passes6/6 in228 seconds after the asynchronous
 original farm-warp dispatch: animals56s, decoration52s, farming53s and inventory/
