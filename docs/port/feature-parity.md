@@ -296,7 +296,7 @@ Production excludes all thirteen mutable fixture drivers (fresh audit1/1,2.7s).
 
 ## Original arcade replay
 
-Fresh desktop1/1 (71 seconds) and extended browser1/1 (84 seconds) match controlled keyboard
+Fresh desktop1/1 (37 seconds) and extended browser1/1 (183 seconds) match controlled keyboard
 input and16ms updates interpreted by the original games. Prairie King starts,
 moves192 pixels, fires two bullets and records wave0/lives3 progress. Both
 Junimo Kart modes start, generate36/40 tracks and match player coordinates,
@@ -311,10 +311,15 @@ title/map/cutscene into Ingame, forward motion follows original physics, P stops
 exact X and resumes, Space produces an upward jump and release clears it, and
 Escape quits both games. Setup only warps beside the original map cabinet; all
 menu, game-state and physics outcomes come from normal input. Tests await the
-original dialogue/fade transition and world control after quitting. Prairie King
-cabinet input, full arcade progression/wins/rewards and post-action persistence
-remain required. Fresh production excludes all18 mutable fixture drivers
-(1/1,2.7s); Tools17/17, Platform38/38 and Game3/3 also pass. The first cabinet
+original dialogue/fade transition and world control after quitting. The original
+Prairie King cabinet also works through world right-click/Continue/movement/fire/quit.
+An actual bed/night/durable day2/cold Load retains every original JOTPKProgress
+field and monster-chance list, and cabinet Continue reopens a movable lives3 game.
+The baseline checkpoint comes from original replay SaveGame (wave0/timer80000),
+so live earned checkpoints, later waves/wins/rewards and upgraded progress remain
+open. The serialized fixture marker identifies this original save after cold Load.
+Fresh production excludes all18 mutable fixture drivers (1/1,2.5s); the earlier
+Tools17/17, Platform38/38 and Game3/3 checks also pass. The first cabinet
 run timed out on startup during concurrent builds; the isolated run passed without
 changing its timeout or runtime.
 

@@ -2425,11 +2425,11 @@
       "files": [
         {
           "name": "SaveGameInfo",
-          "bytes": 16869
+          "bytes": 16988
         },
         {
-          "name": "Parity2_123456789",
-          "bytes": 3041825
+          "name": "Parity4_123456789",
+          "bytes": 3053373
         }
       ],
       "observations": {
@@ -2476,11 +2476,109 @@
           }
         ]
       },
-      "desktop": "Fresh original arcade replay1/1 GREEN70603ms",
-      "browser": "Original comparison/Prairie King plus actual Saloon Kart cabinet right-click/both2/3 modes/start/move/jump/pause/resume/quit1/1 GREEN84221ms",
-      "scope": "Controlled original hardware-boundary replay compares Prairie King movement/firing/saved wave/lives and both kart modes generation/physics/score/lives with unchanged desktop; input/random are restored afterward. Normal original Continue resumes Prairie King, DOM D moves/ArrowUp fires/Escape quits. Original Saloon warp only places the farmer beside the actual Buildings Action Arcade_Minecart tile, without opening a menu. Ordinary world right-click opens the original mode question; actual Endless/Progress responses choose2/3. Ordinary Space passes title/map/cutscene into Ingame; native kart advances, P freezes exact X then resumes, held Space produces jumpPressed/upward velocity, release clears jumpPressed and Escape quits both modes. Tests await original noMenu/CanMove after quit transitions. No successful game-state/movement/jump/pause/quit outcome injected and no original runtime/input changes. Complete arcade wins/rewards, Prairie King cabinet world input and post-action save persistence remain open.",
-      "production": "Fresh18-driver exclusion1/1 GREEN2691ms",
-      "supportTests": "Fresh Tools17/17, Platform38/38, Game3/3 GREEN"
+      "desktop": "Original arcade replay/full-night checkpoint reload1/1 GREEN37188ms",
+      "browser": "Original comparison/both Saloon cabinet DOM/both Kart modes/full-night checkpoint save/cold Load/Prairie King Continue1/1 GREEN182524ms",
+      "scope": "Controlled original hardware replay compares Prairie King movement/firing/saved wave/lives and both kart modes generation/physics/score/lives with unchanged desktop; input/random are restored afterward. Original Saloon/home warps only position the farmer beside actual Buildings Action Arcade_Prairie/Arcade_Minecart tiles or the farmhouse entrance. Ordinary world right-click opens both menus; DOM Continue/D movement/ArrowUp firing/Escape quit and both Endless2/Progress3 start/movement/jump/release/pause/resume/quit work. Tests await original quit/dialogue/fade/world control. Original replay SaveGame creates wave0/lives3/bulletDamage1/waveTimer80000/seven-entry monster-chance checkpoint, not a DOM-cleared wave. Actual bed/night/durable day2/cold original Load preserve every saved field/list, including coins/score/upgrades/held item/flags/round/world, and actual Prairie King cabinet Continue resumes a movable lives3 game. Serialized fixture marker persists so location setup works after cold Load. No successful game/input/save outcome injected; no original simulation/runtime/input/serializer changes. Live earned checkpoints, later waves/wins/rewards and advanced upgraded progress remain open.",
+      "production": "Fresh18-driver exclusion1/1 GREEN2504ms",
+      "supportTests": "Fresh Tools17/17, Platform38/38, Game3/3 GREEN",
+      "beforeNight": {
+        "day": 1,
+        "progress": {
+          "bulletDamage": 1,
+          "fireSpeed": 0,
+          "ammo": 0,
+          "spreadPistol": false,
+          "runSpeed": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "died": false,
+          "round": 0,
+          "wave": 0,
+          "heldItem": -100,
+          "world": 0,
+          "waveTimer": 80000,
+          "monsterChances": [
+            {
+              "x": 0.014,
+              "y": 0.4
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ]
+        }
+      },
+      "afterReload": {
+        "day": 2,
+        "progress": {
+          "bulletDamage": 1,
+          "fireSpeed": 0,
+          "ammo": 0,
+          "spreadPistol": false,
+          "runSpeed": 0,
+          "lives": 3,
+          "coins": 0,
+          "score": 0,
+          "died": false,
+          "round": 0,
+          "wave": 0,
+          "heldItem": -100,
+          "world": 0,
+          "waveTimer": 80000,
+          "monsterChances": [
+            {
+              "x": 0.014,
+              "y": 0.4
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ]
+        }
+      }
     },
     {
       "id": "island-qi-perfection",

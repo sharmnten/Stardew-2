@@ -224,7 +224,22 @@ static object CreateFarm(string id, GameRunner runner, string report)
     }
     if (id == "recipes-machines") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.ProductionActions.Run());
     if (id == "island-qi-perfection") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.IslandActions.Run());
-    if (id == "original-minigames") state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.Run());
+    if (id == "original-minigames")
+    {
+        state["observations"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.Run());
+        state["beforeNight"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.ReadSavedKing());
+        GoToProgressLocation("FarmHouse", 7, 8);
+        StardewBrowser.Testing.AdvancedActions.BeginSleep();
+        bool nightMenuSeen = false;
+        Until(() => {
+            nightMenuSeen |= Game1.activeClickableMenu is SaveGameMenu;
+            return nightMenuSeen && Game1.dayOfMonth == 2 && taskField.GetValue(null) == null
+                && !Game1.showingEndOfNightStuff && !Game1.game1.IsSaving && Game1.player.CanMove
+                && Game1.activeClickableMenu == null && Game1.morningQueue.Count == 0;
+        }, "complete original arcade progress overnight");
+        Reload();
+        state["afterReload"] = JsonSerializer.SerializeToElement(StardewBrowser.Testing.MinigameActions.ReadSavedKing());
+    }
     if (id == "festivals-events-movies")
     {
         StardewBrowser.Testing.CalendarActions.BeginFestival();

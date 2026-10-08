@@ -8,15 +8,20 @@ namespace StardewBrowser.Testing;
 
 internal static class MinigameActions
 {
-    internal static void Prepare() => Game1.player.hasSkullKey = true;
+    internal const string FixtureKey = "StardewBrowser.ArcadeFixture";
+    internal static void Prepare()
+    {
+        Game1.player.hasSkullKey = true;
+        Game1.player.modData[FixtureKey] = "1";
+    }
 
-    internal static (Vector2 Stand, Vector2 Target) KartCabinet()
+    internal static (Vector2 Stand, Vector2 Target) Cabinet(bool kart)
     {
         var saloon = Game1.getLocationFromName("Saloon");
         for (int y = 0; y < saloon.Map.Layers[0].LayerHeight; y++)
         for (int x = 0; x < saloon.Map.Layers[0].LayerWidth; x++)
         {
-            if (saloon.doesTileHaveProperty(x, y, "Action", "Buildings") != "Arcade_Minecart") continue;
+            if (saloon.doesTileHaveProperty(x, y, "Action", "Buildings") != (kart ? "Arcade_Minecart" : "Arcade_Prairie")) continue;
             var target = new Vector2(x, y);
             foreach (var offset in new[] { new Vector2(0, 1), new Vector2(-1, 0), new Vector2(1, 0) })
             {
@@ -26,7 +31,21 @@ internal static class MinigameActions
                     return (stand, target);
             }
         }
-        throw new InvalidOperationException("The original Saloon needs a reachable Junimo Kart cabinet.");
+        throw new InvalidOperationException("The original Saloon needs a reachable arcade cabinet.");
+    }
+
+    internal static object ReadSavedKing()
+    {
+        var saved = Game1.player.jotpkProgress.Value;
+        return new { day = Game1.dayOfMonth, progress = saved == null ? null : new {
+            bulletDamage = saved.bulletDamage.Value, fireSpeed = saved.fireSpeedLevel.Value,
+            ammo = saved.ammoLevel.Value, spreadPistol = saved.spreadPistol.Value,
+            runSpeed = saved.runSpeedLevel.Value, lives = saved.lives.Value, coins = saved.coins.Value,
+            score = saved.score.Value, died = saved.died.Value, round = saved.whichRound.Value,
+            wave = saved.whichWave.Value, heldItem = saved.heldItem.Value, world = saved.world.Value,
+            waveTimer = saved.waveTimer.Value,
+            monsterChances = saved.monsterChances.Select(chance => new { x = chance.X, y = chance.Y }).ToArray()
+        } };
     }
 
     internal static object ReadKart(MineCart cart)

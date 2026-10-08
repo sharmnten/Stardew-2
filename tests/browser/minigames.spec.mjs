@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { withGame } from './driver.mjs';
-import { snapshot, hold, clickControl, pointAtWorld, waitForAsync } from './game-controls.mjs';
+import { snapshot, hold, clickControl, pointAtWorld, walkToBed, waitForAsync } from './game-controls.mjs';
 
-test('original arcade input, firing and generated kart physics match desktop', { timeout: 240000 }, async () => {
+test('original arcade cabinets, both Kart modes and saved Prairie King progress work in browser', { timeout: 420000 }, async () => {
   await withGame(async page => {
     await page.waitForFunction(() => window.portStatus?.phase === 'ready', null, { timeout: 120000 });
     const id = 'original-minigames';
@@ -11,9 +11,12 @@ test('original arcade input, firing and generated kart physics match desktop', {
     const expected = await page.evaluate(async id => {
       const response = await fetch(`Fixtures/reference/${id}.json`);
       if (!response.ok) throw new Error('Generate the original desktop arcade fixture before publishing');
-      return (await response.json()).scenario.observations;
+      return (await response.json()).scenario;
     }, id);
-    assert.deepEqual(await page.evaluate(id => portScenarios.run(id), id), expected);
+    assert.deepEqual(await page.evaluate(id => portScenarios.run(id), id), expected.observations);
+    await clickControl(page, 'Exit');
+    await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
+    await openCabinet(page, 'minigames-king');
     await clickControl(page, 'Continue');
     await page.waitForFunction(() => portStatus.game.minigame?.type === 'AbigailGame');
     const before = (await snapshot(page)).minigame;
@@ -26,13 +29,7 @@ test('original arcade input, firing and generated kart physics match desktop', {
     await page.waitForFunction(() => !portStatus.game.minigame);
     await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
     for (const [choice, mode] of [['Endless', 2], ['Progress', 3]]) {
-      const cabinet = await page.evaluate(() => portScenarios.run('minigames-kart'));
-      assert.equal((await snapshot(page)).location.name, 'Saloon', 'Visit the actual original arcade cabinet');
-      assert.equal((await snapshot(page)).menu.type, null, 'Cabinet setup must leave opening the menu to ordinary world input');
-      await pointAtWorld(page, cabinet.x * 64 + 32, cabinet.y * 64 + 32);
-      await page.mouse.down({ button: 'right' });
-      await page.waitForFunction(() => portStatus.game.menu.type === 'DialogueBox');
-      await page.mouse.up({ button: 'right' });
+      await openCabinet(page, 'minigames-kart');
       await clickControl(page, choice);
       await waitForAsync(page, async () => (await portScenarios.snapshot()).kart?.canStart);
       assert.equal((await kart(page)).mode, mode);
@@ -62,7 +59,52 @@ test('original arcade input, firing and generated kart physics match desktop', {
       await page.waitForFunction(() => !portStatus.game.menu.type && portStatus.game.player.canMove);
       assert.equal((await snapshot(page)).menu.type, null);
     }
+    const saved = await savedKing(page);
+    assert.deepEqual(saved, expected.beforeNight);
+    await page.evaluate(() => portScenarios.run('minigames-home'));
+    await walkToBed(page);
+    await clickControl(page, 'Yes');
+    await page.waitForFunction(() => portStatus.game.menu.type === 'SaveGameMenu', null, { timeout: 90000 });
+    await page.waitForFunction(() => portStatus.game.day === 2 && !portStatus.game.overnight
+      && !portStatus.game.loading && portStatus.game.player.canMove && !portStatus.game.menu.type,
+    null, { timeout: 90000 });
+    await waitForAsync(page, async () => {
+      const slot = portStatus.game.save.slot;
+      const stored = await portStorage.read(slot);
+      if (!stored) return false;
+      const xml = new DOMParser().parseFromString(new TextDecoder().decode(stored.files[slot]), 'application/xml');
+      return xml.querySelector('SaveGame > dayOfMonth')?.textContent === '2';
+    });
+    await page.reload();
+    await page.waitForFunction(() => portStatus?.phase === 'ready', null, { timeout: 120000 });
+    await clickControl(page, 'Load');
+    await page.waitForFunction(() => portStatus.game.menu.type === 'LoadGameMenu' && portStatus.game.menu.saves?.length === 1);
+    await clickControl(page, '0');
+    await page.waitForFunction(() => portStatus.game.mode === 3 && !portStatus.game.loading
+      && portStatus.game.day === 2 && portStatus.game.player.canMove && !portStatus.game.menu.type
+      && !portStatus.game.warping, null, { timeout: 90000 });
+    assert.deepEqual(await savedKing(page), expected.afterReload);
+    await openCabinet(page, 'minigames-king');
+    await clickControl(page, 'Continue');
+    await page.waitForFunction(() => portStatus.game.minigame?.type === 'AbigailGame');
+    assert.equal((await snapshot(page)).minigame.lives, 3);
+    const resumed = (await snapshot(page)).minigame;
+    await hold(page, 'd', 100);
+    assert.ok((await snapshot(page)).minigame.x > resumed.x, 'The cold-loaded original progress must resume a playable arcade game');
+    await hold(page, 'Escape', 100);
+    await page.waitForFunction(() => !portStatus.game.minigame && !portStatus.game.menu.type && portStatus.game.player.canMove);
   }, undefined, '/');
 });
 
 const kart = page => page.evaluate(async () => (await portScenarios.snapshot()).kart);
+const savedKing = page => page.evaluate(async () => (await portScenarios.snapshot()).savedKing);
+
+async function openCabinet(page, action) {
+  const cabinet = await page.evaluate(action => portScenarios.run(action), action);
+  assert.equal((await snapshot(page)).location.name, 'Saloon', 'Visit the actual original arcade cabinet');
+  assert.equal((await snapshot(page)).menu.type, null, 'Cabinet setup must leave opening the menu to ordinary world input');
+  await pointAtWorld(page, cabinet.x * 64 + 32, cabinet.y * 64 + 32);
+  await page.mouse.down({ button: 'right' });
+  await page.waitForFunction(() => portStatus.game.menu.type === 'DialogueBox');
+  await page.mouse.up({ button: 'right' });
+}

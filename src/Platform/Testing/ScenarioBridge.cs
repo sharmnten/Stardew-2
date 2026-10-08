@@ -67,14 +67,17 @@ internal sealed class ScenarioBridge(HttpClient http)
 
     internal async Task<string> RunActionAsync(string id)
     {
-        if (id == "minigames-kart")
+        if (id is "minigames-kart" or "minigames-king" or "minigames-home")
         {
-            if (loadedScenario != "original-minigames" || Game1.currentMinigame != null || Game1.activeClickableMenu != null)
+            if (!Game1.player.modData.ContainsKey(StardewBrowser.Testing.MinigameActions.FixtureKey)
+                || Game1.currentMinigame != null || Game1.activeClickableMenu != null)
                 throw new InvalidOperationException("Load the arcade fixture and finish its active game before opening the kart menu.");
-            var cabinet = StardewBrowser.Testing.MinigameActions.KartCabinet();
-            Game1.warpFarmer("Saloon", (int)cabinet.Stand.X, (int)cabinet.Stand.Y, false);
+            bool home = id == "minigames-home";
+            var cabinet = home ? default : StardewBrowser.Testing.MinigameActions.Cabinet(id == "minigames-kart");
+            string target = home ? "FarmHouse" : "Saloon";
+            Game1.warpFarmer(target, home ? 7 : (int)cabinet.Stand.X, home ? 8 : (int)cabinet.Stand.Y, false);
             var timeout = System.Diagnostics.Stopwatch.StartNew();
-            while (Game1.currentLocation.Name != "Saloon" || Game1.isWarping || !Game1.player.CanMove
+            while (Game1.currentLocation.Name != target || Game1.isWarping || !Game1.player.CanMove
                 || Game1.activeClickableMenu != null)
             {
                 if (timeout.Elapsed > TimeSpan.FromSeconds(60)) throw new TimeoutException("Original arcade cabinet warp did not finish.");
@@ -289,6 +292,8 @@ internal sealed class ScenarioBridge(HttpClient http)
                 ? StardewBrowser.Testing.FishingCastActions.Read() : null,
             kart = Game1.currentMinigame is StardewValley.Minigames.MineCart cart
                 ? StardewBrowser.Testing.MinigameActions.ReadKart(cart) : null,
+            savedKing = Game1.player.modData.ContainsKey(StardewBrowser.Testing.MinigameActions.FixtureKey)
+                ? StardewBrowser.Testing.MinigameActions.ReadSavedKing() : null,
             linusPosition = Game1.player.modData.ContainsKey(StardewBrowser.Testing.FamilyActions.FixtureKey)
                 ? new { x = Game1.getCharacterFromName("Linus").Position.X, y = Game1.getCharacterFromName("Linus").Position.Y } : null,
             morningQueueCount = Game1.morningQueue.Count,
